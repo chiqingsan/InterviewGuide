@@ -59,19 +59,19 @@
 Interview Guide:.
 ├─.hvigor
 ├─.idea
-├─AppScope
+├─AppScope  // 应用配置信息
 │  └─resources
 ├─dependencies
 ├─entry
 │  └─src
 │      ├─main
-│      │  ├─common
+│      │  ├─common  // 公共组件
 │      │  ├─ets
-│      │  │  ├─entryability
-│      │  │  ├─pages
-│      │  │  └─views
-│      │  ├─models
-│      │  └─resources
+│      │  │  ├─entryability  // Ability配置信息
+│      │  │  ├─pages  // 主要页面
+│      │  │  └─views // 自定义组件
+│      │  ├─models // 数据模型
+│      │  └─resources // 资源目录
 │      │      ├─base
 │      │      │  ├─element
 │      │      │  ├─media
@@ -85,7 +85,6 @@ Interview Guide:.
 ├─hvigor
 ├─logo_image
 └─oh_modules
-
 
 ```
 
