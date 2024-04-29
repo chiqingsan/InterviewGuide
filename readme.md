@@ -16,8 +16,8 @@
 <br />
 
 <p align="center">
-  <a href="https://gitee.com/chiqingsan/interview-guide/tree/dev/">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://gitee.com/chiqingsan/interview-guide">
+    <img src="https://gitee.com/chiqingsan/interview-guide/blob/dev/image/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Interview Guide</h3>
