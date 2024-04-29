@@ -1,3 +1,6 @@
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { Logger } from '../../common/utils/Logger';
+
 @Entry
 @Component
 struct Index {
@@ -5,10 +8,19 @@ struct Index {
 
   build() {
     Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+      Column({space:10}) {
+        Button("hilog debug").onClick(() => {
+          Logger.debug("index","debug")
+        })
+        Button("hilog info").onClick(() => {
+          hilog.info(0x0001, "chiqingsan", "%{public}s %{public}s", "info")
+        })
+        Button("hilog warn").onClick(() => {
+          hilog.warn(0x0001, "chiqingsan", "%{public}s %{public}s", "warn")
+        })
+        Button("hilog error").onClick(() => {
+          hilog.error(0x0001, "chiqingsan", "%{public}s %{public}s", "error")
+        })
       }
       .width('100%')
     }
