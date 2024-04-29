@@ -1,8 +1,17 @@
+import { promptAction, router } from '@kit.ArkUI'
+import { Logger } from '../common/utils/Logger'
+import { http } from '@kit.NetworkKit'
+import { iResponseModel } from '../models/UserData'
+
 @Entry
 @Component
 struct LoginPage {
-  @State userAccount: string = ""
-  @State userPassword: string = ""
+  // 用户名
+  @State userAccount: string = "hmheima"
+  // 用户密码
+  @State userPassword: string = "Hmheima%123"
+  // 多选框状态
+  @State multiSelectStatus: boolean = false
 
   build() {
     Column() {
@@ -21,14 +30,17 @@ struct LoginPage {
       // 用户输入框
       Column({ space: 10 }) {
         TextInput({
-          placeholder: "  输入用户名"
+          placeholder: "  输入用户名",
+          text: this.userAccount
         })
           .myinput()
+          .maxLength(11)
           .onChange((val) => {
             this.userAccount = val
           })
         TextInput({
-          placeholder: "  请输入密码"
+          placeholder: "  请输入密码",
+          text: this.userPassword
         })
           .myinput()
           .type(InputType.Password)
@@ -47,18 +59,30 @@ struct LoginPage {
       // 用户协议和隐私政策
       Row() {
         Checkbox()
+          .select($$this.multiSelectStatus)
           .width(18)
           .selectedColor("#FA6D1D")
         Text() {
           Span("已阅读并同意")
           Span(" 用户协议 ")
             .fontColor("#616161")
+            .onClick(() => {
+              router.pushUrl({
+                url: "pages/UserAgreement"
+              })
+            })
           Span("和")
           Span(" 隐私政策 ")
             .fontColor("#616161")
+            .onClick(() => {
+              router.pushUrl({
+                url: "pages/PrivacyPolicy"
+              })
+            })
+
 
         }
-        .mytextsytle(14, 400, "#BFBFBF")
+        .mytextsytle(14, 400, "#ffb6b6b6")
       }
       .width("85%")
 
@@ -70,6 +94,7 @@ struct LoginPage {
           Text("登录")
             .fontColor("#eee")
             .fontWeight(500)
+
         }
       }
       .margin(20)
@@ -80,6 +105,58 @@ struct LoginPage {
         colors: [["#FC9E1C", 0], ["#FA711D", 1]]
       })
       .borderRadius(5)
+      .onClick(() => {
+
+        // 判断用户名是否输入
+        if (this.userAccount === "") {
+          promptAction.showToast({
+            message: "用户名不能为空, 请输入用户名"
+          })
+          return
+        }
+
+        if (this.userPassword === "") {
+          promptAction.showToast({
+            message: "密码不能为空, 请输入密码"
+          })
+          return
+        }
+
+        if (!this.multiSelectStatus) {
+          promptAction.showToast({
+            message: "请同意用户协议和隐私政策"
+          })
+          return
+        }
+
+        http.createHttp().request(
+          "https://api-harmony-teach.itheima.net/hm/login",
+          {
+            header: { contentType: "application/json" },
+            method: http.RequestMethod.POST,
+            extraData: {
+              username: this.userAccount,
+              password: this.userPassword
+            },
+            expectDataType: http.HttpDataType.OBJECT
+          }
+        )
+          .then((res) => {
+            Logger.info(JSON.stringify(res.result))
+            const resData = res.result as iResponseModel
+            AppStorage.setOrCreate("user", resData.data)
+
+            // 跳转到主页
+            router.pushUrl({
+              url: "pages/Index"
+            })
+            promptAction.showToast({
+              message: "登陆成功"
+            })
+          })
+
+
+      })
     }
     .padding({ top: 150 })
   }
