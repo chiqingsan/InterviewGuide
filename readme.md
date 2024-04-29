@@ -56,29 +56,32 @@
 ### 文件目录说明
 
 ```
-filetree 
+Interview Guide:.
+├─.hvigor
+├─.idea
 ├─AppScope
 │  └─resources
+├─dependencies
 ├─entry
-│  ├─.preview
-│  │  ├─cache
-│  │  ├─config
-│  │  └─default
-│  │      ├─generated
-│  │      │  └─profile
-│  │      │      └─default
-│  │      │      └─default
-│  │      └─intermediates
-│  │        
 │  └─src
 │      ├─main
+│      │  ├─common
 │      │  ├─ets
 │      │  │  ├─entryability
-│      │  │  ├─image
-│      │  │  └─pages
+│      │  │  ├─pages
+│      │  │  └─views
+│      │  ├─models
 │      │  └─resources
-│      └─ohosTest
-├─http-test
+│      │      ├─base
+│      │      │  ├─element
+│      │      │  ├─media
+│      │      │  └─profile
+│      │      ├─en_US
+│      │      ├─rawfile
+│      │      └─zh_CN
+│      ├─mock
+│      ├─ohosTest
+│      └─test
 ├─hvigor
 ├─logo_image
 └─oh_modules
