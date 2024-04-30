@@ -1,1 +1,7 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path fill="#cccccc" d="M50.4 512C90.5 293.5 281.9 128 512 128c230.1 0 421.5 165.5 461.6 384C933.5 730.5 742 896 512 896 281.9 896 90.5 730.5 50.4 512zM512 725.3a213.3 213.3 0 1 0 0-426.7 213.3 213.3 0 0 0 0 426.7z m0-85.3a128 128 0 1 1 0-256 128 128 0 0 1 0 256z" /></svg>
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+        "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg class="icon" width="200px" height="200.00px" viewBox="0 0 1024 1024" version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
+    <path fill="#999999"
+          d="M50.4 512C90.5 293.5 281.9 128 512 128c230.1 0 421.5 165.5 461.6 384C933.5 730.5 742 896 512 896 281.9 896 90.5 730.5 50.4 512zM512 725.3a213.3 213.3 0 1 0 0-426.7 213.3 213.3 0 0 0 0 426.7z m0-85.3a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"/>
+</svg>

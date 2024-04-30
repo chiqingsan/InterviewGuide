@@ -19,12 +19,12 @@ struct LoginPage {
       // 上部logo部分
       Column() {
         Image($r("app.media.ic_interview_logo"))
-          .width(30)
+          .width(40)
         Text("面试宝典")
           .mytextsytle(24, 600, "#393E4A")
           .margin({ top: 20, bottom: 10 })
         Text("搞定企业面试真题，就用面试宝典")
-          .mytextsytle(14, 400, "#929292")
+          .mytextsytle(14, 400, "#6F6F6F")
       }
 
       // 用户输入框
@@ -54,7 +54,7 @@ struct LoginPage {
       }
       .width("100%")
       .justifyContent(FlexAlign.Center)
-      .margin({ top: 40, bottom: 30 })
+      .margin({ top: 45, bottom: 20 })
 
       // 用户协议和隐私政策
       Row() {
@@ -79,8 +79,6 @@ struct LoginPage {
                 url: "pages/PrivacyPolicy"
               })
             })
-
-
         }
         .mytextsytle(14, 400, "#ffb6b6b6")
       }
@@ -97,12 +95,12 @@ struct LoginPage {
 
         }
       }
-      .margin(20)
+      .margin(25)
       .height(45)
       .width("85%")
       .linearGradient({
-        direction: GradientDirection.Right,
-        colors: [["#FC9E1C", 0], ["#FA711D", 1]]
+        angle: 135,
+        colors: [["#FCA21C", 0], ["#FA6D1D", 1]]
       })
       .borderRadius(5)
       .onClick(() => {
@@ -155,10 +153,9 @@ struct LoginPage {
             })
           })
 
-
       })
     }
-    .padding({ top: 150 })
+    .padding({ top: 120 })
   }
 }
 
