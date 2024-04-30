@@ -6,6 +6,7 @@ import { Project } from '../views/Project/Project'
 import { window } from '@kit.ArkUI'
 import { tabsSubstance } from "../common/constants/tabsdata"
 import { Logger } from '../common/utils/Logger'
+import { windowManager } from '../common/utils/windowManager'
 
 @Entry
 @Component
@@ -13,16 +14,8 @@ struct Index {
   @State tabsIndex: number = 0
 
   aboutToAppear(): void {
-    // 拿到当前的窗口
-    window.getLastWindow(getContext()).then((win) => {
-      // 设置当前窗口为全屏
-      win.setWindowLayoutFullScreen(true)
-      Logger.info(JSON.stringify(win))
-      const area = win.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
-      // 顶部安全区的高度
-      const hvp = px2vp(area.topRect.height)
-      AppStorage.setOrCreate("topHeight", hvp)
-    })
+    // 调用封装好的方法, 设置窗口为沉浸式模式
+    windowManager.enableFullScreen(true)
   }
 
   build() {
