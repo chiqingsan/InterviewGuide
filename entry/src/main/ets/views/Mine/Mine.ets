@@ -69,7 +69,7 @@ export struct Mine {
   }
 
   @Builder
-  toolsBuilder(tool: Tool) {
+  toolsBuilder(tool: Tool, fn?: () => void) {
     Row() {
       Image(tool.icon)
         .width(16)
@@ -91,6 +91,9 @@ export struct Mine {
     .height(50)
     .width('100%')
     .padding({ left: 16, right: 10 })
+    .onClick(() => {
+      fn && fn()
+    })
   }
 
   build() {
@@ -150,7 +153,12 @@ export struct Mine {
 
       Column() {
         this.toolsBuilder({ icon: $r('app.media.ic_mine_notes'), name: '前端常用词' })
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' })
+        this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' },
+          () => {
+            router.pushUrl({
+              url: "pages/AIinterview"
+            })
+          })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' })
