@@ -52,6 +52,7 @@
 
 1. Dev Eco Studio
 2. SDK10 以上
+3. Nodejs 18.14.1
 
 ### 文件目录说明
 
@@ -65,20 +66,20 @@ Interview Guide:.
 ├─entry
 │  └─src
 │      ├─main
-│      │  ├─common  // 公共组件
 │      │  ├─ets
+│      │  │  ├─common  // 公共组件
 │      │  │  ├─entryability  // Ability配置信息
 │      │  │  ├─pages  // 主要页面
-│      │  │  └─views // 自定义组件
-│      │  ├─models // 数据模型
+│      │  │  ├─views // 自定义组件
+│      │  │	 └─models // 数据模型
 │      │  └─resources // 资源目录
 │      │      ├─base
-│      │      │  ├─element
-│      │      │  ├─media
-│      │      │  └─profile
-│      │      ├─en_US
-│      │      ├─rawfile
-│      │      └─zh_CN
+│      │      │  ├─element  // 通用语言配置
+│      │      │  ├─media  // 公共媒体资源
+│      │      │  └─profile  // 路由配置
+│      │      ├─en_US  // 英文环境配置
+│      │      ├─rawfile // 公共文件资源
+│      │      └─zh_CN  // 中文环境资源
 │      ├─mock
 │      ├─ohosTest
 │      └─test
