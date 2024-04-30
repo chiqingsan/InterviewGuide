@@ -1,0 +1,11 @@
+{
+  "app": {
+    "bundleName": "com.example.interviewer",
+    "patchVersionCode": 2000002,
+    "versionCode": 1000000
+  },
+  "module": {
+    "name": "entry",
+    "type": "hotreload"
+  }
+}
