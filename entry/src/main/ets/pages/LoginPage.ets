@@ -12,6 +12,82 @@ struct LoginPage {
   @State userPassword: string = "Hmheima%123"
   // 多选框状态
   @State multiSelectStatus: boolean = false
+  // 登陆节流控制 false表示未请求, true表示请求中
+  isloading: boolean = false
+
+  login() {
+
+    // 判断用户名是否输入
+    if (this.userAccount === "") {
+      promptAction.showToast({
+        message: "用户名不能为空, 请输入用户名"
+      })
+      return
+    }
+
+    if (this.userPassword === "") {
+      promptAction.showToast({
+        message: "密码不能为空, 请输入密码"
+      })
+      return
+    }
+
+    if (!this.multiSelectStatus) {
+      promptAction.showToast({
+        message: "请同意用户协议和隐私政策"
+      })
+      return
+    }
+
+    if (!this.isloading) {
+      // 开启节流阀
+      this.isloading = true
+
+      http.createHttp().request(
+        "https://api-harmony-teach.itheima.net/hm/login",
+        {
+          header: { contentType: "application/json" },
+          method: http.RequestMethod.POST,
+          extraData: {
+            username: this.userAccount,
+            password: this.userPassword
+          },
+          expectDataType: http.HttpDataType.OBJECT
+        }
+      )
+        .then((res) => {
+          Logger.info(JSON.stringify(res.result))
+          const resData = res.result as iResponseModel
+
+          // 判断业务码是否为10000
+          if (resData.code === 10000) {
+            AppStorage.setOrCreate("user", resData.data)
+
+            // 关闭节流阀
+            this.isloading = false
+
+            // 跳转到主页
+            // TODO 项目完成后, 改为replaceUrl
+            router.pushUrl({
+              url: "pages/Index"
+            })
+            promptAction.showToast({
+              message: "登录成功"
+            })
+          } else {
+            promptAction.showToast({
+              message: `登录失败, ${resData.message}`
+            })
+          }
+        })
+        .catch((err: Error) => {
+          promptAction.showToast({
+            message: `网络请求失败, 错误信息:${err.message}`
+          })
+        })
+    }
+
+  }
 
   build() {
     Column() {
@@ -104,55 +180,8 @@ struct LoginPage {
       })
       .borderRadius(5)
       .onClick(() => {
-
-        // 判断用户名是否输入
-        if (this.userAccount === "") {
-          promptAction.showToast({
-            message: "用户名不能为空, 请输入用户名"
-          })
-          return
-        }
-
-        if (this.userPassword === "") {
-          promptAction.showToast({
-            message: "密码不能为空, 请输入密码"
-          })
-          return
-        }
-
-        if (!this.multiSelectStatus) {
-          promptAction.showToast({
-            message: "请同意用户协议和隐私政策"
-          })
-          return
-        }
-
-        http.createHttp().request(
-          "https://api-harmony-teach.itheima.net/hm/login",
-          {
-            header: { contentType: "application/json" },
-            method: http.RequestMethod.POST,
-            extraData: {
-              username: this.userAccount,
-              password: this.userPassword
-            },
-            expectDataType: http.HttpDataType.OBJECT
-          }
-        )
-          .then((res) => {
-            Logger.info(JSON.stringify(res.result))
-            const resData = res.result as iResponseModel
-            AppStorage.setOrCreate("user", resData.data)
-
-            // 跳转到主页
-            router.pushUrl({
-              url: "pages/Index"
-            })
-            promptAction.showToast({
-              message: "登陆成功"
-            })
-          })
-
+        // 登录逻辑
+        this.login()
       })
     }
     .padding({ top: 120 })

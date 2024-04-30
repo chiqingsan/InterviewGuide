@@ -27,12 +27,16 @@ struct Index {
             (item: tabsStructure, index) => {
               TabContent() {
                 if (this.tabsIndex === 0) {
+                  // 首页
                   Home()
                 } else if (this.tabsIndex === 1) {
+                  // 项目
                   Project()
                 } else if (this.tabsIndex === 2) {
+                  // 面经
                   Interview()
                 } else if (this.tabsIndex === 3) {
+                  // 我的
                   Mine()
                 }
               }.tabBar(this.tabBar(item.name, item.icon, item.selectedIcon, index))
@@ -40,6 +44,7 @@ struct Index {
           )
         }
         .scrollable(false)
+        .animationDuration(0)
         .barHeight(55)
         .padding({ bottom: 15 })
         .barPosition(BarPosition.End)
