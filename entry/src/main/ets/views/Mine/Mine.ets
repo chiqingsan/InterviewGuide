@@ -23,7 +23,7 @@ interface Tool {
 @Component
 export struct Mine {
   @State clockCount: number = 0
-  @StorageProp("user") user: iLoginDataModel = {} as iLoginDataModel
+  @StorageLink("user") user: iLoginDataModel = {} as iLoginDataModel
 
   // 进入我的页面后, 把状态栏字体颜色设置为白色
   aboutToAppear(): void {

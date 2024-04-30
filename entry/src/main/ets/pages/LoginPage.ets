@@ -63,12 +63,8 @@ struct LoginPage {
           if (resData.code === 10000) {
             AppStorage.setOrCreate("user", resData.data)
 
-            // 关闭节流阀
-            this.isloading = false
-
             // 跳转到主页
-            // TODO 项目完成后, 改为replaceUrl
-            router.pushUrl({
+            router.replaceUrl({
               url: "pages/Index"
             })
             promptAction.showToast({
@@ -79,11 +75,17 @@ struct LoginPage {
               message: `登录失败, ${resData.message}`
             })
           }
+
+          // 关闭节流阀
+          this.isloading = false
         })
         .catch((err: Error) => {
           promptAction.showToast({
             message: `网络请求失败, 错误信息:${err.message}`
           })
+
+          // 关闭节流阀
+          this.isloading = false
         })
     }
 

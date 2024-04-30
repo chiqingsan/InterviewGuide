@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/LoginPage",
     "pages/UserAgreement",
-    "pages/PrivacyPolicy"
+    "pages/PrivacyPolicy",
+    "pages/AIinterview"
   ]
 }
