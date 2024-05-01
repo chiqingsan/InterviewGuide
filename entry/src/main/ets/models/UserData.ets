@@ -1,6 +1,6 @@
 
 // 所有接口返回数据的类型
-export interface iResponseModel {
+export interface iResponseModel<T> {
   /**
    * 请求成功10000标志
    */
@@ -8,7 +8,7 @@ export interface iResponseModel {
   /**
    * 返回数据
    */
-  data: iLoginDataModel;
+  data: T;
   /**
    * 请求成功
    */

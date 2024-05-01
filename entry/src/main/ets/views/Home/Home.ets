@@ -1,5 +1,6 @@
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { HdSearch } from '../../common/components/HdSearch'
+import { test } from '../../pages/test'
 
 @Entry
 @Component
@@ -35,7 +36,12 @@ export struct Home {
           Array.from(({ length: 10 })),
           (item: string, index) => {
             TabContent() {
-              Text(index.toString())
+              Column() {
+                Text("首页")
+                test()
+                Text(index.toString())
+                Text(Math.random().toString())
+              }
             }.tabBar(this.tabsItem())
           }
         )
@@ -44,8 +50,6 @@ export struct Home {
       .scrollable(false)
       .barMode(BarMode.Scrollable)
 
-      Text("首页")
-      Text(Math.random().toString())
     }
     .width("100%")
     .height("100%")

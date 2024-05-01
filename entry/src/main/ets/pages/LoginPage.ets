@@ -1,7 +1,7 @@
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { http } from '@kit.NetworkKit'
-import { iResponseModel } from '../models/UserData'
+import { iLoginDataModel, iResponseModel } from '../models/UserData'
 
 @Entry
 @Component
@@ -57,7 +57,7 @@ struct LoginPage {
       )
         .then((res) => {
           Logger.info(JSON.stringify(res.result))
-          const resData = res.result as iResponseModel
+          const resData = res.result as iResponseModel<iLoginDataModel>
 
           // 判断业务码是否为10000
           if (resData.code === 10000) {
