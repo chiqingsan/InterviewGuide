@@ -1,18 +1,28 @@
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { HdSearch } from '../../common/components/HdSearch'
 import { test } from '../../pages/test'
+import { router } from '@kit.ArkUI'
 
 @Entry
 @Component
 export struct Home {
   @StorageProp("topHeight") topHeight: number = 0
+  @State tabsIndex: number = 0
 
+  // @State tabsTitle:
   build() {
     Column() {
       Row({ space: 10 }) {
+        // 搜索框组件
         HdSearch()
           .layoutWeight(1)
+        // 打卡组件
         HdClockIn()
+          .onClick(() => {
+            router.pushUrl({
+              url: "pages/ClockPage"
+            })
+          })
       }
       .height(52)
 
@@ -42,13 +52,16 @@ export struct Home {
                 Text(index.toString())
                 Text(Math.random().toString())
               }
-            }.tabBar(this.tabsItem())
+            }.tabBar(this.tabsItem("全部", index))
           }
         )
       }
       .barHeight(50)
       .scrollable(false)
       .barMode(BarMode.Scrollable)
+      .onTabBarClick((index) => {
+        this.tabsIndex = index
+      })
 
     }
     .width("100%")
@@ -57,17 +70,23 @@ export struct Home {
   }
 
   @Builder
-  tabsItem() {
+  tabsItem(substance: string, index: number) {
     Row() {
       Column() {
-        Text("全部")
+        Text(substance)
           .fontSize(14)
-          .fontColor("#979797")
+          .fontColor(this.tabsIndex === index ? "#121826" : "#979797")
           .padding({ top: 15, bottom: 13 })
         // .fontColor("#ccc")
         Divider()
           .width(25)
           .strokeWidth(2)
+          .color("#121826")
+          .opacity(this.tabsIndex === index ? 1 : 0)
+          .animation({
+            duration: 200,
+            curve: Curve.EaseInOut
+          })
       }
 
       if (true) {
@@ -77,7 +96,7 @@ export struct Home {
       }
     }
     .justifyContent(FlexAlign.Center)
-    .padding({ right: 15 })
+    .padding({ left: index && 15, right: 15 })
 
   }
 }

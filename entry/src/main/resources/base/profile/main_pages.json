@@ -4,6 +4,7 @@
     "pages/LoginPage",
     "pages/UserAgreement",
     "pages/PrivacyPolicy",
-    "pages/AIinterview"
+    "pages/AIinterview",
+    "pages/ClockPage"
   ]
 }
