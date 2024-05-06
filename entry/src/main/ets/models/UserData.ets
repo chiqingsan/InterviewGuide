@@ -60,3 +60,11 @@ export interface iLoginDataModel {
    */
   username?: string;
 }
+
+/*
+ * 用户名和密码提交的数据结构
+ * */
+export interface userInfo{
+  username:string
+  password:string
+}

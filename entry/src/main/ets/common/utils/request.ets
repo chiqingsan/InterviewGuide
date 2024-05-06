@@ -11,7 +11,7 @@ export class HdHttp {
   static async get<T>(url: string, query?: string | object, isJSON: boolean = false) {
 
     try {
-      //     // 创建请求对象
+      // 创建请求对象
       const httpRequest = http.createHttp()
 
       const user = AppStorage.get<iLoginDataModel>("user")
@@ -23,7 +23,7 @@ export class HdHttp {
         {
           header: {
             "Content-Type": isJSON ? "application/json" : "",
-            'Authorization' : `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
           },
           extraData: query,
           expectDataType: http.HttpDataType.OBJECT
@@ -55,24 +55,30 @@ export class HdHttp {
   static async post<T>(url: string, query: string | object) {
 
     try {
-      //     // 创建请求对象
+      // 创建请求对象
       const httpRequest = http.createHttp()
+
+
+      const options: http.HttpRequestOptions = {
+        method: http.RequestMethod.POST,
+        header: {
+          "Content-Type": "application/json"
+        },
+        extraData: query,
+        expectDataType: http.HttpDataType.OBJECT
+      }
+
 
       const user = AppStorage.get<iLoginDataModel>("user")
       const token = user?.token
       Logger.info("token", user?.token as string)
 
-      const res = await httpRequest.request(
-        baseUrl + url,
-        {
-          header: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          extraData: query,
-          expectDataType: http.HttpDataType.OBJECT
-        }
-      )
+      // 判断有无token,有则添加头部的token信息
+      if (token && options.header) {
+        options.header["token"] = `Bearer ${token}`
+      }
+
+      const res = await httpRequest.request(baseUrl + url, options)
 
       const resData = res.result as iResponseModel<T>
       // 如果业务码为401, 则提示登录过期, 跳转回登录页

@@ -66,7 +66,6 @@ export struct HdClockIn {
     )
 
     this.clockCount = (userClock.result as returnToTheModel).data.clockinNumbers
-    console.log(this.clockCount.toString())
   }
 
   build() {

@@ -1,7 +1,9 @@
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { http } from '@kit.NetworkKit'
-import { iLoginDataModel, iResponseModel } from '../models/UserData'
+import { iLoginDataModel, iResponseModel, userInfo } from '../models/UserData'
+import { HdHttp } from '../common/utils/request'
+
 
 @Entry
 @Component
@@ -13,9 +15,10 @@ struct LoginPage {
   // 多选框状态
   @State multiSelectStatus: boolean = false
   // 登陆节流控制 false表示未请求, true表示请求中
-  isloading: boolean = false
+  // 控制登录动画
+  @State isloading: boolean = false
 
-  login() {
+  async login() {
 
     // 判断用户名是否输入
     if (this.userAccount === "") {
@@ -43,50 +46,68 @@ struct LoginPage {
       // 开启节流阀
       this.isloading = true
 
-      http.createHttp().request(
-        "https://api-harmony-teach.itheima.net/hm/login",
-        {
-          header: { contentType: "application/json" },
-          method: http.RequestMethod.POST,
-          extraData: {
-            username: this.userAccount,
-            password: this.userPassword
-          },
-          expectDataType: http.HttpDataType.OBJECT
-        }
-      )
-        .then((res) => {
-          Logger.info(JSON.stringify(res.result))
-          const resData = res.result as iResponseModel<iLoginDataModel>
+      try {
+        const resData = await HdHttp.post<iLoginDataModel>("login", {
+          username: this.userAccount,
+          password: this.userPassword
+        } as userInfo)
+        //
+        // http.createHttp().request(
+        //   "https://api-harmony-teach.itheima.net/hm/login",
+        //   {
+        //     header: { contentType: "application/json" },
+        //     method: http.RequestMethod.POST,
+        //     extraData: {
+        //       username: this.userAccount,
+        //       password: this.userPassword
+        //     },
+        //     expectDataType: http.HttpDataType.OBJECT
+        //   }
+        // )
+        // .then((res) => {
+        Logger.info(JSON.stringify(resData.data))
+        // const resData = res.result as iResponseModel<iLoginDataModel>
 
-          // 判断业务码是否为10000
-          if (resData.code === 10000) {
-            AppStorage.setOrCreate("user", resData.data)
+        // 判断业务码是否为10000
+        if (resData.code === 10000) {
+          AppStorage.setOrCreate("user", resData.data)
 
-            // 跳转到主页
-            router.replaceUrl({
-              url: "pages/Index"
-            })
-            promptAction.showToast({
-              message: "登录成功"
-            })
-          } else {
-            promptAction.showToast({
-              message: `登录失败, ${resData.message}`
-            })
-          }
-
-          // 关闭节流阀
-          this.isloading = false
-        })
-        .catch((err: Error) => {
-          promptAction.showToast({
-            message: `网络请求失败, 错误信息:${err.message}`
+          // 跳转到主页
+          router.replaceUrl({
+            url: "pages/Index"
           })
+          promptAction.showToast({
+            message: "登录成功"
+          })
+        } else {
+          Logger.info("login", JSON.stringify(resData))
+          promptAction.showToast({
+            message: `登录失败, ${resData.message}`
+          })
+        }
 
-          // 关闭节流阀
-          this.isloading = false
+        // 关闭节流阀
+        this.isloading = false
+
+      } catch (err) {
+        promptAction.showToast({
+          message: `网络请求失败, 错误信息:${err.message}`
         })
+
+        // 关闭节流阀
+        this.isloading = false
+
+      }
+
+      // })
+      // .catch((err: Error) => {
+      //   promptAction.showToast({
+      //     message: `网络请求失败, 错误信息:${err.message}`
+      //   })
+      //
+      //   // 关闭节流阀
+      //   this.isloading = false
+      // })
     }
 
   }
@@ -164,9 +185,11 @@ struct LoginPage {
 
       Button({ type: ButtonType.Normal }) {
         Row({ space: 5 }) {
-          LoadingProgress()
-            .width(35)
-            .color("#eee")
+          if (this.isloading) {
+            LoadingProgress()
+              .width(35)
+              .color("#eee")
+          }
           Text("登录")
             .fontColor("#eee")
             .fontWeight(500)
