@@ -45,7 +45,7 @@ export interface TopicData {
 export struct HomeCategoryComp {
   // 需要请求题目的数据结构类型
   @State @Watch("loadQuestion") issue: TopicData = {
-    page: "1",
+    page: "0",
     questionBankType: "10",
     sort: "0",
     type: "0"
@@ -54,7 +54,7 @@ export struct HomeCategoryComp {
   // 题目tabs的数组
   @State tabsTitleList: questionStructure[] = []
   // 题目列表的数组
-  @State listOfQuestions: row[] = []
+  @State @Watch("recordID") listOfQuestions: row[] = []
   // 控制模态窗口
   @State isShow: boolean = false
   // 设置切换tabs时的防抖
@@ -70,8 +70,8 @@ export struct HomeCategoryComp {
       name: "全部",
       displayNewestFlag: 0
     } as questionStructure)
-
-    this.loadQuestion()
+    //
+    // this.loadQuestion()
   }
 
   loadQuestion() {
@@ -85,6 +85,10 @@ export struct HomeCategoryComp {
         Logger.error("首页问题列表:", "网络请求出错")
       }
     }, 50)
+  }
+
+  recordID() {
+    AppStorage.setOrCreate("ListOfQuestionsId", this.listOfQuestions.map(item => item.id))
   }
 
   build() {
@@ -106,6 +110,7 @@ export struct HomeCategoryComp {
       .barMode(BarMode.Scrollable)
       .onTabBarClick((index) => {
         this.tabsIndex = index
+        this.listOfQuestions = []
         this.issue.type = this.tabsTitleList[index].id.toString()
       })
 

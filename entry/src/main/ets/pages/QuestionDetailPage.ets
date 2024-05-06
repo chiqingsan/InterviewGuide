@@ -1,6 +1,7 @@
 import { HdTag } from '../common/components/HdTag'
 import { HdHttp } from '../common/utils/request'
-import { router } from '@kit.ArkUI'
+import { promptAction, router } from '@kit.ArkUI'
+import { Logger } from '../common/utils/Logger'
 
 export interface QuestionDetail {
   id: string
@@ -20,10 +21,17 @@ export interface ParamsType {
   id: number
 }
 
+// 点赞的数据结构
+export interface iBodyParms {
+  id: string,
+  type: number,
+  optType: string
+}
+
 @Entry
 @Component
 export struct QuestionDetailPage {
-  @State
+  @State @Watch("getQuestions")
   questionId: number = 0
   @State
   question: QuestionDetail = {
@@ -39,15 +47,72 @@ export struct QuestionDetailPage {
     stage: ['Vue', '前端']
   } as QuestionDetail
   @StorageProp('topHeight') topHeight: number = 0
+  @StorageProp("ListOfQuestionsId") ListOfQuestionsId: number[] = []
 
   aboutToAppear(): void {
-    this.questionId = (router.getParams() as ParamsType).id
-    this.getQuestions()
+    try {
+      this.questionId = (router.getParams() as ParamsType).id
+      this.getQuestions()
+    } catch (err) {
+      Logger.error("题目详情页:", "路由出现错误")
+    }
   }
 
   async getQuestions() {
     const res = await HdHttp.get<QuestionDetail>(`question/${this.questionId}`)
     this.question = res.data
+  }
+
+  toggleTopics(isNext: boolean) {
+    let listIndex = this.ListOfQuestionsId.findIndex(val => this.questionId === val)
+
+    // 判断题目的id是否在保存的列表中
+    if (listIndex < 0) {
+      promptAction.showToast({
+        message: "所查询的题目不在列表中"
+      })
+    } else {
+      // 判断是上一题还是下一题
+      if (isNext) {
+        // 判断下一题是否小于0
+        if (listIndex <= 0) {
+          promptAction.showToast({
+            message: "当前已经是第一题了~"
+          })
+        } else {
+          listIndex--
+          this.questionId = this.ListOfQuestionsId[listIndex]
+        }
+      } else {
+        // 判断上一题是否超过了列表长度
+        if (listIndex >= this.ListOfQuestionsId.length - 1) {
+          promptAction.showToast({
+            message: "已经是最后一题了~"
+          })
+        } else {
+          listIndex++
+          this.questionId = this.ListOfQuestionsId[listIndex]
+        }
+      }
+    }
+
+  }
+
+  // 点赞收藏
+  async opt(isOn: boolean, iBody: iBodyParms) {
+    if (isOn) {
+      await HdHttp.post<object>("question/opt", iBody)
+      promptAction.showToast({
+        message: `${iBody.optType === "1" ? "点赞" : "收藏"}成功`
+      })
+    } else {
+      await HdHttp.post<object>("question/unOpt", iBody)
+      promptAction.showToast({
+        message: `取消${iBody.optType === "1" ? "点赞" : "收藏"}`
+      })
+    }
+
+    this.getQuestions()
   }
 
   // 题目所属标签
@@ -68,9 +133,12 @@ export struct QuestionDetailPage {
     Row() {
       Image($r("app.media.prev_black")).width((80)).onClick(() => {
         // 上一题业务逻辑
+        this.toggleTopics(true)
+
       })
       Image($r("app.media.next_black")).width((80)).onClick(() => {
         // 下一题业务逻辑
+        this.toggleTopics(false)
       })
     }.width('100%').justifyContent(FlexAlign.SpaceAround)
   }
@@ -94,16 +162,26 @@ export struct QuestionDetailPage {
                   Image($r('app.media.icon_point')).width(24).bindMenu([
                     {
                       value: this.question.collectFlag === 1 ? '取消收藏' : '收藏',
-                      action: () => {
-                        // 收藏和取消收藏业务逻辑代码
+                      action: async () => {
+                        // 点赞和取消点赞业务逻辑代码
                         // this.opt(1,0)
+                        this.opt(this.question.collectFlag !== 1, {
+                          id: this.questionId.toString(),
+                          type: 0,
+                          optType: "2"
+                        })
                       }
                     },
                     {
                       value: this.question.likeFlag === 1 ? '取消点赞' : '点赞',
-                      action: () => {
+                      action: async () => {
                         // 点赞和取消点赞业务逻辑代码
                         // this.opt(1,0)
+                        this.opt(this.question.likeFlag !== 1, {
+                          id: this.questionId.toString(),
+                          type: 0,
+                          optType: "1"
+                        })
                       }
                     }
                   ])

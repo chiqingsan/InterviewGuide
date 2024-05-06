@@ -48,7 +48,7 @@ export interface row {
   /**
    * 题目id
    */
-  id: string;
+  id: number;
 
   /**
    * 点赞数量

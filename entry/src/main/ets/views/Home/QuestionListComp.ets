@@ -8,7 +8,7 @@ import { router } from '@kit.ArkUI'
 @Component
 export struct QuestionListComp {
   // 试题列表
-  @Prop questions: row[]
+  @Link questions: row[]
   // 拿到记录当前列表结构的对象
   @Prop issue: TopicData
   // 定义一个状态属性，用来和Refresh组件进行双向数据绑定
@@ -16,11 +16,10 @@ export struct QuestionListComp {
   // 节流, false表示未请求, true表示正在请求
   isLoad: boolean = false
 
-  async loadQuestion() {
+  async loadQuestion(isFlushed: boolean) {
     try {
-      console.log("questions")
       const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
-      this.questions.push(...resData.data.rows as row[])
+      isFlushed ? this.questions = resData.data.rows as row[] : this.questions.push(...resData.data.rows as row[])
       Logger.info("questions", JSON.stringify(this.questions).slice(0, 1000))
       this.isRefreshing = false
       this.isLoad = false
@@ -53,12 +52,13 @@ export struct QuestionListComp {
         .height("100%")
         .scrollBar(BarState.Off)
         .onReachEnd(() => {
+          // TODO 下拉bug待解决(骨架屏填充解决)
           if (!this.isLoad) {
             this.isLoad = true
             console.log("上拉加载")
-            this.issue.page = (parseInt(this.issue.page as string) + 1).toString()
+            this.issue.page = `${parseInt(this.issue.page) + 1}`
             Logger.info("issue", JSON.stringify(this.issue))
-            this.loadQuestion()
+            this.loadQuestion(false)
           }
         })
       }.onRefreshing(() => {
@@ -66,8 +66,8 @@ export struct QuestionListComp {
           this.isLoad = true
           console.log("下拉更新")
           this.issue.page = "1"
-          this.questions = []
-          this.loadQuestion()
+          Logger.info("issue", JSON.stringify(this.issue))
+          this.loadQuestion(true)
         }
       })
 

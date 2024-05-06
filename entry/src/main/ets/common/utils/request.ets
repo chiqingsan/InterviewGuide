@@ -8,7 +8,7 @@ const baseUrl: string = "https://api-harmony-teach.itheima.net/hm/"
 
 export class HdHttp {
   // 封装 get 请求方法
-  static async get<T>(url: string, query?: string | object, isJSON: boolean = false) {
+  static async get<T>(url: string, query?: object, isJSON: boolean = false) {
 
     try {
       // 创建请求对象
@@ -52,7 +52,7 @@ export class HdHttp {
   }
 
   // 封装 post 请求方法
-  static async post<T>(url: string, query: string | object) {
+  static async post<T>(url: string, query: object) {
 
     try {
       // 创建请求对象
@@ -71,16 +71,17 @@ export class HdHttp {
 
       const user = AppStorage.get<iLoginDataModel>("user")
       const token = user?.token
-      Logger.info("token", user?.token as string)
+      Logger.info("token_Post", user?.token as string)
 
       // 判断有无token,有则添加头部的token信息
       if (token && options.header) {
-        options.header["token"] = `Bearer ${token}`
+        options.header["Authorization"] = `Bearer ${token}`
       }
 
       const res = await httpRequest.request(baseUrl + url, options)
 
       const resData = res.result as iResponseModel<T>
+      Logger.info("resDate_Post:", JSON.stringify(resData))
       // 如果业务码为401, 则提示登录过期, 跳转回登录页
       if (resData.code === 401) {
         promptAction.showToast({ message: '登录超时，请重新登录' })
