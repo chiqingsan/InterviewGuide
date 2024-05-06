@@ -60,10 +60,6 @@ export interface row {
    */
   likeFlag: number;
 
-  /**
-   * 场景教案场景，双元教案1、核心提炼2、随堂测试3、随堂练习4、每日作业
-   */
-  planSceneName?: PlanSceneName;
 
   /**
    * 题号/面经的标题
@@ -99,16 +95,4 @@ export interface row {
    * 浏览量
    */
   views: number;
-}
-
-/**
- * 场景教案场景，双元教案1、核心提炼2、随堂测试3、随堂练习4、每日作业
- */
-export enum PlanSceneName {
-  Empty = "",
-  其他 = "其他",
-  核心提炼 = "核心提炼",
-  每日作业 = "每日作业",
-  随堂测试 = "随堂测试",
-  随堂练习 = "随堂练习",
 }

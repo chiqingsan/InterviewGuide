@@ -2,7 +2,7 @@
 @Component
 export struct IvSkeleton {
   heightValue: number = 20
-  weightValue: number = 100
+  widthValue: number = 100
   @State transitionX: string = "-100%"
 
   build() {
@@ -36,7 +36,7 @@ export struct IvSkeleton {
         })
 
     }
-    .width(this.weightValue)
+    .width(this.widthValue)
     .height(this.heightValue)
     .borderRadius(this.heightValue / 6)
     .clip(true)

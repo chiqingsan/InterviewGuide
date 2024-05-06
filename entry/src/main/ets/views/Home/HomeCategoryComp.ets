@@ -1,3 +1,5 @@
+import { LoadingDialog } from '../../common/components/CustomDialog';
+import { IvSkeleton } from '../../common/components/IvSkeleton';
 import { Logger } from '../../common/utils/Logger';
 import { HdHttp } from '../../common/utils/request'
 import { questionStructure } from '../../models/tabs'
@@ -59,9 +61,16 @@ export struct HomeCategoryComp {
   @State isShow: boolean = false
   // 设置切换tabs时的防抖
   timer: number = -1
+  // loading组件
+  dialog: CustomDialogController = new CustomDialogController({
+    builder: LoadingDialog({ message: '加载中...' }),
+    customStyle: true,
+    alignment: DialogAlignment.Center
+  })
 
   async aboutToAppear(): Promise<void> {
 
+    this.dialog.open() //打开对话框
     // 在页面开始加载的时候, 请求题目tabs栏的数据
     const res = await HdHttp.get<questionStructure[]>("question/type")
     this.tabsTitleList = res.data
@@ -70,6 +79,7 @@ export struct HomeCategoryComp {
       name: "全部",
       displayNewestFlag: 0
     } as questionStructure)
+    this.dialog.close() //打开对话框
     //
     // this.loadQuestion()
   }
@@ -138,6 +148,7 @@ export struct HomeCategoryComp {
     .alignContent(Alignment.TopEnd)
   }
 
+  // tabs组件
   @Builder
   tabsItem(item: questionStructure, index: number) {
     Row() {
@@ -172,6 +183,7 @@ export struct HomeCategoryComp {
 
   }
 
+  // 模态组件
   @Builder
   filterBuilder() {
     // 一定要使用容器包裹住QuestionFilterComp组件，否则打不开
@@ -197,5 +209,25 @@ export struct HomeCategoryComp {
         }
       })
     }
+  }
+
+  // 骨架屏
+  @Builder
+  skeletonScreen() {
+    Column({ space: 12 }) {
+      Row({ space: 10 }) {
+        IvSkeleton({ widthValue: 40 }); // 指定宽度
+        IvSkeleton({ widthValue: 250 }); // 指定宽度
+      }
+      .width("85%");
+      Row({ space: 20 }) {
+        IvSkeleton({ widthValue: 40 }); // 指定宽度
+        IvSkeleton({ widthValue: 10 }); // 指定宽度
+        IvSkeleton({ widthValue: 40 }); // 指定宽度
+      }
+      .width("85%");
+
+    }
+    .width("100%")
   }
 }

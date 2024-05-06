@@ -99,16 +99,24 @@ export struct QuestionDetailPage {
   }
 
   // 点赞收藏
-  async opt(isOn: boolean, iBody: iBodyParms) {
+  async opt(isOn: boolean, optType: string) {
     if (isOn) {
-      await HdHttp.post<object>("question/opt", iBody)
+      await HdHttp.post<object>("question/opt", {
+        id: this.questionId.toString(),
+        type: 0,
+        optType: optType
+      } as iBodyParms)
       promptAction.showToast({
-        message: `${iBody.optType === "1" ? "点赞" : "收藏"}成功`
+        message: `${optType === "1" ? "点赞" : "收藏"}成功`
       })
     } else {
-      await HdHttp.post<object>("question/unOpt", iBody)
+      await HdHttp.post<object>("question/unOpt", {
+        id: this.questionId.toString(),
+        type: 0,
+        optType: optType
+      } as iBodyParms)
       promptAction.showToast({
-        message: `取消${iBody.optType === "1" ? "点赞" : "收藏"}`
+        message: `取消${optType === "1" ? "点赞" : "收藏"}`
       })
     }
 
@@ -165,11 +173,7 @@ export struct QuestionDetailPage {
                       action: async () => {
                         // 点赞和取消点赞业务逻辑代码
                         // this.opt(1,0)
-                        this.opt(this.question.collectFlag !== 1, {
-                          id: this.questionId.toString(),
-                          type: 0,
-                          optType: "2"
-                        })
+                        this.opt(this.question.collectFlag !== 1, "2")
                       }
                     },
                     {
@@ -177,11 +181,7 @@ export struct QuestionDetailPage {
                       action: async () => {
                         // 点赞和取消点赞业务逻辑代码
                         // this.opt(1,0)
-                        this.opt(this.question.likeFlag !== 1, {
-                          id: this.questionId.toString(),
-                          type: 0,
-                          optType: "1"
-                        })
+                        this.opt(this.question.likeFlag !== 1, "1")
                       }
                     }
                   ])
