@@ -7,6 +7,7 @@ import { window } from '@kit.ArkUI'
 import { tabsSubstance } from "../common/constants/tabsdata"
 import { Logger } from '../common/utils/Logger'
 import { windowManager } from '../common/utils/windowManager'
+import { test } from "./test"
 
 @Entry
 @Component
@@ -38,6 +39,7 @@ struct Index {
                 } else if (this.tabsIndex === 3) {
                   // 我的
                   Mine()
+                  // test()
                 }
               }.tabBar(this.tabBar(item.name, item.icon, item.selectedIcon, index))
             }

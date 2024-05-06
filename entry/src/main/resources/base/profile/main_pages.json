@@ -5,6 +5,7 @@
     "pages/UserAgreement",
     "pages/PrivacyPolicy",
     "pages/AIinterview",
-    "pages/ClockPage"
+    "pages/ClockPage",
+    "pages/QuestionDetailPage"
   ]
 }

@@ -2,6 +2,7 @@ import { Logger } from '../../common/utils/Logger';
 import { HdHttp } from '../../common/utils/request'
 import { questionStructure } from '../../models/tabs'
 import { questionDataStructure, row } from '../../models/TopicData';
+import { FilterParams, QuestionFilterComp } from './QuestionFilterComp';
 import { QuestionListComp } from './QuestionListComp'
 
 
@@ -14,7 +15,7 @@ export interface TopicData {
   /**
    * 当前页数，为空默认是1
    */
-  page?: string;
+  page: string;
 
   /**
    * 每页大小，为空默认是10
@@ -30,12 +31,12 @@ export interface TopicData {
    * 排序，默认0,可以不传，难易-10从易到难11从难道易，浏览量：20从低到高21从高到底,30推荐数据（按照权重倒序）
    * 面经默认是按照更新时间
    */
-  sort?: string;
+  sort: string;
 
   /**
    * 0或者不传，查询全部 或者类型id
    */
-  type?: string;
+  type: string;
 }
 
 
@@ -54,7 +55,10 @@ export struct HomeCategoryComp {
   @State tabsTitleList: questionStructure[] = []
   // 题目列表的数组
   @State listOfQuestions: row[] = []
-
+  // 控制模态窗口
+  @State isShow: boolean = false
+  // 设置切换tabs时的防抖
+  timer: number = -1
 
   async aboutToAppear(): Promise<void> {
 
@@ -70,28 +74,28 @@ export struct HomeCategoryComp {
     this.loadQuestion()
   }
 
-  async loadQuestion() {
-    try {
-      console.log("321")
-      const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
-      console.log("123", JSON.stringify(resData))
-      this.listOfQuestions = resData.data.rows as row[]
-      Logger.info("listOfQuestions", JSON.stringify(this.listOfQuestions).slice(0, 1000))
-    } catch (err) {
-      Logger.error("首页问题列表:", "网络请求出错")
-    }
+  loadQuestion() {
+    clearTimeout(this.timer)
+    this.timer = setTimeout(async () => {
+      try {
+        const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
+        this.listOfQuestions = resData.data.rows as row[]
+        Logger.info("listOfQuestions", JSON.stringify(this.listOfQuestions).slice(0, 1000))
+      } catch (err) {
+        Logger.error("首页问题列表:", "网络请求出错")
+      }
+    }, 50)
   }
 
   build() {
     Stack() {
-      // Text(JSON.stringify(this.listOfQuestions))
       Tabs({ index: this.tabsIndex }) {
         ForEach(
           this.tabsTitleList,
           (item: questionStructure, index) => {
             TabContent() {
               // 题目的内容区
-              QuestionListComp({ questions: this.listOfQuestions,issue:this.issue })
+              QuestionListComp({ questions: this.listOfQuestions, issue: this.issue })
 
             }.tabBar(this.tabsItem(item, index))
           }
@@ -117,8 +121,11 @@ export struct HomeCategoryComp {
         .justifyContent(FlexAlign.Center) // 图片居中对齐
         .backgroundColor(Color.White) // 设置背景色位白色，使过滤条件图标能遮盖住tabbar的文字
         .onClick(() => {
-          Logger.info("试题列表", JSON.stringify(this.listOfQuestions))
-          this.loadQuestion()
+          this.isShow = true
+        })
+        .bindSheet($$this.isShow, this.filterBuilder(), {
+          showClose: false, //关闭x
+          height: 420
         })
       }
     }
@@ -158,5 +165,32 @@ export struct HomeCategoryComp {
     .justifyContent(FlexAlign.Center)
     .padding({ left: index && 10, right: 10 })
 
+  }
+
+  @Builder
+  filterBuilder() {
+    // 一定要使用容器包裹住QuestionFilterComp组件，否则打不开
+    Column() {
+      QuestionFilterComp({
+        questionTypeList: this.tabsTitleList,
+        params: {
+          // 排序：0 默认 难易 10 从易到难 11 从难道易  20 浏览量↑ 21 浏览量↓
+          sort: parseInt(this.issue.sort),
+          // 排列顺序：0
+          introduction: this.issue.sort && parseInt(this.issue.sort.split("")[1]),
+          // 排序的类型
+          sortType: this.issue.sort && parseInt(this.issue.sort.split("")[0]),
+          // 阶段ID
+          index: this.tabsIndex
+        } as FilterParams,
+        onSubmit: (params) => {
+          this.isShow = false
+          this.tabsIndex = params.index
+          this.issue.sort = params.sort.toString()
+          this.issue.type = this.tabsTitleList[params.index].id.toString()
+
+        }
+      })
+    }
   }
 }

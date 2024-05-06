@@ -3,6 +3,7 @@ import { HdHttp } from '../../common/utils/request'
 import { questionDataStructure, row } from '../../models/TopicData'
 import { QuestionItemComp, QuestionItem } from '../QuestionItemComp'
 import { TopicData } from './HomeCategoryComp'
+import { router } from '@kit.ArkUI'
 
 @Component
 export struct QuestionListComp {
@@ -35,9 +36,17 @@ export struct QuestionListComp {
 
       Refresh({ refreshing: $$this.isRefreshing }) {
         List() {
-          ForEach(this.questions, (item: row) => {
+          ForEach(this.questions, (item: row, index) => {
             ListItem() {
               QuestionItemComp({ item: item })
+                .onClick(() => {
+                  router.pushUrl({
+                    url: "pages/QuestionDetailPage",
+                    params: {
+                      id: this.questions[index].id
+                    }
+                  })
+                })
             }
           })
         }
