@@ -2,6 +2,7 @@ import { window } from '@kit.ArkUI'
 import { windowManager } from '../../common/utils/windowManager'
 import { router } from '@kit.ArkUI'
 import { iLoginDataModel } from '../../models/UserData'
+import { HdClockIn } from '../../common/components/HdClockIn'
 
 
 interface Nav {
@@ -104,7 +105,7 @@ export struct Mine {
           .aspectRatio(1)
           .borderRadius(55)
         Column({ space: 4 }) {
-          Text(this.user.username || '昵称')
+          Text(this.user.nickName || '昵称')
             .fontSize(18)
             .fontWeight(600)
             .width('100%')
@@ -120,7 +121,7 @@ export struct Mine {
               .fillColor($r('app.color.ih_gray_color'))
           }.onClick(() => {
             router.pushUrl({
-              url: '修改信息页面'
+              url: 'pages/ProfileEditPage'
             })
           })
           .width('100%')
@@ -129,8 +130,7 @@ export struct Mine {
         .layoutWeight(1)
         .alignItems(HorizontalAlign.Start)
 
-        Text('放打卡组件')
-        // HdClockIn({ clockCount: this.clockCount })
+        HdClockIn({ clockCount: this.user.clockinNumbers })
       }
       .width('100%')
       .height(100)
@@ -143,7 +143,7 @@ export struct Mine {
         this.navBuilder({
           icon: $r('app.media.ic_mine_study'), name: '累计学时', other: '4 小时'
         , onClick: () => {
-            router.pushUrl({ url: '跳转到学习记录页面' })
+            router.pushUrl({ url: '学习页面' })
           }
         })
       }

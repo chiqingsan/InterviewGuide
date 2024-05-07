@@ -84,7 +84,6 @@ export struct QuestionListComp {
             })
           }
           .height("100%")
-          .padding({ bottom: 180 })
           .scrollBar(BarState.Off)
           .onReachEnd(() => {
             if (!this.isLoad) {

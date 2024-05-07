@@ -113,9 +113,11 @@ export struct HomeCategoryComp {
           this.tabsTitleList,
           (item: questionStructure, index) => {
             TabContent() {
-              // 题目的内容区
-              QuestionListComp({ questions: this.listOfQuestions, issue: this.issue })
-
+              Column() {
+                // 题目的内容区
+                QuestionListComp({ questions: this.listOfQuestions, issue: this.issue })
+              }
+              .padding({ bottom: 180 })
             }.tabBar(this.tabsItem(item, index))
           }
         )
