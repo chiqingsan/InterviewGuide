@@ -38,6 +38,8 @@ export struct QuestionDetailPage {
   question: QuestionDetail = {} as QuestionDetail
   @StorageProp('topHeight') topHeight: number = 0
   @StorageProp("ListOfQuestionsId") ListOfQuestionsId: number[] = []
+  // 节流阀 false 关 true 开
+  isloading: boolean = false
 
   aboutToAppear(): void {
     try {
@@ -51,6 +53,8 @@ export struct QuestionDetailPage {
   async getQuestions() {
     const res = await HdHttp.get<QuestionDetail>(`question/${this.questionId}`)
     this.question = res.data
+    // 关闭节流阀, 表示数据请求完成
+    this.isloading = false
   }
 
   toggleTopics(isNext: boolean) {
@@ -70,8 +74,13 @@ export struct QuestionDetailPage {
             message: "当前已经是第一题了~"
           })
         } else {
-          listIndex--
-          this.questionId = this.ListOfQuestionsId[listIndex]
+          if (!this.isloading) {
+            this.isloading = true
+            // 清空题目内容, 显示骨架屏提示用户数据请求中
+            this.question = {} as QuestionDetail
+            listIndex--
+            this.questionId = this.ListOfQuestionsId[listIndex]
+          }
         }
       } else {
         // 判断上一题是否超过了列表长度
@@ -80,8 +89,13 @@ export struct QuestionDetailPage {
             message: "已经是最后一题了~"
           })
         } else {
-          listIndex++
-          this.questionId = this.ListOfQuestionsId[listIndex]
+          if (!this.isloading) {
+            this.isloading = true
+            // 清空题目内容, 显示骨架屏提示用户数据请求中
+            this.question = {} as QuestionDetail
+            listIndex++
+            this.questionId = this.ListOfQuestionsId[listIndex]
+          }
         }
       }
     }
@@ -149,7 +163,7 @@ export struct QuestionDetailPage {
         Column() {
           Column() {
             Row() {
-              if (this.question.stem) {
+              if (Object.keys(this.question).length) {
                 Text(this.question.stem).width('100%')
               } else {
                 // 如果没有数据,就显示骨架屏
@@ -158,7 +172,7 @@ export struct QuestionDetailPage {
             }
 
             Row() {
-              if (this.question.id) {
+              if (Object.keys(this.question).length) {
                 Row({ space: 8 }) {
                   HdTag({ difficulty: this.question.difficulty })
                   ForEach(this.question.stage, (stage: string) => {
@@ -207,24 +221,34 @@ export struct QuestionDetailPage {
           .color($r('app.color.ih_bg_color'))
 
         Column() {
-          Scroll() {
+          if (Object.keys(this.question).length) {
+            Scroll() {
 
-            RichText(`
+              RichText(`
                       <html>
                         <body>
                           <div style="font-size:54px">${this.question.answer}</div>
                         <body>
                       </html>
                       `)
+            }
+            .padding((15))
+            .layoutWeight(1)
+            .onScroll((xOffset: number, yOffset: number) => {
+              console.log('mylog->xOffset', xOffset + ' ' + yOffset)
+            })
+            .onScrollStop(() => {
+              console.log('mylog->Scroll Stop')
+            })
+          } else {
+            Column() {
+              LoadingProgress()
+                .width(100)
+              Text("Loading")
+                .fontSize(30)
+                .fontWeight(500)
+            }.height("100%").width("100%").justifyContent(FlexAlign.Center)
           }
-          .padding((15))
-          .layoutWeight(1)
-          .onScroll((xOffset: number, yOffset: number) => {
-            console.log('mylog->xOffset', xOffset + ' ' + yOffset)
-          })
-          .onScrollStop(() => {
-            console.log('mylog->Scroll Stop')
-          })
         }.layoutWeight(1)
 
       }
