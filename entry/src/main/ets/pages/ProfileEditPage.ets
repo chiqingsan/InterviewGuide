@@ -1,10 +1,24 @@
 import { promptAction } from '@kit.ArkUI'
-import { iLoginDataModel } from '../models/UserData'
+import { getUserData, iLoginDataModel } from '../models/UserData'
 import { picker } from '@kit.CoreFileKit'
 import { Logger } from '../common/utils/Logger'
 import fs from '@ohos.file.fs';
-import { request, UploadResponse } from '@kit.BasicServicesKit'
+import { request } from '@kit.BasicServicesKit'
 import { http } from '@kit.NetworkKit'
+import { HdHttp } from '../common/utils/request'
+
+
+export interface userInfo {
+  /**
+   * 上传后的头像url,两个参数不能都为空
+   */
+  avatar?: string;
+
+  /**
+   * 昵称，两个参数不能都为空
+   */
+  nickName?: string;
+}
 
 @Entry
 @Component
@@ -30,7 +44,7 @@ struct ProfileEditPage {
     if (res.photoUris.length > 0) {
       return res.photoUris[0]
     } else {
-      Logger.warn("用户取消了选择照片")
+      Logger.warn("取消了图片选择")
       return
     }
   }
@@ -45,46 +59,11 @@ struct ProfileEditPage {
     console.log(`${getContext().cacheDir}/${filename}.${extension}`)
     fs.copyFileSync(file.fd, `${getContext().cacheDir}/${filename}.${extension}`)
 
-    //
-    // const files: Array<request.File> = [
-    //   {
-    //     filename: `${filename}.${extension}`,
-    //     type: extension,
-    //     name: "file",
-    //     uri: `internal://cache/${filename}.${extension}`
-    //   }
-    // ]
-    //
-    // request.uploadFile(getContext(), {
-    //   url: "https://api-harmony-teach.itheima.net/hm/userInfo/avatar",
-    //   method: http.RequestMethod.POST,
-    //   header: {
-    //     "Content-Type": 'multipart/form-data',
-    //     "Authorization": `Bearer ${this.user.token}`
-    //   },
-    //   files,
-    //   data: []
-    // }).then((res) => {
-    //   res.on("complete", (val) => {
-    //
-    //     // promptAction.showToast({
-    //     //   message: "上传图片成功"
-    //     // })
-    //     AlertDialog.show({
-    //       message: JSON.stringify(val)
-    //     })
-    //   })
-    // })
-
     return [`internal://cache/${filename}.${extension}`, `${filename}.${extension}`, extension]
   }
 
   // 上传图片
   async uploadAnImage(arr: string[]) {
-    // const files: Array<request.File> = [
-    //   { filename: `${filename}.${extension}`, type: extension, name: "file", uri: cachePath }
-    // ]
-
     const files: Array<request.File> = [
       {
         filename: arr[1],
@@ -105,13 +84,21 @@ struct ProfileEditPage {
       data: []
     })
 
-    res.on("progress", (val, size) => {
+    res.on("complete", async (val) => {
+      Logger.info("头像上传结果:", JSON.stringify(val))
 
-      if (val === size) {
-        promptAction.showToast({
-          message: "头像上传成功"
-        })
-      }
+      promptAction.showToast({
+        message: "头像上传成功"
+      })
+
+      // 刷新头像地址
+      const UserData = await HdHttp.get<getUserData>("userInfo")
+
+      Logger.info("头像地址:", UserData.data.avatar as string)
+
+      // 更新头像地址
+      this.user.avatar = UserData.data.avatar
+      AppStorage.set("user", this.user)
     })
   }
 
@@ -130,18 +117,17 @@ struct ProfileEditPage {
                 .onClick(async () => {
                   // 选择头像并上传this.pickerAvatar()
                   const ImagePath = await this.pickerAvatar()
-                  if (!ImagePath) {
-                    promptAction.showToast({
-                      message: "取消了图片选择"
-                    })
-                    return
-                  }
-                  // const cachePath = this.fileCopies(ImagePath)
-                  // 拿到地址数据
-                  const pathArr = this.fileCopies(ImagePath)
 
-                  // 开始准备上传图片
-                  this.uploadAnImage(pathArr)
+                  // 确认ImagePath有数据
+                  if (ImagePath) {
+                    // 拿到地址数据
+                    const pathArr = this.fileCopies(ImagePath)
+
+                    // 开始准备上传图片
+                    await this.uploadAnImage(pathArr)
+
+
+                  }
 
                 })
             }.width('100%').height((60)).justifyContent(FlexAlign.SpaceBetween)
@@ -157,9 +143,20 @@ struct ProfileEditPage {
                 .height((60))
                 .backgroundColor(Color.Transparent)
                 .borderRadius(0)
-                .onSubmit(() => {
+                .onSubmit(async () => {
                   // 修改昵称 this.updateNickName()
-
+                  try {
+                    await HdHttp.post<object>("userInfo/profile", { nickName: this.user.nickName } as userInfo)
+                    promptAction.showToast({
+                      message: "昵称修改成功"
+                    })
+                    AppStorage.set("user", this.user)
+                  } catch (err) {
+                    Logger.error("用户资料修改:", "用户名修改出错")
+                  }
+                })
+                .onChange((val) => {
+                  this.user.nickName = val
                 })
             }.width('100%').height(60).justifyContent(FlexAlign.SpaceBetween)
           }

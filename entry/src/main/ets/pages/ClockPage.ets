@@ -5,6 +5,7 @@ import { HdHttp } from '../common/utils/request'
 import { iResponseModel } from '../models/UserData'
 import { clockInData } from '../models/DateData'
 import { Logger } from '../common/utils/Logger'
+import { LoadingDialog } from '../common/components/CustomDialog'
 
 
 interface DayBuilderParams {
@@ -32,6 +33,11 @@ export struct ClockPage {
   @State totalClockinNumber: number = 0 //累计打卡
   @State clockinNumbers: number = 0 //连续打卡
   @StorageProp("topHeight") topHeight: number = 0
+  dialog: CustomDialogController = new CustomDialogController({
+    builder: LoadingDialog({ message: '加载中...' }),
+    customStyle: true,
+    alignment: DialogAlignment.Center
+  })
 
   // 累计打卡、连续打卡公共布局
   @Builder
@@ -113,6 +119,8 @@ export struct ClockPage {
             selectedDays: this.createAtList,
             // 切换月份更新当前月份打卡数据
             onChangeMonth: async (yearmonth: string) => {
+              // 打开加载弹窗
+              this.dialog.open()
               promptAction.showToast({ message: yearmonth })
               const yearAndMonth: string[] = yearmonth.split("-")
               const dateData: dateStructure = {
@@ -127,6 +135,8 @@ export struct ClockPage {
                 this.createAtList = clockData.data.clockins.map((data) => {
                   return { date: data.createdAt } as HmCalendarSelectedDay
                 })
+                // 关闭加载弹窗
+                this.dialog.close()
               } else {
                 Logger.error("打卡", "网络请求出现问题")
               }
@@ -139,7 +149,10 @@ export struct ClockPage {
             .borderRadius(8)
             .border({ width: 0.5, color: '#ededed' })
             .shadow({ color: '#ededed', radius: 16 })
-            .backgroundColor('#FFFFFF')
+            .linearGradient({
+              angle: 210,
+              colors: [["#88ffffff", 0], ["#ddffffff", 0.3], ["#ffffff", 1]]
+            })
         }
         .padding({ left: 16, right: 16 })
 

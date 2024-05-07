@@ -68,3 +68,42 @@ export interface userInfo{
   username:string
   password:string
 }
+
+
+/**
+ * 返回数据
+ */
+export interface getUserData {
+  /**
+   * 头像,没有不返回
+   */
+  avatar?: string;
+  /**
+   * 连续打卡的天数，若未打卡，0
+   */
+  clockinNumbers: number;
+  /**
+   * 累计打卡天数
+   */
+  clockinTotal: number;
+  /**
+   * 当天是否打卡
+   */
+  flag: boolean;
+  /**
+   * 用户id
+   */
+  id: string;
+  /**
+   * 昵称,没有不返回
+   */
+  nickName?: string;
+  /**
+   * 学习题目数
+   */
+  questionNumber: number;
+  /**
+   * 学习总时长（返回s）
+   */
+  totalTime: number;
+}

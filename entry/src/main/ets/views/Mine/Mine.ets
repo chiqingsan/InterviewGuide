@@ -113,7 +113,7 @@ export struct Mine {
           Row() {
             Text('编辑个人信息')
               .fontColor($r('app.color.ih_gray_color'))
-              .fontSize(11)
+              .fontSize(12)
               .margin({ right: 4 })
             Image($r('app.media.icon_edit'))
               .width(10)
