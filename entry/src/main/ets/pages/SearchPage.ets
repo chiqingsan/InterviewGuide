@@ -103,7 +103,7 @@ export struct SearchPage {
 
   @Builder
   itemBuilder(text: string) {
-    Row({ space: 20 }) {
+    Row({ space: 10 }) {
       Text(text)
         .textOverflow({
           overflow: TextOverflow.Ellipsis
@@ -135,7 +135,7 @@ export struct SearchPage {
       Column({ space: 15 }) {
         // 1. 搜索关键字
         Row({ space: 10 }) {
-          TextInput({ placeholder: '输入回车保存数据', text: $$this.keyword })
+          TextInput({ placeholder: '输入回车搜索题目', text: $$this.keyword })
             .onSubmit(async () => {
               // AlertDialog.show({ message: this.keyword })
               this.getKeyword()
@@ -177,9 +177,9 @@ export struct SearchPage {
               if (this.isDel) {
                 Text('全部删除')
                   .fontSize(14)
-                  .padding(2)
+                  .padding(3)
                   .border({
-                    width: .5,
+                    width: 1,
                     color: "#ffed3d3d",
                     radius: 10
                   })
@@ -192,7 +192,12 @@ export struct SearchPage {
                 Text('取消删除')
                   .fontSize(14)
                   .onClick(() => {
-                    this.isDel = false
+                    animateTo({
+                      duration: 1000,
+                      curve: Curve.Friction
+                    }, () => {
+                      this.isDel = false
+                    })
                   })
               }
 
@@ -200,7 +205,12 @@ export struct SearchPage {
                 .fillColor("#121212")
                 .height(28)
                 .onClick(() => {
-                  this.isDel = true
+                  animateTo({
+                    duration: 1000,
+                    curve: Curve.Friction
+                  }, () => {
+                    this.isDel = true
+                  })
                 })
             }
           }

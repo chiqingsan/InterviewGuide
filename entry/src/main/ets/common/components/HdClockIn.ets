@@ -1,5 +1,6 @@
 import { iLoginDataModel } from '../../models/UserData'
 import { http } from '@kit.NetworkKit'
+import { HdHttp } from '../utils/request';
 
 export interface returnToTheModel {
   /**
@@ -51,21 +52,14 @@ export struct HdClockIn {
 
   aboutToAppear(): void {
     // 获取用户的打卡数据
-    this.getClockData()
+    // this.getClockData()
+    this.clockCount = this.user.clockinNumbers
   }
 
   async getClockData() {
-    const userClock = await http.createHttp().request(
-      "https://api-harmony-teach.itheima.net/hm/clockinInfo",
-      {
-        header: {
-          Authorization: `Bearer ${this.user.token}`
-        },
-        expectDataType: http.HttpDataType.OBJECT
-      }
-    )
+    const userClock = await HdHttp.get<userClockData>("clockinInfo")
 
-    this.clockCount = (userClock.result as returnToTheModel).data.clockinNumbers
+    this.clockCount = userClock.data.clockinNumbers
   }
 
   build() {

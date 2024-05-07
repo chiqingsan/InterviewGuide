@@ -14,7 +14,6 @@ export struct HdSearch {
   aboutToAppear(): void {
     setInterval(() => {
       if (this.categoryTitle.length !== 0) {
-        Logger.info(...this.categoryTitle)
         this.ph = this.categoryTitle[this.index]
         this.index >= this.categoryTitle.length - 1 ? this.index = 0 : this.index++
       }
@@ -23,7 +22,7 @@ export struct HdSearch {
 
   build() {
     Row() {
-      Row({ space: 4 }) {
+      Row({ space: 6 }) {
         Image($r("app.media.ic_common_search"))
           .width($r('app.float.hd_search_icon_size'))
           .aspectRatio(1)
@@ -37,11 +36,11 @@ export struct HdSearch {
       .backgroundColor(this.bg || $r('app.color.common_gray_border'))
       .borderRadius($r('app.float.hd_search_radius'))
       .justifyContent(FlexAlign.Center)
-    }.onClick( () => {
+    }.onClick(() => {
       router.pushUrl({
-        url:"pages/SearchPage",
-        params:{
-          title:this.ph
+        url: "pages/SearchPage",
+        params: {
+          title: this.ph
         }
       })
     })

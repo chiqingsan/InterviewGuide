@@ -14,7 +14,7 @@ export struct Home {
 
   build() {
     Column() {
-      Row({ space: 10 }) {
+      Row({ space: 15 }) {
         // 搜索框组件
         HdSearch()
           .layoutWeight(1)
@@ -39,7 +39,7 @@ export struct Home {
         Image($r('app.media.banner_ai'))
           .objectFit(ImageFit.Contain)
       }
-      .height(130)
+      .height(140)
       .autoPlay(true)
       .indicator(false)
       .indicator(DotIndicator.dot()
