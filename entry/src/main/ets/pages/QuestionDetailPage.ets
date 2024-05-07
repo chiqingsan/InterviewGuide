@@ -2,6 +2,7 @@ import { HdTag } from '../common/components/HdTag'
 import { HdHttp } from '../common/utils/request'
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
+import { IvSkeleton } from '../common/components/IvSkeleton'
 
 export interface QuestionDetail {
   id: string
@@ -34,18 +35,7 @@ export struct QuestionDetailPage {
   @State @Watch("getQuestions")
   questionId: number = 0
   @State
-  question: QuestionDetail = {
-    id: '1',
-    stem: 'Vue生命周期',
-    difficulty: 4,
-    likeCount: 100,
-    views: 122,
-    readFlag: 1,
-    answer: `<strong>Vue生命周期分为四个阶段，10个周期函数</strong>`,
-    collectFlag: 1,
-    likeFlag: 1,
-    stage: ['Vue', '前端']
-  } as QuestionDetail
+  question: QuestionDetail = {} as QuestionDetail
   @StorageProp('topHeight') topHeight: number = 0
   @StorageProp("ListOfQuestionsId") ListOfQuestionsId: number[] = []
 
@@ -127,12 +117,14 @@ export struct QuestionDetailPage {
   @Builder
   tagBuilder(text: string, color: string = '#41B883') {
     Text(text)
-      .fontSize(12)
-      .padding(5)
-      .backgroundColor($r('app.color.ih_bg_color'))
-      .borderRadius(2)
       .fontColor(color)
-      .margin({ right: 5 })
+      .fontSize($r('app.float.common_font10'))
+      .padding({ left: $r('app.float.common_space4'), right: $r('app.float.common_space4') })
+      .constraintSize({ minWidth: $r('app.float.hd_tag_width') })
+      .height($r('app.float.hd_tag_height'))
+      .backgroundColor($r('app.color.common_gray_bg'))
+      .borderRadius($r('app.float.hd_tag_radius'))
+      .textAlign(TextAlign.Center)
   }
 
   // 上一题，下一题
@@ -157,15 +149,23 @@ export struct QuestionDetailPage {
         Column() {
           Column() {
             Row() {
-              Text(this.question.stem).width('100%')
+              if (this.question.stem) {
+                Text(this.question.stem).width('100%')
+              } else {
+                // 如果没有数据,就显示骨架屏
+                IvSkeleton({ widthValue: 220 }).width("100%")
+              }
             }
 
             Row() {
               if (this.question.id) {
-                HdTag({ difficulty: this.question.difficulty })
-                ForEach(this.question.stage, (stage: string) => {
-                  this.tagBuilder(stage)
-                })
+                Row({ space: 8 }) {
+                  HdTag({ difficulty: this.question.difficulty })
+                  ForEach(this.question.stage, (stage: string) => {
+                    this.tagBuilder(stage)
+                  })
+                }
+
                 Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.End }) {
                   Image($r('app.media.icon_point')).width(24).bindMenu([
                     {
@@ -187,6 +187,13 @@ export struct QuestionDetailPage {
                   ])
                 }
                 .layoutWeight(1)
+              } else {
+                Row({ space: 8 }) {
+                  IvSkeleton({ widthValue: 30 })
+                  IvSkeleton({ widthValue: 30 })
+                  Blank()
+                  IvSkeleton({ widthValue: 30 })
+                }.width("100%")
               }
             }
             .height((40))
@@ -201,12 +208,12 @@ export struct QuestionDetailPage {
 
         Column() {
           Scroll() {
-            // RichText(this.question.answer)
+
             RichText(`
                       <html>
-                      <body>
-                        <div style="font-size:54px">${this.question.answer}</div>
-                      <body>
+                        <body>
+                          <div style="font-size:54px">${this.question.answer}</div>
+                        <body>
                       </html>
                       `)
           }
