@@ -3,6 +3,7 @@ import { HdHttp } from '../common/utils/request'
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { IvSkeleton } from '../common/components/IvSkeleton'
+import { trackingService } from '../common/utils/TrackingService'
 
 export interface QuestionDetail {
   id: string
@@ -42,15 +43,24 @@ export struct QuestionDetailPage {
   isloading: boolean = false
 
   aboutToAppear(): void {
+    trackingService.setStartTime()
+
     try {
       this.questionId = (router.getParams() as ParamsType).id
-      this.getQuestions()
+      // this.getQuestions()
     } catch (err) {
       Logger.error("题目详情页:", "路由出现错误")
     }
   }
 
+  async aboutToDisappear(): Promise<void> {
+    trackingService.setEndTime()
+    trackingService.setQuestionId(this.questionId.toString())
+    trackingService.save()
+  }
+
   async getQuestions() {
+
     const res = await HdHttp.get<QuestionDetail>(`question/${this.questionId}`)
     this.question = res.data
     // 关闭节流阀, 表示数据请求完成

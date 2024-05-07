@@ -23,6 +23,7 @@ export class windowManager {
   }
 
   // 设定状态栏的颜色
+  // true = 白 false = 黑
   static settingStatusBar(LorD: boolean = false) {
     window.getLastWindow(getContext())
       .then((win) => {

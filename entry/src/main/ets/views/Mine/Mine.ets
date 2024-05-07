@@ -63,6 +63,7 @@ export struct Mine {
           }
         }
       }
+      .justifyContent(FlexAlign.Center)
       .onClick(() => {
         nav.onClick && nav.onClick()
       })
@@ -113,7 +114,7 @@ export struct Mine {
           Row() {
             Text('编辑个人信息')
               .fontColor($r('app.color.ih_gray_color'))
-              .fontSize(11)
+              .fontSize(12)
               .margin({ right: 4 })
             Image($r('app.media.icon_edit'))
               .width(10)
@@ -131,6 +132,11 @@ export struct Mine {
         .alignItems(HorizontalAlign.Start)
 
         HdClockIn({ clockCount: this.user.clockinNumbers })
+          .onClick(() => {
+            router.pushUrl({
+              url: "pages/ClockPage"
+            })
+          })
       }
       .width('100%')
       .height(100)
@@ -141,9 +147,12 @@ export struct Mine {
         this.navBuilder({ icon: $r('app.media.ic_mine_collect'), name: '我的收藏' })
         this.navBuilder({ icon: $r('app.media.ic_mine_like'), name: '我的点赞' })
         this.navBuilder({
-          icon: $r('app.media.ic_mine_study'), name: '累计学时', other: '4 小时'
-        , onClick: () => {
-            router.pushUrl({ url: '学习页面' })
+          icon: $r('app.media.ic_mine_study'),
+          name: '累计学时',
+          other: `${(this.user.totalTime / 3600).toFixed(1)} 小时`
+        ,
+          onClick: () => {
+            router.pushUrl({ url: "pages/StudyTimePage" })
           }
         })
       }
