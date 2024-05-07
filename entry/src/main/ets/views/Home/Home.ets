@@ -18,6 +18,7 @@ export struct Home {
         // 搜索框组件
         HdSearch()
           .layoutWeight(1)
+
         // 打卡组件
         HdClockIn()
           .onClick(() => {

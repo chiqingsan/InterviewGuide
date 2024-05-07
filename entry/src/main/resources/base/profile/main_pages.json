@@ -6,6 +6,7 @@
     "pages/PrivacyPolicy",
     "pages/AIinterview",
     "pages/ClockPage",
-    "pages/QuestionDetailPage"
+    "pages/QuestionDetailPage",
+    "pages/SearchPage"
   ]
 }

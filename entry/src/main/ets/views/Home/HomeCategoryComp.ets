@@ -74,13 +74,14 @@ export struct HomeCategoryComp {
     // 在页面开始加载的时候, 请求题目tabs栏的数据
     const res = await HdHttp.get<questionStructure[]>("question/type")
     this.tabsTitleList = res.data
+    AppStorage.setOrCreate("categoryTitle", this.tabsTitleList.map(val => val.name))
     this.tabsTitleList.unshift({
       id: 0,
       name: "全部",
       displayNewestFlag: 0
     } as questionStructure)
     this.dialog.close() //打开对话框
-    //
+    // 开屏请求一次列表数据
     this.loadQuestion()
   }
 
