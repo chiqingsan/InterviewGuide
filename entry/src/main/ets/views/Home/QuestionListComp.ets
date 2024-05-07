@@ -9,7 +9,7 @@ import { IvSkeleton } from '../../common/components/IvSkeleton'
 @Component
 export struct QuestionListComp {
   // 试题列表
-  @Link questions: row[]
+  @Link @Watch("recordID") questions: row[]
   // 拿到记录当前列表结构的对象
   @Prop issue: TopicData
   // 定义一个状态属性，用来和Refresh组件进行双向数据绑定
@@ -29,6 +29,14 @@ export struct QuestionListComp {
       this.isRefreshing = false
       this.isLoad = false
     }
+  }
+
+  recordID() {
+    AppStorage.setOrCreate("ListOfQuestionsId", this.questions.map(item => item.id))
+  }
+
+  aboutToAppear(): void {
+    this.recordID()
   }
 
   // 骨架屏
@@ -57,7 +65,7 @@ export struct QuestionListComp {
         Column() {
           Column({ space: 28 }) {
             ForEach(
-              Array.from({ length: 7 }),
+              Array.from({ length: 10 }),
               () => {
                 this.skeletonScreen()
               }

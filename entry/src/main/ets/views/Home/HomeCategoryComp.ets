@@ -56,7 +56,7 @@ export struct HomeCategoryComp {
   // 题目tabs的数组
   @State tabsTitleList: questionStructure[] = []
   // 题目列表的数组
-  @State @Watch("recordID") listOfQuestions: row[] = []
+  @State listOfQuestions: row[] = []
   // 控制模态窗口
   @State isShow: boolean = false
   // 设置切换tabs时的防抖
@@ -102,9 +102,6 @@ export struct HomeCategoryComp {
     }, 100)
   }
 
-  recordID() {
-    AppStorage.setOrCreate("ListOfQuestionsId", this.listOfQuestions.map(item => item.id))
-  }
 
   build() {
     Stack() {

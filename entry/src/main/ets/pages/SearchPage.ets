@@ -57,16 +57,21 @@ export struct SearchPage {
 
   async getKeyword() {
     try {
+      // 切换按钮和显示状态
+      this.isListShow = true
       // 更新关键字
       this.issue.keyword = this.keyword
       const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
       this.questions = resData.data.rows as row[]
+      if (!resData.data.rows?.length) {
+        this.isListShow = false
+        promptAction.showToast({
+          message: "当前关键词查询不到面试题"
+        })
+      }
       Logger.info("keyword:", JSON.stringify(this.questions).slice(0, 1000))
       this.isLoad = false
-      this.isListShow = true
 
-      // 保存题目id数组
-      AppStorage.setOrCreate("ListOfQuestionsId", this.questions.map(item => item.id))
     } catch (err) {
       Logger.error("搜索列表:", "网络请求出错")
       this.isLoad = false

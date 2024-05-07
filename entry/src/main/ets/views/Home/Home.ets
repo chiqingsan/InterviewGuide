@@ -14,7 +14,7 @@ export struct Home {
 
   build() {
     Column() {
-      Row({ space: 15 }) {
+      Row({ space: 12 }) {
         // 搜索框组件
         HdSearch()
           .layoutWeight(1)
