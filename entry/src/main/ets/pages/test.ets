@@ -42,6 +42,7 @@ export struct test {
       Button("删除一条数据")
         .onClick(() => {
           pre.deleteSync(this.keys.pop())
+          pre.flush()
         })
     }
   }

@@ -63,7 +63,7 @@ struct FilterButton {
     }
     .borderRadius(4)
     .padding(0)
-    .margin({ right: this.isNew ? 20 : 10, bottom: 10 })
+    .margin({ right: this.isNew ? 23 : 10, bottom: 10 })
     .backgroundColor($r('app.color.common_gray_bg'))
   }
 }
@@ -139,7 +139,7 @@ export struct QuestionFilterComp {
               this.params.sortType = 1
               this.params.introduction = 1
             }
-            this.params.introduction = this.params.introduction === 0 ? 1 : 0
+            this.params.introduction = this.params.introduction === 1 ? 0 : 1
             this.params.sort = parseInt(`${this.params.sortType}${this.params.introduction}`)
             console.log("sort", this.params.sort)
           })

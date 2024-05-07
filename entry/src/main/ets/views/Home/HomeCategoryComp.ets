@@ -46,8 +46,8 @@ export interface TopicData {
 @Component
 export struct HomeCategoryComp {
   // 需要请求题目的数据结构类型
-  @State @Watch("loadQuestion") issue: TopicData = {
-    page: "0",
+  @State issue: TopicData = {
+    page: "1",
     questionBankType: "10",
     sort: "0",
     type: "0"
@@ -81,12 +81,16 @@ export struct HomeCategoryComp {
     } as questionStructure)
     this.dialog.close() //打开对话框
     //
-    // this.loadQuestion()
+    this.loadQuestion()
   }
 
   loadQuestion() {
     clearTimeout(this.timer)
-    this.timer = setTimeout(async () => {
+    setTimeout(async () => {
+
+      // 清空试题列表, 触发骨架屏的显示
+      this.listOfQuestions = []
+
       try {
         const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
         this.listOfQuestions = resData.data.rows as row[]
@@ -94,7 +98,7 @@ export struct HomeCategoryComp {
       } catch (err) {
         Logger.error("首页问题列表:", "网络请求出错")
       }
-    }, 50)
+    }, 100)
   }
 
   recordID() {
@@ -120,8 +124,8 @@ export struct HomeCategoryComp {
       .barMode(BarMode.Scrollable)
       .onTabBarClick((index) => {
         this.tabsIndex = index
-        this.listOfQuestions = []
         this.issue.type = this.tabsTitleList[index].id.toString()
+        this.loadQuestion()
       })
 
       if (this.tabsTitleList.length != 0) {
@@ -205,29 +209,9 @@ export struct HomeCategoryComp {
           this.tabsIndex = params.index
           this.issue.sort = params.sort.toString()
           this.issue.type = this.tabsTitleList[params.index].id.toString()
-
+          this.loadQuestion()
         }
       })
     }
-  }
-
-  // 骨架屏
-  @Builder
-  skeletonScreen() {
-    Column({ space: 12 }) {
-      Row({ space: 10 }) {
-        IvSkeleton({ widthValue: 40 }); // 指定宽度
-        IvSkeleton({ widthValue: 250 }); // 指定宽度
-      }
-      .width("85%");
-      Row({ space: 20 }) {
-        IvSkeleton({ widthValue: 40 }); // 指定宽度
-        IvSkeleton({ widthValue: 10 }); // 指定宽度
-        IvSkeleton({ widthValue: 40 }); // 指定宽度
-      }
-      .width("85%");
-
-    }
-    .width("100%")
   }
 }

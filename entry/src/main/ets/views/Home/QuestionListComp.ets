@@ -4,6 +4,7 @@ import { questionDataStructure, row } from '../../models/TopicData'
 import { QuestionItemComp, QuestionItem } from '../QuestionItemComp'
 import { TopicData } from './HomeCategoryComp'
 import { router } from '@kit.ArkUI'
+import { IvSkeleton } from '../../common/components/IvSkeleton'
 
 @Component
 export struct QuestionListComp {
@@ -24,54 +25,88 @@ export struct QuestionListComp {
       this.isRefreshing = false
       this.isLoad = false
     } catch (err) {
-      Logger.error("首页问题列表:", "网络请求出错")
+      Logger.error("试题列表:", "网络请求出错")
       this.isRefreshing = false
       this.isLoad = false
     }
   }
 
-  build() {
-    Column() {
-
-      Refresh({ refreshing: $$this.isRefreshing }) {
-        List() {
-          ForEach(this.questions, (item: row, index) => {
-            ListItem() {
-              QuestionItemComp({ item: item })
-                .onClick(() => {
-                  router.pushUrl({
-                    url: "pages/QuestionDetailPage",
-                    params: {
-                      id: this.questions[index].id
-                    }
-                  })
-                })
-            }
-          })
-        }
-        .height("100%")
-        .scrollBar(BarState.Off)
-        .onReachEnd(() => {
-          // TODO 下拉bug待解决(骨架屏填充解决)
-          if (!this.isLoad) {
-            this.isLoad = true
-            console.log("上拉加载")
-            this.issue.page = `${parseInt(this.issue.page) + 1}`
-            Logger.info("issue", JSON.stringify(this.issue))
-            this.loadQuestion(false)
-          }
-        })
-      }.onRefreshing(() => {
-        if (!this.isLoad) {
-          this.isLoad = true
-          console.log("下拉更新")
-          this.issue.page = "1"
-          Logger.info("issue", JSON.stringify(this.issue))
-          this.loadQuestion(true)
-        }
-      })
+  // 骨架屏
+  @Builder
+  skeletonScreen() {
+    Column({ space: 12 }) {
+      Row({ space: 10 }) {
+        IvSkeleton({ widthValue: 35 }); // 指定宽度
+        IvSkeleton({ widthValue: 250 }); // 指定宽度
+      }
+      .width("100%");
+      Row({ space: 18 }) {
+        IvSkeleton({ widthValue: 30 }); // 指定宽度
+        IvSkeleton({ widthValue: 8 }); // 指定宽度
+        IvSkeleton({ widthValue: 40 }); // 指定宽度
+      }
+      .width("100%");
 
     }
-    .padding({ bottom: 180 })
+    .width("100%")
+  }
+
+  build() {
+    Column() {
+      if (this.questions.length === 0) {
+        Column() {
+          Column({ space: 28 }) {
+            ForEach(
+              Array.from({ length: 7 }),
+              () => {
+                this.skeletonScreen()
+              }
+            )
+          }
+          .height("100%")
+          .margin({ top: 12 })
+        }
+      } else {
+        Refresh({ refreshing: $$this.isRefreshing }) {
+          List() {
+            ForEach(this.questions, (item: row, index) => {
+              ListItem() {
+                QuestionItemComp({ item: item })
+                  .onClick(() => {
+                    router.pushUrl({
+                      url: "pages/QuestionDetailPage",
+                      params: {
+                        id: this.questions[index].id
+                      }
+                    })
+                  })
+              }
+            })
+          }
+          .height("100%")
+          .padding({ bottom: 180 })
+          .scrollBar(BarState.Off)
+          .onReachEnd(() => {
+            if (!this.isLoad) {
+              this.isLoad = true
+              console.log("上拉加载")
+              this.issue.page = `${parseInt(this.issue.page) + 1}`
+              Logger.info("issue", JSON.stringify(this.issue))
+              this.loadQuestion(false)
+            }
+          })
+        }.onRefreshing(() => {
+          if (!this.isLoad) {
+            this.isLoad = true
+            console.log("下拉更新")
+            this.issue.page = "1"
+            Logger.info("issue", JSON.stringify(this.issue))
+            this.loadQuestion(true)
+          }
+        })
+      }
+
+
+    }
   }
 }
