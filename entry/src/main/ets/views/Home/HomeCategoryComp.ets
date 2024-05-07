@@ -138,7 +138,11 @@ export struct HomeCategoryComp {
         .height(50)
         .aspectRatio(.7)
         .justifyContent(FlexAlign.Center) // 图片居中对齐
-        .backgroundColor(Color.White) // 设置背景色位白色，使过滤条件图标能遮盖住tabbar的文字
+        // .backgroundColor(Color.White) // 设置背景色位白色，使过滤条件图标能遮盖住tabbar的文字
+        .linearGradient({
+          angle: 90,
+          colors: [["#20ffffff", 0], ["#ccffffff", .2], ["#ffffff", 1]]
+        })
         .onClick(() => {
           this.isShow = true
         })

@@ -164,7 +164,7 @@ export struct QuestionDetailPage {
           Column() {
             Row() {
               if (Object.keys(this.question).length) {
-                Text(this.question.stem).width('100%')
+                Text(this.question.stem).width('100%').fontWeight(600)
               } else {
                 // 如果没有数据,就显示骨架屏
                 IvSkeleton({ widthValue: 220 }).width("100%")
