@@ -110,6 +110,7 @@ export struct QuestionFilterComp {
         Text('筛选题目')
           .layoutWeight(1)
           .textAlign(TextAlign.Center)
+          .fontWeight(500)
         Text('完成')
           .fontSize(16)
           .fontColor($r('app.color.common_main_color'))

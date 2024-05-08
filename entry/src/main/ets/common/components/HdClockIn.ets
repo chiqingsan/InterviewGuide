@@ -89,7 +89,7 @@ export struct HdClockIn {
           .margin({ bottom: (4) })
       }
     }
-    .width((74))
-    .height((28))
+    .width(74)
+    .height(28)
   }
 }

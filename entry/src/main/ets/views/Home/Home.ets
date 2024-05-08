@@ -28,6 +28,7 @@ export struct Home {
           })
       }
       .height(52)
+      .justifyContent(FlexAlign.Center)
 
       Swiper() {
         Image($r('app.media.banner_qa'))

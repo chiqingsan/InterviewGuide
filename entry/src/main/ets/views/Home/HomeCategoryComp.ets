@@ -102,7 +102,6 @@ export struct HomeCategoryComp {
     }, 100)
   }
 
-
   build() {
     Stack() {
       Tabs({ index: this.tabsIndex }) {
@@ -148,7 +147,7 @@ export struct HomeCategoryComp {
         })
         .bindSheet($$this.isShow, this.filterBuilder(), {
           showClose: false, //关闭x
-          height: 420
+          height: 420,
         })
       }
     }

@@ -161,7 +161,11 @@ export struct Mine {
       .borderRadius(8)
 
       Column() {
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_notes'), name: '前端常用词' })
+        this.toolsBuilder({ icon: $r('app.media.ic_mine_notes'), name: '前端常用词' }, () => {
+          router.pushUrl({
+            url: "pages/WordPage"
+          })
+        })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' },
           () => {
             router.pushUrl({

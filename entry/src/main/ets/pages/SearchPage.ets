@@ -59,7 +59,8 @@ export struct SearchPage {
     try {
       // 切换按钮和显示状态
       this.isListShow = true
-      // 更新关键字
+      // 更新关键字,并且去掉关键词的两端空格
+      this.keyword = this.keyword.trim()
       this.issue.keyword = this.keyword
       const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
       this.questions = resData.data.rows as row[]
@@ -143,6 +144,7 @@ export struct SearchPage {
           TextInput({ placeholder: '输入回车搜索题目', text: $$this.keyword })
             .onSubmit(async () => {
               // AlertDialog.show({ message: this.keyword })
+              // 过滤掉关键字的两端空格
               this.getKeyword()
               if (!this.list.includes(this.keyword)) {
                 this.saveData(this.keyword)
