@@ -63,6 +63,8 @@ export struct Project {
   @StorageProp("topHeight") topHeight: number = 0
   @State
   list: ProjectItemModel[] = ProjectItemData
+  // 节流阀
+  isloading: boolean = false
 
   @Builder
   ProjectItemBuilder(item: ProjectItemModel) {
@@ -101,12 +103,15 @@ export struct Project {
     })
   }
 
-  aboutToAppear(): void {
-    HdHttp.get<ProjectItemModel[]>('question/type', new Object({ type: 'items' }))
-      .then(res => {
-        console.log("item", JSON.stringify(res))
-        this.list = [...ProjectItemData, ...res.data]
-      })
+  async aboutToAppear(): Promise<void> {
+    if (!this.isloading) {
+      this.isloading = true
+      const res = await HdHttp.get<ProjectItemModel[]>('question/type', new Object({ type: 'items' }))
+
+      console.log("item", JSON.stringify(res))
+      this.list = [...ProjectItemData, ...res.data]
+      this.isloading = false
+    }
   }
 
   build() {

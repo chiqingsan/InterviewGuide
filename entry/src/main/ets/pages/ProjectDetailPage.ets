@@ -61,14 +61,16 @@ export struct ProjectDetailComp {
   @State
   projectItem: ProjectItemModel = {} as ProjectItem
 
-  async aboutToAppear(): Promise<void> {
-    // 获取项目列表页传入的路由数据
-    this.projectItem = router.getParams() as ProjectItemModel
-    this.issue.type = this.projectItem.id.toString()
 
-    const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
-    this.listOfQuestions = resData.data.rows as row[]
-    this.total = resData.data.total as number
+  async aboutToAppear(): Promise<void> {
+      // 获取项目列表页传入的路由数据
+      this.projectItem = router.getParams() as ProjectItemModel
+      this.issue.type = this.projectItem.id.toString()
+
+      const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
+      this.listOfQuestions = resData.data.rows as row[]
+      this.total = resData.data.total as number
+
   }
 
   build() {
