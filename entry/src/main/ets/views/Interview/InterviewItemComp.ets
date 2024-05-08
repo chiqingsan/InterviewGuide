@@ -118,8 +118,5 @@ export struct InterviewItemComp {
       .fontColor('#bdbdbd')
     }
     .padding({ top: 16, bottom: 16 })
-    .onClick(() => {
-      router.pushUrl({ url: 'pages/InterviewDetailPage', params: this.item })
-    })
   }
 }

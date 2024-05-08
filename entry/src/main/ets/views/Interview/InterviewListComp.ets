@@ -62,7 +62,6 @@ export struct InterviewListComp {
         IvSkeleton({ widthValue: 20, heightValue: 15 }); // 指定宽度
       }
       .width("100%")
-
     }
     .width("100%")
   }
@@ -90,7 +89,7 @@ export struct InterviewListComp {
                 InterviewItemComp({ item: item })
                   .onClick(() => {
                     router.pushUrl({
-                      url: "pages/QuestionDetailPage",
+                      url: "pages/InterviewDetailComp",
                       params: {
                         id: this.questions[index].id
                       }
@@ -120,8 +119,6 @@ export struct InterviewListComp {
           }
         })
       }
-
-
     }
   }
 }

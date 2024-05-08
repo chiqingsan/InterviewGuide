@@ -1,9 +1,9 @@
 import { promptAction, router } from '@kit.ArkUI'
-import { HdTag } from '../../common/components/HdTag'
-import { IvSkeleton } from '../../common/components/IvSkeleton'
-import { Logger } from '../../common/utils/Logger'
-import { HdHttp } from '../../common/utils/request'
-import { trackingService } from '../../common/utils/TrackingService'
+import { HdTag } from '../common/components/HdTag'
+import { IvSkeleton } from '../common/components/IvSkeleton'
+import { Logger } from '../common/utils/Logger'
+import { HdHttp } from '../common/utils/request'
+import { trackingService } from '../common/utils/TrackingService'
 
 // import { DetailRichText } from '../home/DetailRichText'
 
