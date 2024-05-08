@@ -1,5 +1,5 @@
 import { BasicConstant } from '../../common/constants/BasicConstant'
-import {  HdTag } from '../../common/components/HdTag'
+import { HdTag } from '../../common/components/HdTag'
 import router from '@ohos.router'
 
 export interface InterviewItem {
@@ -99,7 +99,7 @@ export struct InterviewItemComp {
 
       Row({ space: BasicConstant.SPACE_SM }) {
         ForEach(['大厂', '面经'], (tag: string) => {
-          HdTag({ substance: tag })
+          HdTag({ substance: tag, tagNameColor: "#3BB46E" })
         })
       }
       .width('100%')

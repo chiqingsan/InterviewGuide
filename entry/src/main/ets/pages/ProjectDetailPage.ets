@@ -61,15 +61,14 @@ export struct ProjectDetailComp {
   @State
   projectItem: ProjectItemModel = {} as ProjectItem
 
-
   async aboutToAppear(): Promise<void> {
-      // 获取项目列表页传入的路由数据
-      this.projectItem = router.getParams() as ProjectItemModel
-      this.issue.type = this.projectItem.id.toString()
+    // 获取项目列表页传入的路由数据
+    this.projectItem = router.getParams() as ProjectItemModel
+    this.issue.type = this.projectItem.id.toString()
 
-      const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
-      this.listOfQuestions = resData.data.rows as row[]
-      this.total = resData.data.total as number
+    const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)
+    this.listOfQuestions = resData.data.rows as row[]
+    this.total = resData.data.total as number
 
   }
 
@@ -110,7 +109,7 @@ export struct ProjectDetailComp {
                 .fontSize($r('app.float.common_font14'))
                 .fontColor(Color.White)
               Blank()
-              Text(`学习进度：${10}%`)
+              Text(`学习进度：10%`)
                 .fontColor($r('app.color.common_gray_01'))
                 .fontSize($r('app.float.common_font14'))
             }

@@ -1,4 +1,7 @@
 import { HdSearch } from '../../common/components/HdSearch'
+import { HdHttp } from '../../common/utils/request'
+import { questionDataStructure, row } from '../../models/TopicData'
+import { TopicData } from '../Home/HomeCategoryComp'
 import { InterviewListComp } from './InterviewListComp'
 
 // 热门企业实体
@@ -9,7 +12,7 @@ interface Company {
 
 interface TabItem {
   name: string
-  value?: number
+  value: string
   onAreaChange?: (area: Area) => void
 }
 
@@ -18,13 +21,29 @@ interface TabItem {
 export struct Interview {
   @State
   left: number = 16
-  @State
-  sort: number | undefined = 30
+  // 需要请求题目的数据结构类型
+  @State @Watch("updateInterview") issue: TopicData = {
+    page: "1",
+    questionBankType: "9",
+    sort: "30",
+    type: "0"
+  }
+  // 题目列表的数组
+  @State listOfQuestions: row[] = []
 
   setLineLeft(area: Area) {
     const width = area.width as number
     const x = area.position.x as number
     this.left = x + (width - 16) / 2
+  }
+
+  aboutToAppear(): void {
+    this.updateInterview()
+  }
+
+  async updateInterview() {
+    const resDate = await HdHttp.get<questionDataStructure>("question/list", this.issue)
+    this.listOfQuestions = resDate.data.rows as row[]
   }
 
   // 热门企业
@@ -67,13 +86,13 @@ export struct Interview {
     Text(tab.name)
       .fontSize(14)
       .padding(10)
-      .fontColor(this.sort === tab.value ? '#000' : '#979797')
+      .fontColor(this.issue.sort === tab.value ? '#000' : '#979797')
       .animation({
         duration: 300
       })
       .onClick((e) => {
         this.setLineLeft(e.target.area)
-        this.sort = tab.value
+        this.issue.sort = tab.value
       })
       .onAreaChange((_o, n) => tab.onAreaChange && tab.onAreaChange(n))
   }
@@ -116,12 +135,12 @@ export struct Interview {
         Row() {
           this.tabBuilder({
             name: '推荐',
-            value: 30,
+            value: "30",
             onAreaChange: (area) => {
               this.setLineLeft(area)
             }
           })
-          this.tabBuilder({ name: '最新', value: undefined })
+          this.tabBuilder({ name: '最新', value: "20" })
         }
         .width('100%')
         .padding({ left: 16, right: 16 })
@@ -142,7 +161,8 @@ export struct Interview {
       }
 
       // 文章列表
-      InterviewListComp({ sort: this.sort })
+      InterviewListComp({ questions: this.listOfQuestions, issue: this.issue })
+        .padding({ left: 10, right: 10 })
     }
     .width('100%')
     .height('100%')
