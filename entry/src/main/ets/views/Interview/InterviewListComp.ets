@@ -33,24 +33,35 @@ export struct InterviewListComp {
     }
   }
 
-  aboutToAppear(): void {
-  }
-
   // 骨架屏
   @Builder
   skeletonScreen() {
-    Column({ space: 12 }) {
+    Column({ space: 8 }) {
       Row({ space: 10 }) {
-        IvSkeleton({ widthValue: 35 }); // 指定宽度
-        IvSkeleton({ widthValue: 250 }); // 指定宽度
-      }
-      .width("100%");
-      Row({ space: 18 }) {
         IvSkeleton({ widthValue: 30 }); // 指定宽度
-        IvSkeleton({ widthValue: 8 }); // 指定宽度
-        IvSkeleton({ widthValue: 40 }); // 指定宽度
+        IvSkeleton({ widthValue: 100 }); // 指定宽度
+        Blank()
+        IvSkeleton({ widthValue: 30 }); // 指定宽度
       }
-      .width("100%");
+      .width("100%")
+
+      Column({ space: 3 }) {
+        IvSkeleton({ widthValue: 350, heightValue: 16 }); // 指定宽度
+        IvSkeleton({ widthValue: 300, heightValue: 16 }); // 指定宽度
+      }.width("100%").alignItems(HorizontalAlign.Start)
+
+      Row({ space: 8 }) {
+        IvSkeleton({ widthValue: 25, heightValue: 16 }); // 指定宽度
+        IvSkeleton({ widthValue: 25, heightValue: 16 }); // 指定宽度
+      }
+      .width("100%")
+
+      Row({ space: 12 }) {
+        IvSkeleton({ widthValue: 25, heightValue: 15 }); // 指定宽度
+        IvSkeleton({ widthValue: 30, heightValue: 15 }); // 指定宽度
+        IvSkeleton({ widthValue: 20, heightValue: 15 }); // 指定宽度
+      }
+      .width("100%")
 
     }
     .width("100%")
@@ -69,7 +80,7 @@ export struct InterviewListComp {
             )
           }
           .height("100%")
-          .margin({ top: 12 })
+          .margin({ top: 17 })
         }
       } else {
         Refresh({ refreshing: $$this.isRefreshing }) {
@@ -93,7 +104,7 @@ export struct InterviewListComp {
           .onReachEnd(() => {
             if (!this.isLoad) {
               this.isLoad = true
-              console.log("上拉加载")
+              Logger.info("面经页面:", "上拉加载")
               this.issue.page = `${parseInt(this.issue.page) + 1}`
               Logger.info("issue", JSON.stringify(this.issue))
               this.loadQuestion(false)
@@ -102,7 +113,7 @@ export struct InterviewListComp {
         }.onRefreshing(() => {
           if (!this.isLoad) {
             this.isLoad = true
-            console.log("下拉更新")
+            Logger.info("面经页面:", "下拉更新")
             this.issue.page = "1"
             Logger.info("issue", JSON.stringify(this.issue))
             this.loadQuestion(true)

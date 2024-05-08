@@ -42,6 +42,8 @@ export struct Interview {
   }
 
   async updateInterview() {
+    // 清空列表, 触发骨架屏
+    this.listOfQuestions = []
     const resDate = await HdHttp.get<questionDataStructure>("question/list", this.issue)
     this.listOfQuestions = resDate.data.rows as row[]
   }
