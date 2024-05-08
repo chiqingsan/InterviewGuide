@@ -28,7 +28,6 @@ export interface QuestionDetail {
 export struct QuestionItemComp {
   item: row = {} as row
 
-
   @Builder
   SplitBuilder() {
     Text('|')
@@ -48,7 +47,7 @@ export struct QuestionItemComp {
   build() {
     Column() {
       Row({ space: 5 }) {
-        HdTag({ difficulty: this.item.difficulty })
+        HdTag({ substance: this.item.difficulty })
         Text(this.item.stem)
           .fontSize(15)
           .layoutWeight(1)

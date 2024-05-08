@@ -184,7 +184,7 @@ export struct QuestionDetailPage {
             Row() {
               if (Object.keys(this.question).length) {
                 Row({ space: 8 }) {
-                  HdTag({ difficulty: this.question.difficulty })
+                  HdTag({ substance: this.question.difficulty })
                   ForEach(this.question.stage, (stage: string) => {
                     this.tagBuilder(stage)
                   })

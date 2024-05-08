@@ -1,0 +1,174 @@
+import { HdHttp } from '../../common/utils/request'
+import { InterviewItemComp } from './InterviewItemComp'
+import { promptAction } from '@kit.ArkUI'
+import { iResponseModel } from '../../models/UserData'
+
+
+// 定义数据响应对象实体
+interface PageResult {
+  total: number
+  pageTotal: number
+  rows: InterviewItemModel[]
+}
+
+export interface InterviewItem {
+  id: string
+  stem: string
+  content: string
+  likeCount: number
+  views: number
+  creatorName: string
+  creatorAvatar: ResourceStr
+  createdAt: string
+  tags: string[]
+  likeFlag: 0 | 1 | null
+}
+
+export class InterviewListParams {
+  page: number = 1
+  questionBankType: number = 9
+  sort: number = 30
+}
+
+export class InterviewItemModel implements InterviewItem {
+  id: string = ''
+  stem: string = ''
+  content: string = ''
+  likeCount: number = 0
+  views: number = 0
+  creatorName: string = ''
+  creatorAvatar: ResourceStr = ''
+  createdAt: string = ''
+  tags: string[] = []
+  likeFlag: 0 | 1 | null = null
+
+  constructor(model: InterviewItem) {
+    this.id = model.id
+    this.stem = model.stem
+    this.content = model.content
+    this.likeCount = model.likeCount
+    this.views = model.views
+    this.creatorName = model.creatorName
+    this.creatorAvatar = model.creatorAvatar
+    this.createdAt = model.createdAt
+    this.tags = model.tags
+    this.likeFlag = model.likeFlag
+  }
+}
+
+export const interviewListData: InterviewItem[] = [
+// {
+//   id: '10001',
+//   stem: '微软谷歌面试算法难度 | 你想象不到的简单',
+//   content: '内推 候选人可以找到认识的微软员工,员工会把简历提交到微软人才库。这样微软HR就可以在人才库的系统中查看到你的简历。',
+//   likeCount: 13,
+//   views: 347,
+//   creatorName: '凡人的积累',
+//   creatorAvatar: $r('app.media.ic_interview_avatar'),
+//   createdAt: '一周前',
+//   tags: ['大厂', '算法'],
+//   likeFlag: 1
+// },
+// {
+//   id: '10002',
+//   stem: '美团-工程效能组-开发工程师实习生(工程基建方向)-一面',
+//   content: '项目介绍网页音视频项目项目代码量多少？是一个人完成的吗？介绍SaaS视频项目SpringSpring框架有什么特性？(不知道这个问题要问什么，答的扩展性、封装性啥的)控制反转了解吗？',
+//   likeCount: 32,
+//   views: 503,
+//   creatorName: '响亮的名字',
+//   creatorAvatar: $r('app.media.ic_interview_avatar'),
+//   createdAt: '10 小时前',
+//   tags: ['大厂', 'Java'],
+//   likeFlag: 0
+// },
+// {
+//   id: '10003',
+//   stem: '中邮消费金融AI算法工程师（实习生）',
+//   content: '这个是在猎聘上投递的 能收到面试属实是意外之喜面试官是nlp方向的，主要是问nlp相关 首先自我介绍说一个在上段实习中的项目 这里说了一个搭建智能客服对话助手',
+//   likeCount: 10,
+//   views: 98,
+//   creatorName: '不想秃头的夜猫子',
+//   creatorAvatar: $r('app.media.ic_interview_avatar'),
+//   createdAt: '23 分钟前',
+//   tags: ['国企', '实习'],
+//   likeFlag: 1
+// }
+]
+
+
+@Component
+export struct InterviewListComp {
+  @State
+  list: InterviewItemModel[] = interviewListData
+  @State
+  page: number = 1
+  @Prop
+  @Watch('onUpdate')
+  sort: number = 30
+  @State
+  refreshing: boolean = false
+  @State
+  loadmore: boolean = false
+
+  // 定义题目查询方法
+  findInterviewList(params: InterviewListParams): Promise<iResponseModel<PageResult>> {
+    return HdHttp.get<PageResult>('question/list', params)
+  }
+
+  // 调用获取数据
+  onUpdate() {
+    this.findInterviewList({
+      questionBankType: 9, // 9:面经 10：小程序
+      page: this.page,
+      sort: this.sort
+    }).then(res => {
+      if (this.loadmore) {
+        this.list.push(...res.data.rows)
+        this.loadmore = false
+      }
+      else {
+        this.list = res.data.rows
+      }
+      this.loadmore = false
+      this.refreshing = false
+
+      promptAction.showToast({ message: '数据已更新' })
+      //  获取新页数据
+      if (this.page < res.data.pageTotal) {
+        this.page++
+      } else {
+        // 已经加载到了最后一页
+      }
+    })
+  }
+
+  onRefresh() {
+    this.page = 1
+    this.onUpdate()
+  }
+
+  build() {
+
+
+    Refresh({ refreshing: $$this.refreshing }) {
+      // 一般放List容器来展示数据
+      List() {
+        ForEach(this.list, (item: InterviewItemModel) => {
+          ListItem() {
+            InterviewItemComp({ item })
+              .padding(10)
+          }
+        })
+      }
+      .padding({ bottom: 50 })
+      .onReachEnd(() => {
+        this.loadmore = true
+        this.onUpdate()
+      })
+    }.onRefreshing(() => {
+      // 请求服务器URL获取最新数据
+      //  当用户下拉时，Refresh自动出现加载中的动画，手动this.refreshing = false即可关闭
+      this.onRefresh()
+    })
+  }
+}
