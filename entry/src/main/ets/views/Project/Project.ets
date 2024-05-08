@@ -5,6 +5,8 @@ import { HdHttp } from '../../common/utils/request'
 
 export interface ProjectTag {
   tagName: string
+  nameColor?: string
+  borderColor?: string
 }
 
 export interface ProjectItem {
@@ -58,6 +60,7 @@ export const ProjectItemData: ProjectItem[] = [
 @Entry
 @Component
 export struct Project {
+  @StorageProp("topHeight") topHeight: number = 0
   @State
   list: ProjectItemModel[] = ProjectItemData
 
@@ -81,6 +84,7 @@ export struct Project {
         }
       }
       .layoutWeight(1)
+      .padding(1)
       .height(80)
       .alignItems(HorizontalAlign.Start)
     }
@@ -101,7 +105,7 @@ export struct Project {
     HdHttp.get<ProjectItemModel[]>('question/type', new Object({ type: 'items' }))
       .then(res => {
         console.log("item", JSON.stringify(res))
-        this.list = [...res.data, ...ProjectItemData]
+        this.list = [...ProjectItemData, ...res.data]
       })
   }
 
@@ -124,6 +128,7 @@ export struct Project {
           }
         })
       }
+      .layoutWeight(1)
       .divider({
         strokeWidth: $r('app.float.common_border_width'),
         color: $r('app.color.common_gray_border')
@@ -151,6 +156,6 @@ export struct Project {
     }
     .width('100%')
     .height('100%')
-    .padding({ top: 30 })
+    .padding({ top: this.topHeight })
   }
 }
