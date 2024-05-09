@@ -132,8 +132,13 @@ export struct ClockPage {
               Logger.info("打卡", JSON.stringify(clockData))
               if (clockData.code === 10000) {
                 Logger.info("打卡", "拿到数据,业务码正常")
-                this.createAtList = clockData.data.clockins.map((data) => {
-                  return { date: data.createdAt } as HmCalendarSelectedDay
+                animateTo({
+                  duration: 1000,
+                  curve: Curve.Ease
+                }, () => {
+                  this.createAtList = clockData.data.clockins.map((data) => {
+                    return { date: data.createdAt } as HmCalendarSelectedDay
+                  })
                 })
                 // 关闭加载弹窗
                 this.dialog.close()

@@ -1,5 +1,5 @@
-import { HdTag } from '../common/components/HdTag'
-import { row } from '../models/TopicData'
+import { HdTag } from './HdTag'
+import { row } from '../../models/TopicData'
 
 export interface QuestionItem {
   id: string

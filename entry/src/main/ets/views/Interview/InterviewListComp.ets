@@ -1,7 +1,7 @@
 import { Logger } from '../../common/utils/Logger'
 import { HdHttp } from '../../common/utils/request'
 import { questionDataStructure, row } from '../../models/TopicData'
-import { QuestionItemComp, QuestionItem } from '../QuestionItemComp'
+import { QuestionItemComp, QuestionItem } from '../../common/components/QuestionItemComp'
 
 import { router } from '@kit.ArkUI'
 import { IvSkeleton } from '../../common/components/IvSkeleton'

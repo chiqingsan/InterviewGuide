@@ -52,12 +52,16 @@ struct StudyTimePage {
     this.dialog.open()
     const resData = await HdHttp.get<learningData>("studyInfo")
 
-    this.knowledge = resData.data.studyData[0].list
-    this.project = resData.data.studyData[1].list
-    this.knowledgeTitle = resData.data.studyData[0].type
-    this.projectTitle = resData.data.studyData[1].type
-    this.totalTime = resData.data.totalTime
-
+    animateTo({
+      duration: 1000,
+      curve: Curve.Ease
+    }, () => {
+      this.knowledge = resData.data.studyData[0].list
+      this.project = resData.data.studyData[1].list
+      this.knowledgeTitle = resData.data.studyData[0].type
+      this.projectTitle = resData.data.studyData[1].type
+      this.totalTime = resData.data.totalTime
+    })
     // 数据请求完毕后关闭加载组件
     this.dialog.close()
   }
