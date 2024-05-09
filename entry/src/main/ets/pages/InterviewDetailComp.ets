@@ -2,6 +2,7 @@ import { promptAction, router } from '@kit.ArkUI'
 import { HdRichText } from '../common/components/HdRichText'
 import { HdTag } from '../common/components/HdTag'
 import { IvSkeleton } from '../common/components/IvSkeleton'
+import { opt } from '../common/function/LikeAndFavorite'
 import { Logger } from '../common/utils/Logger'
 import { HdHttp } from '../common/utils/request'
 import { trackingService } from '../common/utils/TrackingService'
@@ -105,49 +106,49 @@ export struct InterviewDetailComp {
   @State
   loading: boolean = false
 
-  @Builder
-  menuBuilder() {
-    Menu() {
-      MenuItem({ content: this.item.likeFlag === 1 ? '取消点赞' : '点赞' })
-        .onClick(() => {
-          this.opt(1, this.item.likeFlag).then(() => {
-            this.item.likeFlag = this.item.likeFlag === 1 ? 0 : 1
-            const likeCount =
-              this.item.likeFlag === 1
-                ? Number(this.item.likeCount) + 1
-                : Number(this.item.likeCount) - 1
-          })
-        })
-      MenuItem({ content: this.item.collectFlag === 1 ? '取消收藏' : '收藏' })
-        .onClick(() => {
-          this.opt(2, this.item.collectFlag).then(() => {
-            this.item.collectFlag = this.item.collectFlag === 1 ? 0 : 1
-          })
-        })
-    }
-    .radius(12)
-    .width(108)
-  }
+  // @Builder
+  // menuBuilder() {
+  //   Menu() {
+  //     MenuItem({ content: this.item.likeFlag === 1 ? '取消点赞' : '点赞' })
+  //       .onClick(() => {
+  //         this.opt(1, this.item.likeFlag).then(() => {
+  //           this.item.likeFlag = this.item.likeFlag === 1 ? 0 : 1
+  //           const likeCount =
+  //             this.item.likeFlag === 1
+  //               ? Number(this.item.likeCount) + 1
+  //               : Number(this.item.likeCount) - 1
+  //         })
+  //       })
+  //     MenuItem({ content: this.item.collectFlag === 1 ? '取消收藏' : '收藏' })
+  //       .onClick(() => {
+  //         this.opt(2, this.item.collectFlag).then(() => {
+  //           this.item.collectFlag = this.item.collectFlag === 1 ? 0 : 1
+  //         })
+  //       })
+  //   }
+  //   .radius(12)
+  //   .width(108)
+  // }
 
   /**
    * type:1:点赞，2：收藏
    * flag: 1:已点赞/已收藏，0：未点赞/未收藏
    */
-  async opt(type: 1 | 2, flag: 0 | 1) {
-    try {
-      let data: OptData = {
-        id: this.questionId.toString(),
-        type: 0,
-        optType: type
-      }
-
-      await HdHttp.post<OptModel>(flag === 1 ? 'question/unOpt' : 'question/opt', data)
-      return promptAction.showToast({ message: '操作成功' })
-    } catch (err) {
-      promptAction.showToast({ message: '操作失败' })
-      return Promise.reject(err)
-    }
-  }
+  // async opt(type: 1 | 2, flag: 0 | 1) {
+  //   try {
+  //     let data: OptData = {
+  //       id: this.questionId.toString(),
+  //       type: 0,
+  //       optType: type
+  //     }
+  //
+  //     await HdHttp.post<OptModel>(flag === 1 ? 'question/unOpt' : 'question/opt', data)
+  //     return promptAction.showToast({ message: '操作成功' })
+  //   } catch (err) {
+  //     promptAction.showToast({ message: '操作失败' })
+  //     return Promise.reject(err)
+  //   }
+  // }
 
   async getData() {
     const resData = await HdHttp.get<InterviewItem>(`question/${this.questionId}`)
@@ -156,7 +157,7 @@ export struct InterviewDetailComp {
     //   Logger.debug('面经' + this.questionId, JSON.stringify(res.data))
     //   this.item = res.data
     // })
-    promptAction.showToast({ message: '面经数据已更新' })
+    // promptAction.showToast({ message: '面经数据已更新' })
     Logger.debug('面经' + this.questionId, JSON.stringify(resData.data))
     this.item = resData.data
   }
@@ -191,26 +192,34 @@ export struct InterviewDetailComp {
 
   build() {
     Column() {
-      // nav
       Row({ space: 16 }) {
         Image($r('sys.media.ohos_ic_public_arrow_left'))
-          .size({ width: 24, height: 24 })
+          .size({ width: 30, height: 30 })
           .onClick(() => router.back())
-        if (Object.keys(this.item).length != 0) {
-          Text(this.item.stem)
-            .fontWeight(600)
-            .layoutWeight(1)
-            .textAlign(TextAlign.Center)
-            .fontSize(18)
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .opacity(this.show ? 1 : 0)
-            .animation({ duration: 300 })
-        }
+        Blank()
         Image($r('sys.media.ohos_ic_public_more'))
           .size({ width: 24, height: 20 })
           .objectFit(ImageFit.Contain)
-          .bindMenu(this.menuBuilder())
+          .bindMenu([{
+            value: this.item.collectFlag === 1 ? '取消收藏' : '收藏',
+            action: async () => {
+              // 点赞和取消点赞业务逻辑代码
+              // this.opt(1,0)
+              // this.opt(this.question.collectFlag !== 1, "2")
+              await opt(this.questionId.toString(), this.item.collectFlag !== 1, "2")
+              this.getData()
+            }
+          },
+            {
+              value: this.item.likeFlag === 1 ? '取消点赞' : '点赞',
+              action: async () => {
+                // 点赞和取消点赞业务逻辑代码
+                // this.opt(1,0)
+                // this.opt(this.question.likeFlag !== 1, "1")
+                await opt(this.questionId.toString(), this.item.likeFlag !== 1, "1")
+                this.getData()
+              }
+            }])
       }
       .padding({ left: 16, right: 16 })
       .height(56)
