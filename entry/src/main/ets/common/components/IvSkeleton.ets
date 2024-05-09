@@ -2,7 +2,7 @@
 @Component
 export struct IvSkeleton {
   heightValue: number = 20
-  widthValue: number = 100
+  widthValue: number | string = 100
   @State transitionX: string = "-100%"
 
   build() {

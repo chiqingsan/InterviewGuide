@@ -2,6 +2,7 @@ import { promptAction, router } from '@kit.ArkUI'
 import { HdRichText } from '../common/components/HdRichText'
 import { HdTag } from '../common/components/HdTag'
 import { IvSkeleton } from '../common/components/IvSkeleton'
+import { RelatedQuestions } from '../common/constants/RelatedQuestions'
 import { opt } from '../common/function/LikeAndFavorite'
 import { Logger } from '../common/utils/Logger'
 import { HdHttp } from '../common/utils/request'
@@ -87,17 +88,9 @@ interface OptModel {
 @Entry
 @Component
 export struct InterviewDetailComp {
+  @StorageProp('topHeight') topHeight: number = 0
   @State
-  item: InterviewItem = {
-    stem: '标题',
-    views: 100,
-    likeCount: 100,
-    createdAt: '2024-01-22',
-    creatorAvatar: $r('app.media.ic_interview_logo'),
-    creatorName: 'hajimi',
-    content: '面经详情内容',
-    tags: ['vue', '前端']
-  } as InterviewItem
+  item: InterviewItem = {} as InterviewItem
   scroller: Scroller = new Scroller()
   @State
   show: boolean = false
@@ -227,106 +220,111 @@ export struct InterviewDetailComp {
       .justifyContent(FlexAlign.SpaceBetween)
 
 
-      Scroll(this.scroller) {
-        Column({ space: 16 }) {
-          if (Object.keys(this.item).length != 0) {
-            Text(this.item.stem)
-              .fontWeight(600)
-              .fontSize(18)
+      Column({ space: 16 }) {
+        if (Object.keys(this.item).length) {
+          Text(this.item.stem)
+            .fontWeight(600)
+            .fontSize(18)
 
-            Row({ space: 4 }) {
-              Image(this.item.creatorAvatar)
-                .width(36)
-                .aspectRatio(1)
-              Column({ space: 4 }) {
-                Text(this.item.creatorName)
-                  .fontSize(14)
-                Text() {
-                  Span('浏览 ' + this.item.views)
-                  Span(' · ')
-                  Span('点赞 ' + this.item.likeCount)
-                  Span(' · ')
-                  Span(this.item.createdAt)
-                }
-                .width('100%')
-                .fontSize($r('app.float.common_font12'))
-                .fontColor('#bdbdbd')
-              }
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1)
-            }
-
-            Row({ space: 4 }) {
-              ForEach(this.item.tags, (tag: string) => {
-                HdTag({ substance: tag })
-              })
-            }
-            .width('100%')
-          } else {
-            IvSkeleton({ widthValue: 160 })
-            Row({ space: 4 }) {
-              Image($r("app.media.startIcon"))
-                .width(36)
-                .aspectRatio(1)
-              Column({ space: 4 }) {
-                IvSkeleton({ widthValue: 50, heightValue: 18 })
-                IvSkeleton({ widthValue: 180, heightValue: 18 })
-              }
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1)
-            }
-
-            Row({ space: 4 }) {
-              IvSkeleton({ widthValue: 28, heightValue: 15 })
-              IvSkeleton({ widthValue: 28, heightValue: 15 })
-            }
-            .width('100%')
-          }
-
-          // con
-          // DetailRichText({ content: this.item.content })
-          HdRichText({ richTextContent: this.item.content })
-
-          // ref
           Row({ space: 4 }) {
-            Text('相关题目：')
-              .fontSize(14)
-            Column({ space: 10 }) {
-              ForEach([1, 2, 3, 4], () => {
-                Row() {
-                  Image($r('app.media.ic_interview_file'))
-                    .size({ width: 14, height: 14 })
-                    .fillColor($r('app.color.common_blue'))
-                  Text(' Vue 生命周期总共分为几个阶段？')
-                    .fontSize(12)
-                    .fontColor($r('app.color.common_blue'))
-                    .maxLines(1)
-                    .textOverflow({ overflow: TextOverflow.Ellipsis })
-                }
-                .width('100%')
-              })
+            Image(this.item.creatorAvatar)
+              .width(36)
+              .aspectRatio(1)
+            Column({ space: 4 }) {
+              Text(this.item.creatorName)
+                .fontSize(14)
+              Text() {
+                Span('浏览 ' + this.item.views)
+                Span(' · ')
+                Span('点赞 ' + this.item.likeCount)
+                Span(' · ')
+                Span(this.item.createdAt)
+              }
+              .width('100%')
+              .fontSize($r('app.float.common_font12'))
+              .fontColor('#bdbdbd')
             }
+            .alignItems(HorizontalAlign.Start)
             .layoutWeight(1)
           }
-          .alignItems(VerticalAlign.Top)
-          .padding(16)
-          .backgroundColor($r('app.color.common_gray_bg'))
-          .borderRadius(8)
 
+          Row({ space: 4 }) {
+            ForEach(this.item.tags, (tag: string) => {
+              HdTag({ substance: tag })
+            })
+          }
+          .width('100%')
+        } else {
+          IvSkeleton({ widthValue: 160 })
+          Row({ space: 4 }) {
+            Image($r("app.media.startIcon"))
+              .width(36)
+              .aspectRatio(1)
+            Column({ space: 4 }) {
+              IvSkeleton({ widthValue: 50, heightValue: 16 })
+              IvSkeleton({ widthValue: 180, heightValue: 14 })
+            }
+            .alignItems(HorizontalAlign.Start)
+            .layoutWeight(1)
+          }
+
+          Row({ space: 4 }) {
+            IvSkeleton({ widthValue: 28, heightValue: 15 })
+            IvSkeleton({ widthValue: 28, heightValue: 15 })
+          }
+          .width('100%')
+        }
+
+        Column() {
+          if (Object.keys(this.item).length) {
+            HdRichText({ richTextContent: this.item.content })
+          } else {
+            LoadingProgress()
+              .width(100)
+            Text("Loading")
+              .fontSize(30)
+              .fontWeight(500)
+          }
+        }.layoutWeight(1).justifyContent(FlexAlign.Center)
+
+        // ref
+        Row({ space: 4 }) {
+          Text('相关题目：')
+            .fontSize(14)
+          Column({ space: 10 }) {
+            ForEach(Array.from({ length: 4 }), () => {
+              Row() {
+                Image($r('app.media.ic_interview_file'))
+                  .size({ width: 14, height: 14 })
+                  .fillColor($r('app.color.common_blue'))
+                Text(RelatedQuestions[Math.floor(Math.random() * RelatedQuestions.length)].question)
+                  .fontSize(12)
+                  .fontColor($r('app.color.common_blue'))
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+              }
+              .width('100%')
+
+            })
+          }
+          .layoutWeight(1)
+        }
+        .alignItems(VerticalAlign.Top)
+        .padding(16)
+        .backgroundColor($r('app.color.common_gray_bg'))
+        .borderRadius(8)
+
+        Row() {
           Text('© 著作权归作者所有')
             .fontSize(12)
             .fontColor($r('app.color.common_gray_01'))
-            .height(60)
-        }
-        .padding({ left: 16, right: 16 })
-      }
-      .onScroll(() => {
-        this.show = this.scroller.currentOffset().yOffset > 30
-      })
+        }.height(35).alignItems(VerticalAlign.Top)
+      }.layoutWeight(1)
+      .padding({ left: 16, right: 16 })
     }
     .width('100%')
     .height('100%')
-    .padding({ top: 30 })
+    .padding({ top: this.topHeight })
     .justifyContent(FlexAlign.Start)
   }
 }

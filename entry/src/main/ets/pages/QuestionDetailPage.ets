@@ -35,10 +35,8 @@ export interface iBodyParms {
 @Entry
 @Component
 export struct QuestionDetailPage {
-  @State @Watch("getQuestions")
-  questionId: number = 0
-  @State
-  question: QuestionDetail = {} as QuestionDetail
+  @State @Watch("getQuestions") questionId: number = 0
+  @State question: QuestionDetail = {} as QuestionDetail
   @StorageProp('topHeight') topHeight: number = 0
   @StorageProp("ListOfQuestionsId") ListOfQuestionsId: number[] = []
   // 节流阀 false 关 true 开
@@ -113,6 +111,7 @@ export struct QuestionDetailPage {
     }
 
   }
+
   //
   // // 点赞收藏
   // async opt(isOn: boolean, optType: string) {
@@ -200,7 +199,7 @@ export struct QuestionDetailPage {
                         // 点赞和取消点赞业务逻辑代码
                         // this.opt(1,0)
                         // this.opt(this.question.collectFlag !== 1, "2")
-                        await opt(this.questionId.toString(),this.question.collectFlag !== 1, "2")
+                        await opt(this.questionId.toString(), this.question.collectFlag !== 1, "2")
                         this.getQuestions()
                       }
                     },
@@ -210,7 +209,7 @@ export struct QuestionDetailPage {
                         // 点赞和取消点赞业务逻辑代码
                         // this.opt(1,0)
                         // this.opt(this.question.likeFlag !== 1, "1")
-                        await opt(this.questionId.toString(),this.question.likeFlag !== 1, "1")
+                        await opt(this.questionId.toString(), this.question.likeFlag !== 1, "1")
                         this.getQuestions()
                       }
                     }

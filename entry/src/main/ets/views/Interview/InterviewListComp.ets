@@ -51,15 +51,14 @@ export struct InterviewListComp {
       }.width("100%").alignItems(HorizontalAlign.Start)
 
       Row({ space: 8 }) {
-        IvSkeleton({ widthValue: 25, heightValue: 16 }); // 指定宽度
-        IvSkeleton({ widthValue: 25, heightValue: 16 }); // 指定宽度
+        IvSkeleton({ widthValue: 28, heightValue: 16 }); // 指定宽度
+        IvSkeleton({ widthValue: 28, heightValue: 16 }); // 指定宽度
       }
       .width("100%")
 
       Row({ space: 12 }) {
-        IvSkeleton({ widthValue: 25, heightValue: 15 }); // 指定宽度
         IvSkeleton({ widthValue: 30, heightValue: 15 }); // 指定宽度
-        IvSkeleton({ widthValue: 20, heightValue: 15 }); // 指定宽度
+        IvSkeleton({ widthValue: 32, heightValue: 15 }); // 指定宽度
       }
       .width("100%")
     }
@@ -72,7 +71,7 @@ export struct InterviewListComp {
         Column() {
           Column({ space: 28 }) {
             ForEach(
-              Array.from({ length: 10 }),
+              Array.from({ length: 5 }),
               () => {
                 this.skeletonScreen()
               }
