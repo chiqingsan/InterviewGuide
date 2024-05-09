@@ -3,7 +3,7 @@ import { HdHttp } from '../common/utils/request'
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { IvSkeleton } from '../common/components/IvSkeleton'
-import { trackingService } from '../common/utils/TrackingService'
+import { trackingService } from '../common/function/TrackingService'
 import { HdRichText } from '../common/components/HdRichText'
 import { opt } from '../common/function/LikeAndFavorite'
 

@@ -1,9 +1,6 @@
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { HdSearch } from '../../common/components/HdSearch'
-import { test } from '../../pages/test'
 import { router } from '@kit.ArkUI'
-import { questionStructure } from '../../models/tabs'
-import { HdHttp } from '../../common/utils/request'
 import { HomeCategoryComp } from './HomeCategoryComp'
 import { BasicConstant } from '../../common/constants/BasicConstant'
 
@@ -53,8 +50,7 @@ export struct Home {
 
       // 题目列表tabs
       HomeCategoryComp()
-
-
+      
     }
     .width("100%")
     .height("100%")

@@ -5,6 +5,7 @@ import { QuestionListComp } from '../views/Home/QuestionListComp'
 import { questionDataStructure, row } from '../models/TopicData'
 import { HdHttp } from '../common/utils/request'
 import { TopicData } from '../views/Home/HomeCategoryComp'
+import { ifaa } from '@kit.OnlineAuthenticationKit'
 
 interface iSearchItemParams {
   text: string
@@ -145,10 +146,12 @@ export struct SearchPage {
             .onSubmit(async () => {
               // AlertDialog.show({ message: this.keyword })
               // 过滤掉关键字的两端空格
-              this.getKeyword()
-              if (!this.list.includes(this.keyword)) {
-                this.saveData(this.keyword)
-                this.getData()
+              if (this.keyword != "") {
+                this.getKeyword()
+                if (!this.list.includes(this.keyword)) {
+                  this.saveData(this.keyword)
+                  this.getData()
+                }
               }
             })
             .layoutWeight(4)
@@ -164,10 +167,12 @@ export struct SearchPage {
               if (this.isListShow) {
                 this.isListShow = false
               } else {
-                this.getKeyword()
-                if (!this.list.includes(this.keyword)) {
-                  this.saveData(this.keyword)
-                  this.getData()
+                if (this.keyword != "") {
+                  this.getKeyword()
+                  if (!this.list.includes(this.keyword)) {
+                    this.saveData(this.keyword)
+                    this.getData()
+                  }
                 }
               }
             })

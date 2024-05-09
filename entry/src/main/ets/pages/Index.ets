@@ -3,11 +3,8 @@ import { Home } from '../views/Home/Home'
 import { Interview } from '../views/Interview/Interview'
 import { Mine } from '../views/Mine/Mine'
 import { Project } from '../views/Project/Project'
-import { window } from '@kit.ArkUI'
 import { tabsSubstance } from "../common/constants/tabsdata"
-import { Logger } from '../common/utils/Logger'
 import { windowManager } from '../common/utils/windowManager'
-import { test } from "./test"
 
 @Entry
 @Component

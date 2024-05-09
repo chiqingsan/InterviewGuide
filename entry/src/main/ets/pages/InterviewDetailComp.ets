@@ -6,7 +6,7 @@ import { RelatedQuestions } from '../common/constants/RelatedQuestions'
 import { opt } from '../common/function/LikeAndFavorite'
 import { Logger } from '../common/utils/Logger'
 import { HdHttp } from '../common/utils/request'
-import { trackingService } from '../common/utils/TrackingService'
+import { interviewTracking, trackingService } from '../common/function/TrackingService'
 
 // import { DetailRichText } from '../home/DetailRichText'
 
@@ -161,21 +161,20 @@ export struct InterviewDetailComp {
     let params: ParamsType = router.getParams() as ParamsType
     this.questionId = params.id
 
-
-    //在进入页面时，设置要上报的题目id和当前时间
-    // trackingService.setQuestionId(this.item.id)
-    // trackingService.setStartTime()
-
     // 根据id获取数据详情
     this.getData()
+
+    // 在进入页面时，设置要上报的题目id和当前时间
+    interviewTracking.setStartTime()
+    interviewTracking.setId(this.questionId.toString())
   }
 
   // 离开页面时
   async aboutToDisappear() {
     try {
       // 设置最后时间，并上报埋点数据
-      // trackingService.setEndTime()
-      // await trackingService.save()
+      interviewTracking.setEndTime()
+      await interviewTracking.save()
 
     } catch (err) {
       console.log('mylog->InterviewDetailComp aboutToDisappear err', JSON.stringify(err))

@@ -1,6 +1,6 @@
 @Component
 export struct HdRichText {
-  @Prop richTextContent:string = ""
+  @Prop richTextContent: string = ""
 
   build() {
     Scroll() {
@@ -15,7 +15,8 @@ export struct HdRichText {
     }
     .layoutWeight(1)
     .onScroll((xOffset: number, yOffset: number) => {
-      console.log('mylog->xOffset', xOffset + ' ' + yOffset)
+      // xOffset 一直为0 ,可能有bug
+      // console.log('mylog->xOffset', xOffset + ' ' + yOffset)
     })
     .onScrollStop(() => {
       console.log('mylog->Scroll Stop')
