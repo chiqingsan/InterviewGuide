@@ -4,6 +4,7 @@ import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { IvSkeleton } from '../common/components/IvSkeleton'
 import { trackingService } from '../common/utils/TrackingService'
+import { HdRichText } from '../common/components/HdRichText'
 
 export interface QuestionDetail {
   id: string
@@ -232,24 +233,9 @@ export struct QuestionDetailPage {
 
         Column() {
           if (Object.keys(this.question).length) {
-            Scroll() {
-
-              RichText(`
-                      <html>
-                        <body>
-                          <div style="font-size:54px">${this.question.answer}</div>
-                        <body>
-                      </html>
-                      `)
-            }
-            .padding((15))
-            .layoutWeight(1)
-            .onScroll((xOffset: number, yOffset: number) => {
-              console.log('mylog->xOffset', xOffset + ' ' + yOffset)
-            })
-            .onScrollStop(() => {
-              console.log('mylog->Scroll Stop')
-            })
+            Column() {
+              HdRichText({ richTextContent: this.question.answer })
+            }.padding(15)
           } else {
             Column() {
               LoadingProgress()

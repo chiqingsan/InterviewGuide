@@ -1,4 +1,5 @@
 import { promptAction, router } from '@kit.ArkUI'
+import { HdRichText } from '../common/components/HdRichText'
 import { HdTag } from '../common/components/HdTag'
 import { IvSkeleton } from '../common/components/IvSkeleton'
 import { Logger } from '../common/utils/Logger'
@@ -86,15 +87,16 @@ interface OptModel {
 @Component
 export struct InterviewDetailComp {
   @State
-  item: InterviewItemModel = {} as InterviewItem
-  // stem:'标题',
-  // views:100,
-  // likeCount:100,
-  // createdAt:'2024-01-22',
-  // creatorAvatar:$r('app.media.ic_interview_logo'),
-  // creatorName:'hajimi',
-  // content:'面经详情内容',
-  // tags:['vue','前端']
+  item: InterviewItem = {
+    stem: '标题',
+    views: 100,
+    likeCount: 100,
+    createdAt: '2024-01-22',
+    creatorAvatar: $r('app.media.ic_interview_logo'),
+    creatorName: 'hajimi',
+    content: '面经详情内容',
+    tags: ['vue', '前端']
+  } as InterviewItem
   scroller: Scroller = new Scroller()
   @State
   show: boolean = false
@@ -147,13 +149,16 @@ export struct InterviewDetailComp {
     }
   }
 
-  getData() {
-    HdHttp.get<InterviewItemModel>(`question/${this.questionId}`)
-      .then(res => {
-        promptAction.showToast({ message: '面经数据已更新' })
-        Logger.debug('面经' + this.questionId, JSON.stringify(res.data))
-        this.item = res.data
-      })
+  async getData() {
+    const resData = await HdHttp.get<InterviewItem>(`question/${this.questionId}`)
+    // .then(res => {
+    //   promptAction.showToast({ message: '面经数据已更新' })
+    //   Logger.debug('面经' + this.questionId, JSON.stringify(res.data))
+    //   this.item = res.data
+    // })
+    promptAction.showToast({ message: '面经数据已更新' })
+    Logger.debug('面经' + this.questionId, JSON.stringify(resData.data))
+    this.item = resData.data
   }
 
   aboutToAppear(): void {
@@ -164,8 +169,8 @@ export struct InterviewDetailComp {
 
 
     //在进入页面时，设置要上报的题目id和当前时间
-    trackingService.setQuestionId(this.item.id)
-    trackingService.setStartTime()
+    // trackingService.setQuestionId(this.item.id)
+    // trackingService.setStartTime()
 
     // 根据id获取数据详情
     this.getData()
@@ -175,8 +180,8 @@ export struct InterviewDetailComp {
   async aboutToDisappear() {
     try {
       // 设置最后时间，并上报埋点数据
-      trackingService.setEndTime()
-      await trackingService.save()
+      // trackingService.setEndTime()
+      // await trackingService.save()
 
     } catch (err) {
       console.log('mylog->InterviewDetailComp aboutToDisappear err', JSON.stringify(err))
@@ -271,6 +276,7 @@ export struct InterviewDetailComp {
 
           // con
           // DetailRichText({ content: this.item.content })
+          HdRichText({ richTextContent: this.item.content })
 
           // ref
           Row({ space: 4 }) {
