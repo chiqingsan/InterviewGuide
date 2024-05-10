@@ -3,9 +3,10 @@ import { getUserData, iLoginDataModel } from '../models/UserData'
 import { picker } from '@kit.CoreFileKit'
 import { Logger } from '../common/utils/Logger'
 import fs from '@ohos.file.fs';
-import { request } from '@kit.BasicServicesKit'
+import { emitter, request } from '@kit.BasicServicesKit'
 import { http } from '@kit.NetworkKit'
 import { HdHttp } from '../common/utils/Request'
+import { MyDialog } from '../common/components/CustomDialog'
 
 
 export interface userInfo {
@@ -25,6 +26,12 @@ export interface userInfo {
 struct ProfileEditPage {
   @StorageProp("user") user: iLoginDataModel = {} as iLoginDataModel
   @StorageProp("topHeight") topHeight: number = 0
+  // 自定义弹窗
+  dialog: CustomDialogController = new CustomDialogController({
+    builder: MyDialog({ message: `上传进度: 0%` }),
+    customStyle: true,
+    alignment: DialogAlignment.Center
+  })
 
   // 选择图片,返回选择图片的地址
   async pickerAvatar() {
@@ -73,6 +80,8 @@ struct ProfileEditPage {
       }
     ]
 
+
+    this.dialog.open()
     const res = await request.uploadFile(getContext(), {
       url: "https://api-harmony-teach.itheima.net/hm/userInfo/avatar",
       method: http.RequestMethod.POST,
@@ -84,21 +93,25 @@ struct ProfileEditPage {
       data: []
     })
 
-    res.on("complete", async (val) => {
-      Logger.info("头像上传结果:", JSON.stringify(val))
+    res.on("progress", async (val, size) => {
+      Logger.info("头像上传进度:", `${val / size * 100}%`)
+      emitter.emit({ eventId: 133 }, { data: { process: `上传进度: ${(val / size * 100).toFixed(0)}%` } })
+      if (val === size) {
+        this.dialog.close()
+        promptAction.showToast({
+          message: "头像上传成功"
+        })
 
-      promptAction.showToast({
-        message: "头像上传成功"
-      })
+        // 刷新头像地址
+        const UserData = await HdHttp.get<getUserData>("userInfo")
 
-      // 刷新头像地址
-      const UserData = await HdHttp.get<getUserData>("userInfo")
+        Logger.info("头像地址:", UserData.data.avatar as string)
 
-      Logger.info("头像地址:", UserData.data.avatar as string)
+        // 更新头像地址
+        this.user.avatar = UserData.data.avatar
+        AppStorage.set("user", this.user)
+      }
 
-      // 更新头像地址
-      this.user.avatar = UserData.data.avatar
-      AppStorage.set("user", this.user)
     })
   }
 

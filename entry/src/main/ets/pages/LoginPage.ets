@@ -1,7 +1,6 @@
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
-import { http } from '@kit.NetworkKit'
-import { iLoginDataModel, iResponseModel, userInfo } from '../models/UserData'
+import { iLoginDataModel, userInfo } from '../models/UserData'
 import { HdHttp } from '../common/utils/Request'
 import { BasicConstant } from '../common/constants/BasicConstant'
 

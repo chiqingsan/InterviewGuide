@@ -2,10 +2,9 @@ import { HmCalendar, HmCalendarSelectedDay } from '@ohmos/calendar'
 import { promptAction } from '@kit.ArkUI'
 import { router } from '@kit.ArkUI'
 import { HdHttp } from '../common/utils/Request'
-import { iResponseModel } from '../models/UserData'
 import { clockInData } from '../models/DateData'
 import { Logger } from '../common/utils/Logger'
-import { LoadingDialog } from '../common/components/CustomDialog'
+import { MyDialog } from '../common/components/CustomDialog'
 
 
 interface DayBuilderParams {
@@ -34,7 +33,7 @@ export struct ClockPage {
   @State clockinNumbers: number = 0 //连续打卡
   @StorageProp("topHeight") topHeight: number = 0
   dialog: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({ message: '加载中...' }),
+    builder: MyDialog({ message: '加载中...' }),
     customStyle: true,
     alignment: DialogAlignment.Center
   })

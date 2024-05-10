@@ -1,8 +1,16 @@
+import { emitter } from '@kit.BasicServicesKit'
+
 @CustomDialog
-export struct LoadingDialog {
+export struct MyDialog {
   @State
   message: string = ''
   controller: CustomDialogController
+
+  aboutToAppear(): void {
+    emitter.on({ eventId: 133 }, (res) => {
+      this.message = res.data!["process"]
+    })
+  }
 
   build() {
     Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

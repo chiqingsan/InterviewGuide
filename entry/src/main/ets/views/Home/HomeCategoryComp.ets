@@ -1,4 +1,4 @@
-import { LoadingDialog } from '../../common/components/CustomDialog';
+import { MyDialog } from '../../common/components/CustomDialog';
 import { Logger } from '../../common/utils/Logger';
 import { HdHttp } from '../../common/utils/Request'
 import { questionStructure } from '../../models/HomeTabsData'
@@ -28,7 +28,7 @@ export struct HomeCategoryComp {
   timer: number = -1
   // loading组件
   dialog: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({ message: '加载中...' }),
+    builder: MyDialog({ message: '加载中...' }),
     customStyle: true,
     alignment: DialogAlignment.Center
   })

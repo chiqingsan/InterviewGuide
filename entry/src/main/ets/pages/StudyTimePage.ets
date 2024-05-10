@@ -1,4 +1,4 @@
-import { LoadingDialog } from '../common/components/CustomDialog'
+import { MyDialog } from '../common/components/CustomDialog'
 import { HdHttp } from '../common/utils/Request'
 import { windowManager } from '../common/utils/WindowManager'
 import { learningData, learningLists } from '../models/LearningData'
@@ -25,7 +25,7 @@ struct StudyTimePage {
   @StorageProp('topHeight')
   topHeight: number = 0
   dialog: CustomDialogController = new CustomDialogController({
-    builder: LoadingDialog({ message: '加载中...' }),
+    builder: MyDialog({ message: '加载中...' }),
     customStyle: true,
     alignment: DialogAlignment.Center
   })
