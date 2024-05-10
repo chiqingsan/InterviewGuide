@@ -13,6 +13,7 @@
     "pages/ProjectDetailPage",
     "pages/InterviewDetailComp",
     "pages/AiInterview",
-    "pages/Feedback"
+    "pages/Feedback",
+    "pages/BrowsingHistory"
   ]
 }

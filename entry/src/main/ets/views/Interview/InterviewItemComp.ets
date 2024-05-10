@@ -14,41 +14,10 @@ export interface InterviewItem {
   likeFlag: 0 | 1 | null
 }
 
-export class InterviewListParams {
-  page: number = 1
-  questionBankType: number = 9
-  sort: number = 30
-}
-
-export class InterviewItemModel implements InterviewItem {
-  id: string = ''
-  stem: string = ''
-  content: string = ''
-  likeCount: number = 0
-  views: number = 0
-  creatorName: string = ''
-  creatorAvatar: ResourceStr = ''
-  createdAt: string = ''
-  tags: string[] = []
-  likeFlag: 0 | 1 | null = null
-
-  constructor(model: InterviewItem) {
-    this.id = model.id
-    this.stem = model.stem
-    this.content = model.content
-    this.likeCount = model.likeCount
-    this.views = model.views
-    this.creatorName = model.creatorName
-    this.creatorAvatar = model.creatorAvatar
-    this.createdAt = model.createdAt
-    this.tags = model.tags
-    this.likeFlag = model.likeFlag
-  }
-}
 
 @Component
 export struct InterviewItemComp {
-  item: InterviewItemModel = new InterviewItemModel({} as InterviewItem)
+  item: InterviewItem = {} as InterviewItem
 
   @Builder
   menuBuilder() {

@@ -79,8 +79,11 @@ struct StudyTimePage {
           }.width('100%').margin({ bottom: (10) })
 
           Row() {
-            Text(this.getTimeText(this.totalTime, false)).fontSize((40)).fontWeight(FontWeight.Bold)
-            Text(this.totalTime < 3600 ? '分钟' : '小时').margin({ bottom: (8), left: (8) })
+            Text(this.getTimeText(this.totalTime, false))
+              .fontSize((40))
+              .fontWeight(FontWeight.Bold)
+              .fontColor("#41B8B1")
+            Text(this.totalTime < 3600 ? '分钟' : '小时').margin({ bottom: (8), left: (8) }).fontColor("#41B8B1")
           }.width('100%').alignItems(VerticalAlign.Bottom).margin({ bottom: (20) })
 
           Column() {

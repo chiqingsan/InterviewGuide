@@ -6,8 +6,9 @@ import { IvSkeleton } from '../common/components/IvSkeleton'
 import { trackingService } from '../common/function/TrackingService'
 import { HdRichText } from '../common/components/HdRichText'
 import { opt } from '../common/function/LikeAndFavorite'
-import { ParamsType, QuestionDetail } from '../models/TopicData'
+import {  ParamsType, QuestionDetail } from '../models/TopicData'
 import { BasicConstant } from '../common/constants/BasicConstant'
+import { RecordKeeping } from '../common/function/RecordKeeping'
 
 
 @Entry
@@ -41,6 +42,10 @@ export struct QuestionDetailPage {
 
     const res = await HdHttp.get<QuestionDetail>(`question/${this.questionId}`)
     this.question = res.data
+
+    // 使用数据持久化来保存浏览过的题目,用来提供给浏览记录页面显示
+    RecordKeeping<QuestionDetail>(res,"QUESTIONS")
+
     // 关闭节流阀, 表示数据请求完成
     this.isloading = false
   }
@@ -166,14 +171,14 @@ export struct QuestionDetailPage {
                       }
                     },
                     {
-                      value:"点我反馈",
+                      value: "点我反馈",
                       action: () => {
-                          router.pushUrl({
-                            url:BasicConstant.PAGE_Feedback,
-                            params:{
-                              id:this.questionId
-                            }
-                          })
+                        router.pushUrl({
+                          url: BasicConstant.PAGE_Feedback,
+                          params: {
+                            id: this.questionId
+                          }
+                        })
                       }
                     }
                   ])

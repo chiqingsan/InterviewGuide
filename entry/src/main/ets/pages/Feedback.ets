@@ -1,4 +1,5 @@
-import { promptAction, router } from '@kit.ArkUI'
+import { router } from '@kit.ArkUI'
+import { TopBar } from '../common/components/TopBar';
 import { Logger } from '../common/utils/Logger';
 import { HdHttp } from '../common/utils/Request'
 
@@ -48,18 +49,25 @@ struct Feedback {
   questionsId: number = 0
 
   async aboutToAppear(): Promise<void> {
-    const resData = await HdHttp.get<Datum[]>("question/feedback/type")
-    this.name = resData.data.map((val) => val.name)
-    this.questionsId = (router.getParams() as object)["id"]
+    try {
+      const resData = await HdHttp.get<Datum[]>("question/feedback/type")
+      this.name = resData.data.map((val) => val.name)
+      this.questionsId = (router.getParams() as object)["id"]
+    } catch (e) {
+      Logger.info("反馈:", "路由跳转没有携带试题ID")
+    }
   }
 
   async feedback() {
     try {
       const mySelected: string[] = this.selectTheArray.map(val => this.name[val])
       const myFeed: myFeedback = {
-        questionId: this.questionsId.toString(),
         type: mySelected,
         feedbackInfo: this.input
+      }
+      // questionId: this.questionsId.toString(),
+      if (this.questionsId) {
+        myFeed.questionId = this.questionsId.toString()
       }
       await HdHttp.post<object>("question/feedback", myFeed)
       Logger.info("反馈:", `${this.questionsId}问题反馈成功`)
@@ -73,21 +81,7 @@ struct Feedback {
   build() {
     Column() {
       // title
-      Stack() {
-        Row() {
-          Image($r("app.media.icon_left"))
-            .width(18)
-            .fillColor("#121826")
-        }.width("100%")
-        .onClick(() => {
-          router.back()
-        })
-
-        Text("意见反馈")
-          .fontWeight(500)
-          .fontSize(18)
-          .fontColor("#121826")
-      }.height(44).margin({ left: 20, right: 20 })
+      TopBar({ barTitle: "意见反馈" })
 
       Column() {
 
@@ -181,7 +175,7 @@ struct Feedback {
   feedbackTheResults() {
     Column() {
       Text("提交反馈")
-        .height(55)
+        .height(70)
         .fontSize(18)
         .fontWeight(600)
       Column() {
@@ -198,12 +192,13 @@ struct Feedback {
           .margin({ top: 8 })
       }.margin({ bottom: 250 })
 
-      Row() {
-        Text(this.submitTheResults ? "返回题目详情" : "重新提交")
+      Row({ space: 5 }) {
+        Text(this.submitTheResults ? (this.questionsId ? "返回题目详情" : "返回我的页面") : "重新提交")
           .fontSize(15)
           .fontColor("#3C3E42")
         Image($r("app.media.icon_right"))
-          .width(14)
+          .width(12)
+          .fillColor($r("app.color.tab_selected_color"))
       }.onClick(() => {
         if (this.submitTheResults) {
           router.back()

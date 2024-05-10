@@ -9,6 +9,7 @@ import { HdHttp } from '../common/utils/Request'
 import { interviewTracking } from '../common/function/TrackingService'
 import { InterviewItem } from '../models/TopicData'
 import { BasicConstant } from '../common/constants/BasicConstant'
+import { RecordKeeping } from '../common/function/RecordKeeping'
 
 
 // 接收路由参数实体
@@ -77,12 +78,8 @@ export struct InterviewDetailComp {
 
   async getData() {
     const resData = await HdHttp.get<InterviewItem>(`question/${this.questionId}`)
-    // .then(res => {
-    //   promptAction.showToast({ message: '面经数据已更新' })
-    //   Logger.debug('面经' + this.questionId, JSON.stringify(res.data))
-    //   this.item = res.data
-    // })
-    // promptAction.showToast({ message: '面经数据已更新' })
+
+    RecordKeeping<InterviewItem>(resData,"EXPERIENCE")
     Logger.debug('面经' + this.questionId, JSON.stringify(resData.data))
     this.item = resData.data
   }
