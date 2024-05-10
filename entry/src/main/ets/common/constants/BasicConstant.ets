@@ -7,7 +7,7 @@ export class BasicConstant {
   // 项目详情
   static readonly PAGE_ProjectDetailPage = 'pages/ProjectDetailPage'
   // 面经详情
-  static readonly PAGE_InterviewDetailPage = 'pages/InterviewDetailPage'
+  static readonly PAGE_InterviewDetailPage = 'pages/InterviewDetailComp'
   // 试题详情
   static readonly PAGE_QuestionDetailPage = 'pages/QuestionDetailPage'
   // 登录
