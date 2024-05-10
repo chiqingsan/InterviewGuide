@@ -107,3 +107,4 @@ export interface getUserData {
    */
   totalTime: number;
 }
+

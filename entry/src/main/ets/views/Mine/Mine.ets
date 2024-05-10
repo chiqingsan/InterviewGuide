@@ -3,6 +3,7 @@ import { router } from '@kit.ArkUI'
 import { iLoginDataModel } from '../../models/UserData'
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { BasicConstant } from '../../common/constants/BasicConstant'
+import { preferences } from '@kit.ArkData'
 
 
 interface Nav {
@@ -86,7 +87,7 @@ export struct Mine {
           .fontColor($r('app.color.common_gray_01'))
       }
       Image($r('sys.media.ohos_ic_public_arrow_right'))
-        .width(16)
+        .width(18)
         .aspectRatio(1)
         .fillColor($r('app.color.common_gray_01'))
     }
@@ -176,6 +177,22 @@ export struct Mine {
         this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_setting'), name: '设置' })
+      }
+      .backgroundColor(Color.White)
+      .borderRadius(8)
+
+      Column() {
+        this.toolsBuilder({ icon: $r('app.media.ic_tuichu'), name: '退出登录' }, () => {
+          // 情况缓存的用户数据
+          AppStorage.set("user", {} as iLoginDataModel)
+          const pre = preferences.getPreferencesSync(getContext(), { name: "store" })
+          pre.deleteSync("USERDATA")
+          pre.flush()
+          // 销毁页面,跳转到登录页面
+          router.replaceUrl({
+            url: BasicConstant.PAGE_LoginPage
+          })
+        })
       }
       .backgroundColor(Color.White)
       .borderRadius(8)

@@ -3,6 +3,7 @@ import { Logger } from '../common/utils/Logger'
 import { iLoginDataModel, userInfo } from '../models/UserData'
 import { HdHttp } from '../common/utils/Request'
 import { BasicConstant } from '../common/constants/BasicConstant'
+import { preferences } from '@kit.ArkData'
 
 
 @Entry
@@ -56,6 +57,14 @@ struct LoginPage {
 
         // 判断业务码是否为10000
         if (resData.code === 10000) {
+
+          // 如果业务码正确, 则把返回的数据保存到内存中
+          console.log("开始保存用户token")
+          // 保存到磁盘
+          const pre = preferences.getPreferencesSync(getContext(), { name: "store" })
+          pre.putSync("USERDATA", JSON.stringify(resData.data))
+          pre.flush()
+          // 保存到内存中,方便之后页面调用
           AppStorage.setOrCreate("user", resData.data)
 
           // 跳转到主页
@@ -82,20 +91,22 @@ struct LoginPage {
 
         // 关闭节流阀
         this.isloading = false
-
       }
-
-      // })
-      // .catch((err: Error) => {
-      //   promptAction.showToast({
-      //     message: `网络请求失败, 错误信息:${err.message}`
-      //   })
-      //
-      //   // 关闭节流阀
-      //   this.isloading = false
-      // })
     }
+  }
 
+  aboutToAppear(): void {
+    const pre = preferences.getPreferencesSync(getContext(), { name: "store" })
+    const userData = pre.getSync("USERDATA", "") as string
+    Logger.info("登录页面的用户数据:", userData)
+    if (userData) {
+
+      AppStorage.setOrCreate("user", JSON.parse(userData) as iLoginDataModel)
+
+      router.replaceUrl({
+        url: BasicConstant.PAGE_INDEX
+      })
+    }
   }
 
   build() {
