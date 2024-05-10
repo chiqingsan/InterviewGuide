@@ -63,7 +63,7 @@ struct Index {
       Text(name)
         .fontSize(12)
         .fontWeight(500)
-        .fontColor(this.tabsIndex === index ? "#3C3E42" : "#979797")
+        .fontColor(this.tabsIndex === index ? $r("app.color.tab_selected_color") : $r("app.color.common_gray_01"))
     }
   }
 }

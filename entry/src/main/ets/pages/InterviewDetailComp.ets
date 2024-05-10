@@ -6,15 +6,15 @@ import { RelatedQuestions } from '../common/constants/RelatedQuestions'
 import { opt } from '../common/function/LikeAndFavorite'
 import { Logger } from '../common/utils/Logger'
 import { HdHttp } from '../common/utils/Request'
-import { interviewTracking} from '../common/function/TrackingService'
+import { interviewTracking } from '../common/function/TrackingService'
 import { InterviewItem } from '../models/TopicData'
+import { BasicConstant } from '../common/constants/BasicConstant'
 
 
 // 接收路由参数实体
 export interface ParamsType {
   id: number
 }
-
 
 
 @Entry
@@ -143,7 +143,18 @@ export struct InterviewDetailComp {
                 await opt(this.questionId.toString(), this.item.likeFlag !== 1, "1")
                 this.getData()
               }
-            }])
+            }, {
+              value: "点我反馈",
+              action: () => {
+                router.pushUrl({
+                  url: BasicConstant.PAGE_Feedback,
+                  params: {
+                    id: this.questionId
+                  }
+                })
+              }
+            }
+          ])
       }
       .padding({ left: 16, right: 16 })
       .height(56)

@@ -3,7 +3,6 @@ import { router } from '@kit.ArkUI'
 import { iLoginDataModel } from '../../models/UserData'
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { BasicConstant } from '../../common/constants/BasicConstant'
-import { preferences } from '@kit.ArkData'
 import { PreferencesManager } from '../../common/utils/Preference'
 
 

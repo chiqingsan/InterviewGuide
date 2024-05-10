@@ -12,6 +12,7 @@
     "pages/WordPage",
     "pages/ProjectDetailPage",
     "pages/InterviewDetailComp",
-    "pages/AiInterview"
+    "pages/AiInterview",
+    "pages/Feedback"
   ]
 }

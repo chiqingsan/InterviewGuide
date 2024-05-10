@@ -1,12 +1,13 @@
 import { HdTag } from '../common/components/HdTag'
 import { HdHttp } from '../common/utils/Request'
-import { promptAction, router } from '@kit.ArkUI'
+import { promptAction, Router, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { IvSkeleton } from '../common/components/IvSkeleton'
 import { trackingService } from '../common/function/TrackingService'
 import { HdRichText } from '../common/components/HdRichText'
 import { opt } from '../common/function/LikeAndFavorite'
 import { ParamsType, QuestionDetail } from '../models/TopicData'
+import { BasicConstant } from '../common/constants/BasicConstant'
 
 
 @Entry
@@ -89,32 +90,6 @@ export struct QuestionDetailPage {
 
   }
 
-  //
-  // // 点赞收藏
-  // async opt(isOn: boolean, optType: string) {
-  //   if (isOn) {
-  //     await HdHttp.post<object>("question/opt", {
-  //       id: this.questionId.toString(),
-  //       type: 0,
-  //       optType: optType
-  //     } as iBodyParms)
-  //     promptAction.showToast({
-  //       message: `${optType === "1" ? "点赞" : "收藏"}成功`
-  //     })
-  //   } else {
-  //     await HdHttp.post<object>("question/unOpt", {
-  //       id: this.questionId.toString(),
-  //       type: 0,
-  //       optType: optType
-  //     } as iBodyParms)
-  //     promptAction.showToast({
-  //       message: `取消${optType === "1" ? "点赞" : "收藏"}`
-  //     })
-  //   }
-  //
-  //   this.getQuestions()
-  // }
-
   // 题目所属标签
   @Builder
   tagBuilder(text: string, color: string = '#41B883') {
@@ -188,6 +163,17 @@ export struct QuestionDetailPage {
                         // this.opt(this.question.likeFlag !== 1, "1")
                         await opt(this.questionId.toString(), this.question.likeFlag !== 1, "1")
                         this.getQuestions()
+                      }
+                    },
+                    {
+                      value:"点我反馈",
+                      action: () => {
+                          router.pushUrl({
+                            url:BasicConstant.PAGE_Feedback,
+                            params:{
+                              id:this.questionId
+                            }
+                          })
                       }
                     }
                   ])

@@ -113,6 +113,7 @@ export struct HomeCategoryComp {
         .bindSheet($$this.isShow, this.filterBuilder(), {
           showClose: false, //关闭x
           height: 420,
+          blurStyle: BlurStyle.Thick
         })
       }
     }

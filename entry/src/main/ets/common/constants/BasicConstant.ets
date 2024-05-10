@@ -26,6 +26,8 @@ export class BasicConstant {
   static readonly PAGE_SearchPage = 'pages/SearchPage'
   // 单词页
   static readonly PAGE_WordPage = 'pages/WordPage'
+  // 问题反馈页面
+  static readonly PAGE_Feedback = 'pages/Feedback'
 }
 
 interface IEVENT_MAP {
