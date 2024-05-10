@@ -1,7 +1,7 @@
 import { Logger } from '../utils/Logger';
 import { HdHttp } from '../utils/Request';
 
-export interface iTimeList {
+export interface iTimeItem {
   /**
    * 结束时间（毫秒）
    */
@@ -23,7 +23,7 @@ export interface learningDurationStructure {
   /**
    * 入参
    */
-  timeList: iTimeList[];
+  timeList: iTimeItem[];
 }
 
 
@@ -50,11 +50,7 @@ export interface lengthOfTheInterview {
 
 class TrackingService {
   // 类的实例属性
-  timelist: iTimeList = {
-    questionId: "0",
-    endTime: 0,
-    startTime: 0
-  }
+  timelist: iTimeItem = {} as iTimeItem
 
   // 初始化-重置数据
   constructor() {
@@ -84,9 +80,7 @@ class TrackingService {
   // 4. 把收集好的数据请求服务器接口提交时长数据
   async save() {
     Logger.info("timelist", JSON.stringify(this.timelist))
-    await HdHttp.post<string>('time/tracking', {
-      "timeList": [this.timelist]
-    } as learningDurationStructure)
+    await HdHttp.post<string>('time/tracking', { timeList: [this.timelist] } as learningDurationStructure)
     Logger.info("阅读时长埋点结束, 学习时长已收集上传", Date.now().toString())
   }
 }

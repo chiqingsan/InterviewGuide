@@ -1,9 +1,10 @@
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
-import { iLoginDataModel, userInfo } from '../models/UserData'
+import { getUserData, iLoginDataModel, userInfo } from '../models/UserData'
 import { HdHttp } from '../common/utils/Request'
 import { BasicConstant } from '../common/constants/BasicConstant'
 import { preferences } from '@kit.ArkData'
+import { PreferencesManager } from '../common/utils/Preference'
 
 
 @Entry
@@ -95,17 +96,26 @@ struct LoginPage {
     }
   }
 
-  aboutToAppear(): void {
-    const pre = preferences.getPreferencesSync(getContext(), { name: "store" })
-    const userData = pre.getSync("USERDATA", "") as string
+  async aboutToAppear(): Promise<void> {
+    const userData = await PreferencesManager.getData("store", "USERDATA", "")
     Logger.info("登录页面的用户数据:", userData)
     if (userData) {
-
-      AppStorage.setOrCreate("user", JSON.parse(userData) as iLoginDataModel)
 
       router.replaceUrl({
         url: BasicConstant.PAGE_INDEX
       })
+
+      // 如果保存过token,则直接跳转到首页, 并且更新用户的头像和昵称数据
+      const userDate = JSON.parse(userData) as iLoginDataModel
+      // 保存到内存中, 提供给其他页面调用
+      AppStorage.setOrCreate("user", userDate)
+      const resData = await HdHttp.get<getUserData>("userInfo")
+
+      // 更新用户名称和头像
+      userDate.nickName = resData.data.nickName as string
+      userDate.avatar = resData.data.avatar as string
+      // 更新用户数据
+      AppStorage.setOrCreate("user", userDate)
     }
   }
 

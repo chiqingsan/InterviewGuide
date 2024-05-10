@@ -92,7 +92,7 @@ export struct HomeCategoryComp {
         this.loadQuestion()
       })
 
-      if (this.tabsTitleList.length != 0) {
+      if (this.tabsTitleList.length) {
         Row() {
           // 过滤条件按钮
           Image($r('app.media.gengduo'))

@@ -108,3 +108,27 @@ export interface getUserData {
   totalTime: number;
 }
 
+// 刷新token返回的数据结构
+
+export interface refreshTheToken {
+  /**
+   * 用户头像地址
+   */
+  avatar?: string;
+  /**
+   * 用户id
+   */
+  id: number;
+  /**
+   * 昵称
+   */
+  nickName?: string;
+  /**
+   * token过期后，刷新token使用
+   */
+  refreshToken: string;
+  /**
+   * 后续交互使用的token
+   */
+  token: string;
+}

@@ -4,6 +4,7 @@ import { iLoginDataModel } from '../../models/UserData'
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { BasicConstant } from '../../common/constants/BasicConstant'
 import { preferences } from '@kit.ArkData'
+import { PreferencesManager } from '../../common/utils/Preference'
 
 
 interface Nav {
@@ -182,12 +183,13 @@ export struct Mine {
       .borderRadius(8)
 
       Column() {
-        this.toolsBuilder({ icon: $r('app.media.ic_tuichu'), name: '退出登录' }, () => {
-          // 情况缓存的用户数据
+        this.toolsBuilder({ icon: $r('app.media.ic_tuichu'), name: '退出登录' }, async () => {
+          // 清楚内存中的用户数据
           AppStorage.set("user", {} as iLoginDataModel)
-          const pre = preferences.getPreferencesSync(getContext(), { name: "store" })
-          pre.deleteSync("USERDATA")
-          pre.flush()
+
+          // 清楚缓存中的用户数据
+          await PreferencesManager.delAllData("store", "USERDATA")
+
           // 销毁页面,跳转到登录页面
           router.replaceUrl({
             url: BasicConstant.PAGE_LoginPage
