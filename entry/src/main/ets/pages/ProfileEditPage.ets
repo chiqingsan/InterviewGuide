@@ -5,7 +5,7 @@ import { Logger } from '../common/utils/Logger'
 import fs from '@ohos.file.fs';
 import { request } from '@kit.BasicServicesKit'
 import { http } from '@kit.NetworkKit'
-import { HdHttp } from '../common/utils/request'
+import { HdHttp } from '../common/utils/Request'
 
 
 export interface userInfo {

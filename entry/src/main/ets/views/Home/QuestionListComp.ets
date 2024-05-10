@@ -1,10 +1,10 @@
 import { Logger } from '../../common/utils/Logger'
-import { HdHttp } from '../../common/utils/request'
-import { questionDataStructure, row } from '../../models/TopicData'
-import { QuestionItemComp, QuestionItem } from '../../common/components/QuestionItemComp'
-import { TopicData } from './HomeCategoryComp'
+import { HdHttp } from '../../common/utils/Request'
+import { questionDataStructure, row, TopicData } from '../../models/TopicData'
+import { QuestionItemComp} from '../../common/components/QuestionItemComp'
 import { router } from '@kit.ArkUI'
 import { IvSkeleton } from '../../common/components/IvSkeleton'
+import { BasicConstant } from '../../common/constants/BasicConstant'
 
 @Component
 export struct QuestionListComp {
@@ -82,7 +82,7 @@ export struct QuestionListComp {
                 QuestionItemComp({ item: item })
                   .onClick(() => {
                     router.pushUrl({
-                      url: "pages/QuestionDetailPage",
+                      url: BasicConstant.PAGE_QuestionDetailPage,
                       params: {
                         id: this.questions[index].id
                       }

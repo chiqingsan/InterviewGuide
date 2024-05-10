@@ -1,7 +1,6 @@
 import { LoadingDialog } from '../common/components/CustomDialog'
-import { Logger } from '../common/utils/Logger'
-import { HdHttp } from '../common/utils/request'
-import { windowManager } from '../common/utils/windowManager'
+import { HdHttp } from '../common/utils/Request'
+import { windowManager } from '../common/utils/WindowManager'
 import { learningData, learningLists } from '../models/LearningData'
 
 interface ListItemStudy {

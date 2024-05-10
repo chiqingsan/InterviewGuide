@@ -1,6 +1,6 @@
 import { iLoginDataModel } from '../../models/UserData'
 import { http } from '@kit.NetworkKit'
-import { HdHttp } from '../utils/request';
+import { HdHttp } from '../utils/Request';
 
 export interface returnToTheModel {
   /**

@@ -2,16 +2,9 @@ import { promptAction, router } from '@kit.ArkUI'
 import { preferences } from '@kit.ArkData'
 import { Logger } from '../common/utils/Logger'
 import { QuestionListComp } from '../views/Home/QuestionListComp'
-import { questionDataStructure, row } from '../models/TopicData'
-import { HdHttp } from '../common/utils/request'
-import { TopicData } from '../views/Home/HomeCategoryComp'
-import { ifaa } from '@kit.OnlineAuthenticationKit'
+import { questionDataStructure, row, TopicData } from '../models/TopicData'
+import { HdHttp } from '../common/utils/Request'
 
-interface iSearchItemParams {
-  text: string
-  isShowDel: boolean
-  delCallBack: () => void
-}
 
 @Entry
 @Component
@@ -162,6 +155,10 @@ export struct SearchPage {
             .padding({ right: 15, left: 15 })
             .backgroundColor(this.isListShow ? "#ffff3c3c" : "#cc0A59F7")
             .fontWeight(500)
+            .animation({
+              duration: 300,
+              curve: Curve.Ease
+            })
             .onClick(() => {
               // 打开查询数据组件
               if (this.isListShow) {

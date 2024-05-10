@@ -2,37 +2,12 @@ import { HdSearch } from '../common/components/HdSearch'
 import { BasicConstant } from '../common/constants/BasicConstant'
 import { router } from '@kit.ArkUI'
 import { QuestionListComp } from '../views/Home/QuestionListComp'
-import { TopicData } from '../views/Home/HomeCategoryComp'
-import { HdHttp } from '../common/utils/request'
-import { questionDataStructure, row } from '../models/TopicData'
+import { HdHttp } from '../common/utils/Request'
+import { ProjectItem, questionDataStructure, row, TopicData } from '../models/TopicData'
 
-export interface ProjectTag {
-  tagName: string
-}
 
-export interface ProjectItem {
-  id: number
-  name: string
-  icon: ResourceStr
-  describeInfo: string | null
-  tags: ProjectTag[]
-}
 
-export class ProjectItemModel implements ProjectItem {
-  id: number
-  name: string
-  icon: ResourceStr
-  describeInfo: string | null
-  tags: ProjectTag[]
 
-  constructor(model: ProjectItem) {
-    this.id = model.id
-    this.name = model.name
-    this.icon = model.icon
-    this.describeInfo = model.describeInfo
-    this.tags = model.tags
-  }
-}
 
 @Entry
 @Component
@@ -59,11 +34,11 @@ export struct ProjectDetailComp {
   // 可选排序
   sortArr: string[] = ["0", "21", "20"]
   @State
-  projectItem: ProjectItemModel = {} as ProjectItem
+  projectItem: ProjectItem = {} as ProjectItem
 
   async aboutToAppear(): Promise<void> {
     // 获取项目列表页传入的路由数据
-    this.projectItem = router.getParams() as ProjectItemModel
+    this.projectItem = router.getParams() as ProjectItem
     this.issue.type = this.projectItem.id.toString()
 
     const resData = await HdHttp.get<questionDataStructure>("question/list", this.issue)

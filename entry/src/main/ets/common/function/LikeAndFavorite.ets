@@ -1,9 +1,9 @@
 // 点赞收藏
-import { iBodyParms } from '../../pages/QuestionDetailPage'
-import { HdHttp } from '../utils/request'
+import { HdHttp } from '../utils/Request'
 import { promptAction } from '@kit.ArkUI'
+import { iBodyParms } from '../../models/TopicData'
 
-export async function opt(id:string,isOn: boolean, optType: string) {
+export async function opt(id: string, isOn: boolean, optType: string) {
   if (isOn) {
     await HdHttp.post<object>("question/opt", {
       id: id,

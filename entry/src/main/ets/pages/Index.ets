@@ -1,10 +1,10 @@
-import { tabsStructure } from '../models/tabs'
+import { tabsStructure } from '../models/HomeTabsData'
 import { Home } from '../views/Home/Home'
 import { Interview } from '../views/Interview/Interview'
 import { Mine } from '../views/Mine/Mine'
 import { Project } from '../views/Project/Project'
-import { tabsSubstance } from "../common/constants/tabsdata"
-import { windowManager } from '../common/utils/windowManager'
+import { tabsSubstance } from "../common/constants/Tabsdata"
+import { windowManager } from '../common/utils/WindowManager'
 
 @Entry
 @Component

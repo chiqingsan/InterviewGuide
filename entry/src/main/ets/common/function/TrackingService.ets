@@ -1,5 +1,5 @@
 import { Logger } from '../utils/Logger';
-import { HdHttp } from '../utils/request';
+import { HdHttp } from '../utils/Request';
 
 export interface iTimeList {
   /**

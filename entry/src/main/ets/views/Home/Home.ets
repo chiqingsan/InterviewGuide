@@ -19,9 +19,7 @@ export struct Home {
         // 打卡组件
         HdClockIn()
           .onClick(() => {
-            router.pushUrl({
-              url: "pages/ClockPage"
-            })
+            router.pushUrl({ url: BasicConstant.PAGE_ClockedPage })
           })
       }
       .height(52)
@@ -50,7 +48,7 @@ export struct Home {
 
       // 题目列表tabs
       HomeCategoryComp()
-      
+
     }
     .width("100%")
     .height("100%")

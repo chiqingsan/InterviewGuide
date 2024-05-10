@@ -1,7 +1,7 @@
 import { HmCalendar, HmCalendarSelectedDay } from '@ohmos/calendar'
 import { promptAction } from '@kit.ArkUI'
 import { router } from '@kit.ArkUI'
-import { HdHttp } from '../common/utils/request'
+import { HdHttp } from '../common/utils/Request'
 import { iResponseModel } from '../models/UserData'
 import { clockInData } from '../models/DateData'
 import { Logger } from '../common/utils/Logger'

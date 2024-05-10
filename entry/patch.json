@@ -1,7 +1,7 @@
 {
   "app": {
     "bundleName": "com.example.interviewer",
-    "patchVersionCode": 2000195,
+    "patchVersionCode": 2000196,
     "versionCode": 1000000
   },
   "module": {

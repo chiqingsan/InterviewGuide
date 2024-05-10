@@ -1,88 +1,20 @@
-import { promptAction, router } from '@kit.ArkUI'
+import { router } from '@kit.ArkUI'
 import { HdRichText } from '../common/components/HdRichText'
 import { HdTag } from '../common/components/HdTag'
 import { IvSkeleton } from '../common/components/IvSkeleton'
 import { RelatedQuestions } from '../common/constants/RelatedQuestions'
 import { opt } from '../common/function/LikeAndFavorite'
 import { Logger } from '../common/utils/Logger'
-import { HdHttp } from '../common/utils/request'
-import { interviewTracking, trackingService } from '../common/function/TrackingService'
+import { HdHttp } from '../common/utils/Request'
+import { interviewTracking} from '../common/function/TrackingService'
+import { InterviewItem } from '../models/TopicData'
 
-// import { DetailRichText } from '../home/DetailRichText'
-
-export interface InterviewItem {
-  id: string
-  stem: string
-  content: string
-  likeCount: number
-  views: number
-  creatorName: string
-  creatorAvatar: ResourceStr
-  createdAt: string
-  tags: string[]
-  likeFlag: 0 | 1
-  collectFlag: 0 | 1
-}
-
-export class InterviewItemModel implements InterviewItem {
-  id: string = ''
-  stem: string = ''
-  content: string = ''
-  likeCount: number = 0
-  views: number = 0
-  creatorName: string = ''
-  creatorAvatar: ResourceStr = ''
-  createdAt: string = ''
-  tags: string[] = []
-  likeFlag: 0 | 1 = 0
-  collectFlag: 0 | 1 = 0
-
-  constructor(model: InterviewItem) {
-    this.id = model.id
-    this.stem = model.stem
-    this.content = model.content
-    this.likeCount = model.likeCount
-    this.views = model.views
-    this.creatorName = model.creatorName
-    this.creatorAvatar = model.creatorAvatar
-    this.createdAt = model.createdAt
-    this.tags = model.tags
-    this.likeFlag = model.likeFlag
-    this.collectFlag = model.collectFlag
-  }
-}
 
 // 接收路由参数实体
 export interface ParamsType {
   id: number
 }
 
-interface OptData {
-  id: string,
-  type: number,
-  optType: 1 | 2
-}
-
-interface OptDataModel {
-  id: number
-}
-
-interface OptModel {
-  /**
-   * 请求成功code
-   */
-  code?: number;
-  data?: OptDataModel
-  /**
-   * 请求成功message
-   */
-  message?: string;
-
-  /**
-   * 请求成功标志
-   */
-  success?: boolean;
-}
 
 
 @Entry

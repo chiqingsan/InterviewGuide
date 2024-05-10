@@ -3,6 +3,7 @@ interface problemStructure {
   category: string
 }
 
+// 相关问题
 export const RelatedQuestions: problemStructure[] = [
   {
     "question": "Vue 生命周期总共分为几个阶段？",

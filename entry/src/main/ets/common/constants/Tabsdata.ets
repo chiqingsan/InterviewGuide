@@ -1,4 +1,4 @@
-import { tabsStructure } from "../../models/tabs"
+import { tabsStructure } from "../../models/HomeTabsData"
 
 export const tabsSubstance: tabsStructure[] = [
   { name: "首页", icon: $r("app.media.ic_tabbar_home"), selectedIcon: $r("app.media.ic_tabbar_home_select") },

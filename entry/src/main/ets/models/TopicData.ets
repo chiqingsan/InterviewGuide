@@ -96,3 +96,96 @@ export interface row {
    */
   views: number;
 }
+
+
+// 面经详情结构
+export interface InterviewItem {
+  id: string
+  stem: string
+  content: string
+  likeCount: number
+  views: number
+  creatorName: string
+  creatorAvatar: ResourceStr
+  createdAt: string
+  tags: string[]
+  likeFlag: 0 | 1
+  collectFlag: 0 | 1
+}
+
+
+// 标签结构
+export interface ProjectTag {
+  tagName: string
+}
+
+// 项目详情返回的数据结构
+export interface ProjectItem {
+  id: number
+  name: string
+  icon: ResourceStr
+  describeInfo: string | null
+  tags: ProjectTag[]
+}
+
+
+
+// 试题返回的数据结构
+export interface QuestionDetail {
+  id: string
+  stem: string
+  difficulty: number
+  likeCount: number
+  views: number
+  readFlag: 0 | 1
+  answer: string
+  collectFlag: 0 | 1
+  likeFlag: 0 | 1
+  stage: Array<string>
+}
+
+//接收参数的实体
+export interface ParamsType {
+  id: number
+}
+
+// 点赞的数据结构
+export interface iBodyParms {
+  id: string,
+  type: number,
+  optType: string
+}
+
+// 面经列表的查询上传结构
+export interface TopicData {
+  /**
+   * 搜索关键词,(定位题目，传题号)
+   */
+  keyword?: string;
+
+  /**
+   * 当前页数，为空默认是1
+   */
+  page: string;
+
+  /**
+   * 每页大小，为空默认是10
+   */
+  pageSize?: string;
+
+  /**
+   * 9面经10小程序面试题
+   */
+  questionBankType: string;
+
+  /**
+   * 排序，默认0,可以不传，难易-10从易到难11从难道易，浏览量：20从低到高21从高到底,30推荐数据（按照权重倒序）
+   * 面经默认是按照更新时间
+   */
+  sort: string;
+
+  /**
+   * 0或者不传，查询全部 或者类型id
+   */
+  type: string;
+}

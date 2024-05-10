@@ -1,36 +1,13 @@
 import { HdTag } from '../common/components/HdTag'
-import { HdHttp } from '../common/utils/request'
+import { HdHttp } from '../common/utils/Request'
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { IvSkeleton } from '../common/components/IvSkeleton'
 import { trackingService } from '../common/function/TrackingService'
 import { HdRichText } from '../common/components/HdRichText'
 import { opt } from '../common/function/LikeAndFavorite'
+import { ParamsType, QuestionDetail } from '../models/TopicData'
 
-export interface QuestionDetail {
-  id: string
-  stem: string
-  difficulty: number
-  likeCount: number
-  views: number
-  readFlag: 0 | 1
-  answer: string
-  collectFlag: 0 | 1
-  likeFlag: 0 | 1
-  stage: Array<string>
-}
-
-//接收参数的实体
-export interface ParamsType {
-  id: number
-}
-
-// 点赞的数据结构
-export interface iBodyParms {
-  id: string,
-  type: number,
-  optType: string
-}
 
 @Entry
 @Component

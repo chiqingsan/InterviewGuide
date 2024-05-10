@@ -1,37 +1,9 @@
 import { HdTag } from '../../common/components/HdTag'
 import { BasicConstant } from '../../common/constants/BasicConstant'
 import { router } from '@kit.ArkUI'
-import { HdHttp } from '../../common/utils/request'
+import { HdHttp } from '../../common/utils/Request'
+import { ProjectItem, ProjectTag } from '../../models/TopicData'
 
-export interface ProjectTag {
-  tagName: string
-  nameColor?: string
-  borderColor?: string
-}
-
-export interface ProjectItem {
-  id: number
-  name: string
-  icon: ResourceStr
-  describeInfo: string | null
-  tags: ProjectTag[]
-}
-
-export class ProjectItemModel implements ProjectItem {
-  id: number
-  name: string
-  icon: ResourceStr
-  describeInfo: string | null
-  tags: ProjectTag[]
-
-  constructor(model: ProjectItem) {
-    this.id = model.id
-    this.name = model.name
-    this.icon = model.icon
-    this.describeInfo = model.describeInfo
-    this.tags = model.tags
-  }
-}
 
 export const ProjectItemData: ProjectItem[] = [
   {
@@ -62,12 +34,12 @@ export const ProjectItemData: ProjectItem[] = [
 export struct Project {
   @StorageProp("topHeight") topHeight: number = 0
   @State
-  list: ProjectItemModel[] = ProjectItemData
+  list: ProjectItem[] = ProjectItemData
   // 节流阀
   isloading: boolean = false
 
   @Builder
-  ProjectItemBuilder(item: ProjectItemModel) {
+  ProjectItemBuilder(item: ProjectItem) {
     Row({ space: BasicConstant.SPACE_MD }) {
       Image(item.icon)
         .size({ width: 60, height: 80 })
@@ -97,7 +69,7 @@ export struct Project {
     .alignItems(VerticalAlign.Top)
     .onClick(() => {
       router.pushUrl({
-        url: 'pages/ProjectDetailPage',
+        url: BasicConstant.PAGE_ProjectDetailPage,
         params: item
       })
     })
@@ -106,7 +78,7 @@ export struct Project {
   async aboutToAppear(): Promise<void> {
     if (!this.isloading) {
       this.isloading = true
-      const res = await HdHttp.get<ProjectItemModel[]>('question/type', new Object({ type: 'items' }))
+      const res = await HdHttp.get<ProjectItem[]>('question/type', new Object({ type: 'items' }))
 
       console.log("item", JSON.stringify(res))
       this.list = [...ProjectItemData, ...res.data]
@@ -127,7 +99,7 @@ export struct Project {
         })
 
       List() {
-        ForEach(this.list, (item: ProjectItemModel) => {
+        ForEach(this.list, (item: ProjectItem) => {
           ListItem() {
             this.ProjectItemBuilder(item)
           }

@@ -1,4 +1,5 @@
 import { router } from '@kit.ArkUI'
+import { BasicConstant } from '../constants/BasicConstant'
 import { Logger } from '../utils/Logger'
 
 @Component
@@ -38,7 +39,7 @@ export struct HdSearch {
       .justifyContent(FlexAlign.Center)
     }.onClick(() => {
       router.pushUrl({
-        url: "pages/SearchPage",
+        url: BasicConstant.PAGE_SearchPage,
         params: {
           title: this.ph
         }

@@ -1,8 +1,8 @@
-import { window } from '@kit.ArkUI'
-import { windowManager } from '../../common/utils/windowManager'
+import { windowManager } from '../../common/utils/WindowManager'
 import { router } from '@kit.ArkUI'
 import { iLoginDataModel } from '../../models/UserData'
 import { HdClockIn } from '../../common/components/HdClockIn'
+import { BasicConstant } from '../../common/constants/BasicConstant'
 
 
 interface Nav {
@@ -122,7 +122,7 @@ export struct Mine {
               .fillColor($r('app.color.ih_gray_color'))
           }.onClick(() => {
             router.pushUrl({
-              url: 'pages/ProfileEditPage'
+              url: BasicConstant.PAGE_ProfileEditPage
             })
           })
           .width('100%')
@@ -134,7 +134,7 @@ export struct Mine {
         HdClockIn({ clockCount: this.user.clockinNumbers })
           .onClick(() => {
             router.pushUrl({
-              url: "pages/ClockPage"
+              url: BasicConstant.PAGE_ClockedPage
             })
           })
       }
@@ -152,7 +152,7 @@ export struct Mine {
           other: `${(this.user.totalTime / 3600).toFixed(1)} 小时`
         ,
           onClick: () => {
-            router.pushUrl({ url: "pages/StudyTimePage" })
+            router.pushUrl({ url: BasicConstant.PAGE_StudyTimePage })
           }
         })
       }
@@ -163,13 +163,13 @@ export struct Mine {
       Column() {
         this.toolsBuilder({ icon: $r('app.media.ic_mine_notes'), name: '前端常用词' }, () => {
           router.pushUrl({
-            url: "pages/WordPage"
+            url: BasicConstant.PAGE_WordPage
           })
         })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' },
           () => {
             router.pushUrl({
-              url: "pages/AIinterview"
+              url: "pages/AiInterview"
             })
           })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' })

@@ -1,7 +1,6 @@
 import { HdSearch } from '../../common/components/HdSearch'
-import { HdHttp } from '../../common/utils/request'
-import { questionDataStructure, row } from '../../models/TopicData'
-import { TopicData } from '../Home/HomeCategoryComp'
+import { HdHttp } from '../../common/utils/Request'
+import { questionDataStructure, row, TopicData } from '../../models/TopicData'
 import { InterviewListComp } from './InterviewListComp'
 
 // 热门企业实体

@@ -1,18 +1,31 @@
-// TODO 完成常量的封装
-
 export class BasicConstant {
   static readonly SPACE_SM = 4
   static readonly SPACE_MD = 10
   static readonly SPACE_LG = 16
+  // 首页
   static readonly PAGE_INDEX = 'pages/Index'
+  // 项目详情
   static readonly PAGE_ProjectDetailPage = 'pages/ProjectDetailPage'
+  // 面经详情
   static readonly PAGE_InterviewDetailPage = 'pages/InterviewDetailPage'
+  // 试题详情
   static readonly PAGE_QuestionDetailPage = 'pages/QuestionDetailPage'
+  // 登录
   static readonly PAGE_LoginPage = 'pages/LoginPage'
-  static readonly PAGE_ClockedPage = 'pages/ClockedPage'
+  // 签到
+  static readonly PAGE_ClockedPage = 'pages/ClockPage'
+  // 学习统计
   static readonly PAGE_StudyTimePage = 'pages/StudyTimePage'
-  static readonly PAGE_PREVIEW = 'pages/PreviewWebPage'
+  // 编辑资料
   static readonly PAGE_ProfileEditPage = 'pages/ProfileEditPage'
+  // 隐私协议
+  static readonly PAGE_PrivacyPolicy = 'pages/PrivacyPolicy'
+  // 用户协议
+  static readonly PAGE_UserAgreement = 'pages/UserAgreement'
+  // 搜索
+  static readonly PAGE_SearchPage = 'pages/SearchPage'
+  // 单词页
+  static readonly PAGE_WordPage = 'pages/WordPage'
 }
 
 interface IEVENT_MAP {

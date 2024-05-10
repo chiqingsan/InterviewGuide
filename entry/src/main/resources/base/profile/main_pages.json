@@ -11,6 +11,7 @@
     "pages/StudyTimePage",
     "pages/WordPage",
     "pages/ProjectDetailPage",
-    "pages/InterviewDetailComp"
+    "pages/InterviewDetailComp",
+    "pages/AiInterview"
   ]
 }

@@ -1,6 +1,5 @@
 import { BasicConstant } from '../../common/constants/BasicConstant'
 import { HdTag } from '../../common/components/HdTag'
-import router from '@ohos.router'
 
 export interface InterviewItem {
   id: string

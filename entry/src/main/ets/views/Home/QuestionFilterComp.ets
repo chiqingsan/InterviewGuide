@@ -1,4 +1,5 @@
-import { questionStructure } from '../../models/tabs'
+import { questionStructure } from '../../models/HomeTabsData'
+
 
 export interface QuestionType {
   id: number
@@ -6,17 +7,6 @@ export interface QuestionType {
   displayNewestFlag: 0 | 1
 }
 
-export class QuestionTypeModel implements QuestionType {
-  id: number = 0
-  name: string = ''
-  displayNewestFlag: 0 | 1 = 0
-
-  constructor(model: QuestionType) {
-    this.id = model.id
-    this.name = model.name
-    this.displayNewestFlag = model.displayNewestFlag
-  }
-}
 
 @Preview
 @Component
@@ -165,7 +155,7 @@ export struct QuestionFilterComp {
 
       this.TitleBuilder('选择阶段')
       Flex({ wrap: FlexWrap.Wrap }) {
-        ForEach(this.questionTypeList, (item: QuestionTypeModel, index: number) => {
+        ForEach(this.questionTypeList, (item: QuestionType, index: number) => {
           FilterButton({ text: item.name, isNew: item.displayNewestFlag === 1, isActive: this.params.index === index })
             .onClick(() => this.params.index = index)
         })

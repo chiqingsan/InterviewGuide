@@ -3,6 +3,7 @@ import { http } from '@kit.NetworkKit'
 import { iResponseModel, iLoginDataModel } from '../../models/UserData'
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from './Logger'
+import { BasicConstant } from '../constants/BasicConstant'
 
 const baseUrl: string = "https://api-harmony-teach.itheima.net/hm/"
 
@@ -35,7 +36,7 @@ export class HdHttp {
       // 如果业务码为401, 则提示登录过期, 跳转回登录页
       if (resData.code === 401) {
         promptAction.showToast({ message: '登录超时，请重新登录' })
-        router.pushUrl({ url: 'pages/LoginPage' })
+        router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
       }
 
       return resData
@@ -85,7 +86,7 @@ export class HdHttp {
       // 如果业务码为401, 则提示登录过期, 跳转回登录页
       if (resData.code === 401) {
         promptAction.showToast({ message: '登录超时，请重新登录' })
-        router.pushUrl({ url: 'pages/LoginPage' })
+        router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
       }
 
       return resData

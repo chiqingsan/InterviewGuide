@@ -2,7 +2,8 @@ import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from '../common/utils/Logger'
 import { http } from '@kit.NetworkKit'
 import { iLoginDataModel, iResponseModel, userInfo } from '../models/UserData'
-import { HdHttp } from '../common/utils/request'
+import { HdHttp } from '../common/utils/Request'
+import { BasicConstant } from '../common/constants/BasicConstant'
 
 
 @Entry
@@ -51,22 +52,8 @@ struct LoginPage {
           username: this.userAccount,
           password: this.userPassword
         } as userInfo)
-        //
-        // http.createHttp().request(
-        //   "https://api-harmony-teach.itheima.net/hm/login",
-        //   {
-        //     header: { contentType: "application/json" },
-        //     method: http.RequestMethod.POST,
-        //     extraData: {
-        //       username: this.userAccount,
-        //       password: this.userPassword
-        //     },
-        //     expectDataType: http.HttpDataType.OBJECT
-        //   }
-        // )
-        // .then((res) => {
+
         Logger.info(JSON.stringify(resData.data))
-        // const resData = res.result as iResponseModel<iLoginDataModel>
 
         // 判断业务码是否为10000
         if (resData.code === 10000) {
@@ -74,7 +61,7 @@ struct LoginPage {
 
           // 跳转到主页
           router.replaceUrl({
-            url: "pages/Index"
+            url: BasicConstant.PAGE_INDEX
           })
           promptAction.showToast({
             message: "登录成功"
@@ -166,17 +153,13 @@ struct LoginPage {
           Span(" 用户协议 ")
             .fontColor("#616161")
             .onClick(() => {
-              router.pushUrl({
-                url: "pages/UserAgreement"
-              })
+              router.pushUrl({ url: BasicConstant.PAGE_UserAgreement })
             })
           Span("和")
           Span(" 隐私政策 ")
             .fontColor("#616161")
             .onClick(() => {
-              router.pushUrl({
-                url: "pages/PrivacyPolicy"
-              })
+              router.pushUrl({ url: BasicConstant.PAGE_PrivacyPolicy })
             })
         }
         .mytextsytle(14, 400, "#ffb6b6b6")
@@ -232,7 +215,5 @@ function myinput() {
     radius: 0
   })
   .placeholderColor("#ccc")
-  .placeholderFont({
-    size: 14
-  })
+  .placeholderFont({ size: 14 })
 }
