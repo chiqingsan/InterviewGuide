@@ -133,12 +133,7 @@ export struct Mine {
         .layoutWeight(1)
         .alignItems(HorizontalAlign.Start)
 
-        HdClockIn({ clockCount: this.user.clockinNumbers })
-          .onClick(() => {
-            router.pushUrl({
-              url: BasicConstant.PAGE_ClockedPage
-            })
-          })
+        HdClockIn()
       }
       .width('100%')
       .height(100)

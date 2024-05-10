@@ -1,28 +1,7 @@
 import { iLoginDataModel } from '../../models/UserData'
-import { http } from '@kit.NetworkKit'
 import { HdHttp } from '../utils/Request';
-
-export interface returnToTheModel {
-  /**
-   * 请求成功10000标志
-   */
-  code: number;
-
-  /**
-   * 返回数据
-   */
-  data: userClockData;
-
-  /**
-   * 请求成功
-   */
-  message: string;
-
-  /**
-   * 请求成功标志
-   */
-  success: boolean;
-}
+import { router } from '@kit.ArkUI';
+import { BasicConstant } from '../constants/BasicConstant';
 
 /**
  * 返回数据
@@ -79,6 +58,9 @@ export struct HdClockIn {
           }
         }
         .width('50')
+        .onClick(() => {
+          router.pushUrl({ url: BasicConstant.PAGE_ClockedPage })
+        })
       } else {
         Text('打卡')
           .width('50')
@@ -87,6 +69,12 @@ export struct HdClockIn {
           .fontWeight(500)
           .fontColor('#333C4F')
           .margin({ bottom: (4) })
+          .onClick(async () => {
+            const resData = await HdHttp.post<object>("clockin", new Object({}))
+            this.user.clockinNumbers = resData.data['clockinNumbers']
+            // 更新连续打卡的天数
+            AppStorage.set("user", this.user)
+          })
       }
     }
     .width(74)

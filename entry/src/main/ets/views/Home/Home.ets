@@ -1,6 +1,5 @@
 import { HdClockIn } from '../../common/components/HdClockIn'
 import { HdSearch } from '../../common/components/HdSearch'
-import { router } from '@kit.ArkUI'
 import { HomeCategoryComp } from './HomeCategoryComp'
 import { BasicConstant } from '../../common/constants/BasicConstant'
 
@@ -18,9 +17,7 @@ export struct Home {
 
         // 打卡组件
         HdClockIn()
-          .onClick(() => {
-            router.pushUrl({ url: BasicConstant.PAGE_ClockedPage })
-          })
+
       }
       .height(52)
       .justifyContent(FlexAlign.Center)
