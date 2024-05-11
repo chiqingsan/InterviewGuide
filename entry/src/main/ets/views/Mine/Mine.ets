@@ -26,6 +26,7 @@ interface Tool {
 export struct Mine {
   @State clockCount: number = 0
   @StorageLink("user") user: iLoginDataModel = {} as iLoginDataModel
+  @State isShow: boolean = false
 
   // 进入我的页面后, 把状态栏字体颜色设置为白色
   aboutToAppear(): void {
@@ -99,6 +100,44 @@ export struct Mine {
     })
   }
 
+  @Builder
+  shareModalities() {
+    Column() {
+      Text("推荐分享")
+        .width("100%")
+        .height(70)
+        .fontWeight(600)
+        .fontSize(18)
+        .fontColor("#121826")
+        .textAlign(TextAlign.Center)
+      Row({ space: 35 }) {
+        Column() {
+          Image($r("app.media.QQ"))
+            .width(50)
+          Text("QQ")
+        }.height(75).justifyContent(FlexAlign.SpaceBetween)
+
+        Column() {
+          Image($r("app.media.weixinjierumoban"))
+            .width(50)
+          Text("微信")
+        }.height(75).justifyContent(FlexAlign.SpaceBetween)
+
+        Column() {
+          Image($r("app.media.weibo"))
+            .width(50)
+          Text("微博")
+        }.height(75).justifyContent(FlexAlign.SpaceBetween)
+
+        Column() {
+          Image($r("app.media.baidutieba"))
+            .width(43)
+          Text("贴吧")
+        }.height(75).justifyContent(FlexAlign.SpaceBetween)
+      }.height(100).margin({ top: 15, bottom: 40 })
+    }
+  }
+
   build() {
     Column({ space: 16 }) {
       Row({ space: 12 }) {
@@ -160,6 +199,7 @@ export struct Mine {
       .padding(16)
       .borderRadius(8)
 
+
       Column() {
         this.toolsBuilder({ icon: $r('app.media.ic_mine_notes'), name: '前端常用词' }, () => {
           router.pushUrl({
@@ -172,7 +212,9 @@ export struct Mine {
               url: "pages/AiInterview"
             })
           })
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' })
+        this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' }, () => {
+          this.isShow = true
+        })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈' }, () => {
           router.pushUrl({ url: BasicConstant.PAGE_Feedback })
         })
@@ -202,6 +244,9 @@ export struct Mine {
       .borderRadius(8)
 
     }
+    .bindSheet($$this.isShow, this.shareModalities, {
+      height: SheetSize.FIT_CONTENT
+    })
     .padding($r('app.float.common_gutter'))
     .backgroundColor($r('app.color.common_gray_bg'))
     .linearGradient({
