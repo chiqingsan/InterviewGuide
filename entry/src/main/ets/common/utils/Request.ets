@@ -1,13 +1,11 @@
-// 项目请求的基地址
 import { http } from '@kit.NetworkKit'
-import { iResponseModel, iLoginDataModel, refreshTheToken } from '../../models/UserData'
+import { iResponseModel, iLoginDataModel } from '../../models/UserData'
 import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from './Logger'
 import { BasicConstant } from '../constants/BasicConstant'
-import { preferences } from '@kit.ArkData'
 import { PreferencesManager } from './Preference'
-import { RefreshTheToken } from '../function/RefreshTheToken'
 
+// 项目请求的基地址
 const baseUrl: string = "https://api-harmony-teach.itheima.net/hm/"
 
 export class HdHttp {
@@ -39,14 +37,21 @@ export class HdHttp {
       // 如果业务码为401, 则提示登录过期, 跳转回登录页
       if (resData.code === 401) {
 
-        const userDataStr = await PreferencesManager.getData<string>("store", "USERDATA", "")
-        if (userDataStr) {
-          RefreshTheToken(userDataStr)
-        } else {
-          promptAction.showToast({ message: '登录超时，请重新登录' })
-          router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
+        // const userDataStr = await PreferencesManager.getData<string>("store", "USERDATA", "")
+        // if (userDataStr) {
+        //   RefreshTheToken(userDataStr)
+        // } else {
+        //   promptAction.showToast({ message: '登录超时，请重新登录' })
+        //   router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
+        //
+        // }
 
-        }
+        // 删除磁盘中的用户数据
+        PreferencesManager.delAllData("store", "USERDATA")
+        // 清楚内存中的用户数据
+        AppStorage.set("user", {} as iLoginDataModel)
+        promptAction.showToast({ message: '登录超时，请重新登录' })
+        router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
 
       }
 
@@ -96,15 +101,23 @@ export class HdHttp {
       Logger.info("resDate_Post:", JSON.stringify(resData))
       // 如果业务码为401, 则提示登录过期, 跳转回登录页
       if (resData.code === 401) {
-        
-        const userDataStr = await PreferencesManager.getData<string>("store", "USERDATA", "")
-        if (userDataStr) {
-          RefreshTheToken(userDataStr)
-        } else {
-          promptAction.showToast({ message: '登录超时，请重新登录' })
-          router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
 
-        }
+        // const userDataStr = await PreferencesManager.getData<string>("store", "USERDATA", "")
+        // if (userDataStr) {
+        //   RefreshTheToken(userDataStr)
+        // } else {
+        //   promptAction.showToast({ message: '登录超时，请重新登录' })
+        //   router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
+        //
+        // }
+
+        // 删除磁盘中的用户数据
+        PreferencesManager.delAllData("store", "USERDATA")
+        // 清楚内存中的用户数据
+        AppStorage.set("user", {} as iLoginDataModel)
+        promptAction.showToast({ message: '登录超时，请重新登录' })
+        router.pushUrl({ url: BasicConstant.PAGE_LoginPage })
+
       }
 
       return resData

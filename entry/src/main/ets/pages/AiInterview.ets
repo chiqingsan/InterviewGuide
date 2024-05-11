@@ -83,7 +83,7 @@ struct AiInterview {
           Stack() {
             Column() {
 
-              List({ space: 15, scroller: this.ScrollController }) {
+              List({ space: 18, scroller: this.ScrollController }) {
                 ForEach(
                   this.aListOfConversations,
                   (item: conversationStructure) => {
@@ -136,7 +136,7 @@ struct AiInterview {
           .alignContent(Alignment.Bottom)
         } else {
           Column() {
-            Text("正在准备面试环境，请稍等…").margin({ top: 160 })
+            Text("正在准备面试环境，请稍等…").margin({ top: 160 }).fontColor($r("app.color.common_gray_01"))
           }.layoutWeight(1)
         }
       }
