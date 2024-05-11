@@ -1,7 +1,7 @@
 import { QuestionItemComp } from '../common/components/QuestionItemComp';
 import { TopBar } from '../common/components/TopBar';
 import { PreferencesManager } from '../common/utils/Preference';
-import { collectionStructure,  row } from '../models/TopicData';
+import { collectionStructure, row } from '../models/TopicData';
 import { router } from '@kit.ArkUI';
 import { BasicConstant } from '../common/constants/BasicConstant';
 
@@ -60,7 +60,12 @@ struct BrowsingHistory {
       })
       .onClick((e) => {
         this.setLineLeft(e.target.area)
-        this.tabsIndex = tab.value
+        animateTo({
+          duration: 300,
+          curve: Curve.Ease
+        }, () => {
+          this.tabsIndex = tab.value
+        })
       })
       .onAreaChange((_o, n) => tab.onAreaChange && tab.onAreaChange(n))
   }
@@ -101,27 +106,40 @@ struct BrowsingHistory {
       }
 
 
-      List() {
-        ForEach(
-          this.listOfQuestions,
-          (item: row) => {
-            ListItem() {
-              QuestionItemComp({ item: item })
-                .onClick(() => {
-                  router.pushUrl({
-                    url: this.tabsIndex ? BasicConstant.PAGE_InterviewDetailPage : BasicConstant.PAGE_QuestionDetailPage,
-                    params: {
-                      id: item.id
-                    }
+      if (this.listOfQuestions.length) {
+        List() {
+          ForEach(
+            this.listOfQuestions,
+            (item: row) => {
+              ListItem() {
+                QuestionItemComp({ item: item })
+                  .onClick(() => {
+                    router.pushUrl({
+                      url: this.tabsIndex ? BasicConstant.PAGE_InterviewDetailPage : BasicConstant.PAGE_QuestionDetailPage,
+                      params: {
+                        id: item.id
+                      }
+                    })
                   })
-                })
+              }
             }
-          }
-        )
+          )
+        }
+        .layoutWeight(1)
+        .padding({ left: 20, right: 20, bottom: 10 })
+        .scrollBar(BarState.Off)
+      } else {
+        Column() {
+          Image($r("app.media.Frame"))
+            .width(64)
+            .aspectRatio(1)
+          Text("暂无题目浏览记录")
+            .fontColor("#C3C3C5")
+            .fontSize(12)
+            .margin({ top: 5 })
+        }.margin({ top: 80 })
+
       }
-      .layoutWeight(1)
-      .padding({ left: 20, right: 20, bottom: 10 })
-      .scrollBar(BarState.Off)
 
     }.padding({ top: this.topHeight })
   }
