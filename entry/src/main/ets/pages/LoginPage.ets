@@ -101,9 +101,9 @@ struct LoginPage {
     Logger.info("登录页面的用户数据:", userData)
     if (userData) {
 
-      router.replaceUrl({
-        url: BasicConstant.PAGE_INDEX
-      })
+      // router.replaceUrl({
+      //   url: BasicConstant.PAGE_INDEX
+      // })
 
       // 如果保存过token,则直接跳转到首页, 并且更新用户的头像和昵称数据
       const userDate = JSON.parse(userData) as iLoginDataModel
