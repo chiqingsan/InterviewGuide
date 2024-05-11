@@ -94,6 +94,7 @@ struct ProfileEditPage {
     })
 
     res.on("progress", async (val, size) => {
+      
       Logger.info("头像上传进度:", `${val / size * 100}%`)
       emitter.emit({ eventId: 133 }, { data: { process: `上传进度: ${(val / size * 100).toFixed(0)}%` } })
       if (val === size) {
