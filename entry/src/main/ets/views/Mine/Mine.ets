@@ -221,7 +221,9 @@ export struct Mine {
         this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' }, () => {
           router.pushUrl({ url: BasicConstant.PAGE_AboutUs })
         })
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_setting'), name: '设置' })
+        this.toolsBuilder({ icon: $r('app.media.ic_mine_setting'), name: '设置' }, () => {
+          router.pushUrl({ url: BasicConstant.PAGE_SetUp })
+        })
       }
       .backgroundColor(Color.White)
       .borderRadius(8)

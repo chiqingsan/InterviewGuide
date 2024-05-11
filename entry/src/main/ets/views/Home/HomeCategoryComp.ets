@@ -36,16 +36,22 @@ export struct HomeCategoryComp {
   async aboutToAppear(): Promise<void> {
 
     this.dialog.open() //打开对话框
-    // 在页面开始加载的时候, 请求题目tabs栏的数据
-    const res = await HdHttp.get<questionStructure[]>("question/type")
-    this.tabsTitleList = res.data
-    AppStorage.setOrCreate("categoryTitle", this.tabsTitleList.map(val => val.name))
-    this.tabsTitleList.unshift({
-      id: 0,
-      name: "全部",
-      displayNewestFlag: 0
-    } as questionStructure)
-    this.dialog.close() //打开对话框
+
+    try {
+      // 在页面开始加载的时候, 请求题目tabs栏的数据
+      const res = await HdHttp.get<questionStructure[]>("question/type")
+      this.tabsTitleList = res.data as questionStructure[]
+      // 提供给搜索框轮播关键词
+      AppStorage.setOrCreate("categoryTitle", this.tabsTitleList.map(val => val.name))
+      this.tabsTitleList.unshift({
+        id: 0,
+        name: "全部",
+        displayNewestFlag: 0
+      } as questionStructure)
+    } catch (e) {
+      Logger.error("首页tabs列表:", "网络请求出错")
+    }
+    this.dialog.close() //关闭加载组件
     // 开屏请求一次列表数据
     this.loadQuestion()
   }

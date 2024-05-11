@@ -58,9 +58,6 @@ export struct HdClockIn {
           }
         }
         .width('50')
-        .onClick(() => {
-          router.pushUrl({ url: BasicConstant.PAGE_ClockedPage })
-        })
       } else {
         Text('打卡')
           .width('50')
@@ -69,15 +66,19 @@ export struct HdClockIn {
           .fontWeight(500)
           .fontColor('#333C4F')
           .margin({ bottom: (4) })
-          .onClick(async () => {
-            const resData = await HdHttp.post<object>("clockin", new Object({}))
-            this.user.clockinNumbers = resData.data['clockinNumbers']
-            // 更新连续打卡的天数
-            AppStorage.set("user", this.user)
-          })
       }
     }
     .width(74)
     .height(28)
+    .onClick(async () => {
+      if (this.clockCount > 0) {
+        router.pushUrl({ url: BasicConstant.PAGE_ClockedPage })
+      } else {
+        const resData = await HdHttp.post<object>("clockin", new Object({}))
+        this.user.clockinNumbers = resData.data['clockinNumbers']
+        // 更新连续打卡的天数
+        AppStorage.set("user", this.user)
+      }
+    })
   }
 }

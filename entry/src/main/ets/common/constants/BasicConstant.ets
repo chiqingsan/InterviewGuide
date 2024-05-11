@@ -32,6 +32,8 @@ export class BasicConstant {
   static readonly PAGE_AboutUs = 'pages/AboutUs'
   // 收藏页面
   static readonly PAGE_BrowsingHistory = 'pages/BrowsingHistory'
+  // 设置页面
+  static readonly PAGE_SetUp = 'pages/SetUp'
 
 }
 
