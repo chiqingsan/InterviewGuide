@@ -33,7 +33,6 @@ struct BrowsingHistory {
   }
 
   async loadTheList() {
-    console.log("进来了")
     const resStr = await PreferencesManager.getData("store", this.tabsIndex ? "EXPERIENCE" : "QUESTIONS", "")
     if (resStr) {
       this.listOfQuestions = JSON.parse(resStr) as collectionStructure[]

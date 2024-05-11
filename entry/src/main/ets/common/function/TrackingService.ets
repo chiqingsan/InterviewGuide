@@ -1,4 +1,5 @@
 import { Logger } from '../utils/Logger';
+import { PreferencesManager } from '../utils/Preference';
 import { HdHttp } from '../utils/Request';
 
 export interface iTimeItem {
@@ -68,8 +69,14 @@ class TrackingService {
   }
 
   //  2. 收集用户离开页面的时间
-  setEndTime() {
+  async setEndTime() {
     this.timelist.endTime = Date.now()
+    const myTimeListStr = await PreferencesManager.getData("store", "buriedPoint", "")
+
+    const myTimeList = myTimeListStr ? JSON.parse(myTimeListStr) as iTimeItem[] : []
+    myTimeList.push(this.timelist)
+    PreferencesManager.savaData("store", "buriedPoint", JSON.stringify(myTimeList))
+
   }
 
   // 3. 设置用户阅读的题目id
@@ -79,9 +86,13 @@ class TrackingService {
 
   // 4. 把收集好的数据请求服务器接口提交时长数据
   async save() {
-    Logger.info("timelist", JSON.stringify(this.timelist))
-    await HdHttp.post<string>('time/tracking', { timeList: [this.timelist] } as learningDurationStructure)
-    Logger.info("阅读时长埋点结束, 学习时长已收集上传", Date.now().toString())
+    const myTimeListStr = await PreferencesManager.getData("store", "buriedPoint", "")
+    const myTimeList = myTimeListStr ? JSON.parse(myTimeListStr) as iTimeItem[] : []
+    if (myTimeList.length > 5) {
+      await HdHttp.post<string>('time/tracking', { timeList: myTimeList } as learningDurationStructure)
+      PreferencesManager.delAllData("store", "buriedPoint")
+      Logger.info("阅读时长埋点结束, 学习时长已收集上传", JSON.stringify(myTimeList))
+    }
   }
 }
 

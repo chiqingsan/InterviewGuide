@@ -27,6 +27,4 @@ export async function RecordKeeping<T extends collectionStructure>(res: iRespons
     myQuestionsObj.unshift(myQuestionsObj.splice(findIndex, 1)[0])
     PreferencesManager.savaData("store", name, JSON.stringify(myQuestionsObj))
   }
-  const test = await PreferencesManager.getData("store", name, "")
-  Logger.info("收藏的题目数据", test)
 }

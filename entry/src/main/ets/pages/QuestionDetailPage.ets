@@ -6,7 +6,7 @@ import { IvSkeleton } from '../common/components/IvSkeleton'
 import { trackingService } from '../common/function/TrackingService'
 import { HdRichText } from '../common/components/HdRichText'
 import { opt } from '../common/function/LikeAndFavorite'
-import {  ParamsType, QuestionDetail } from '../models/TopicData'
+import { ParamsType, QuestionDetail } from '../models/TopicData'
 import { BasicConstant } from '../common/constants/BasicConstant'
 import { RecordKeeping } from '../common/function/RecordKeeping'
 
@@ -23,7 +23,7 @@ export struct QuestionDetailPage {
 
   aboutToAppear(): void {
     trackingService.setStartTime()
-
+    trackingService.setQuestionId(this.questionId.toString())
     try {
       this.questionId = (router.getParams() as ParamsType).id
       // this.getQuestions()
@@ -33,8 +33,7 @@ export struct QuestionDetailPage {
   }
 
   async aboutToDisappear(): Promise<void> {
-    trackingService.setEndTime()
-    trackingService.setQuestionId(this.questionId.toString())
+    await trackingService.setEndTime()
     trackingService.save()
   }
 
@@ -44,7 +43,7 @@ export struct QuestionDetailPage {
     this.question = res.data
 
     // 使用数据持久化来保存浏览过的题目,用来提供给浏览记录页面显示
-    RecordKeeping<QuestionDetail>(res,"QUESTIONS")
+    RecordKeeping<QuestionDetail>(res, "QUESTIONS")
 
     // 关闭节流阀, 表示数据请求完成
     this.isloading = false
