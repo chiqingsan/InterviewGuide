@@ -1,8 +1,7 @@
-import { HdTag } from '../common/components/HdTag';
 import { QuestionItemComp } from '../common/components/QuestionItemComp';
 import { TopBar } from '../common/components/TopBar';
 import { PreferencesManager } from '../common/utils/Preference';
-import { collectionStructure, InterviewItem, row } from '../models/TopicData';
+import { collectionStructure,  row } from '../models/TopicData';
 import { router } from '@kit.ArkUI';
 import { BasicConstant } from '../common/constants/BasicConstant';
 

@@ -141,7 +141,7 @@ export struct Mine {
       GridRow({ columns: 4 }) {
         this.navBuilder({
           icon: $r('app.media.ic_mine_history'), name: '历史记录', onClick: () => {
-            router.pushUrl({ url: "pages/BrowsingHistory" })
+            router.pushUrl({ url: BasicConstant.PAGE_BrowsingHistory })
           }
         })
         this.navBuilder({ icon: $r('app.media.ic_mine_collect'), name: '我的收藏' })
@@ -176,7 +176,9 @@ export struct Mine {
         this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈' }, () => {
           router.pushUrl({ url: BasicConstant.PAGE_Feedback })
         })
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' })
+        this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' }, () => {
+          router.pushUrl({ url: BasicConstant.PAGE_AboutUs })
+        })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_setting'), name: '设置' })
       }
       .backgroundColor(Color.White)

@@ -28,6 +28,11 @@ export class BasicConstant {
   static readonly PAGE_WordPage = 'pages/WordPage'
   // 问题反馈页面
   static readonly PAGE_Feedback = 'pages/Feedback'
+  // 关于我们
+  static readonly PAGE_AboutUs = 'pages/AboutUs'
+  // 收藏页面
+  static readonly PAGE_BrowsingHistory = 'pages/BrowsingHistory'
+
 }
 
 interface IEVENT_MAP {
