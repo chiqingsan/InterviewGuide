@@ -94,7 +94,7 @@ Interview Guide:
 
 
 
-![image-20240512195747094](C:\Users\chiqingsan\AppData\Roaming\Typora\typora-user-images\image-20240512195747094.png)
+<img src="./logo_image/Interview.gif" alt="Logo" width="280">
 
 
 
