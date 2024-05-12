@@ -94,7 +94,7 @@ Interview Guide:
 
 <br>
 <p align="center">
-    <img src="./logo_image/Interview.gif" alt="Logo" width="280">
+    <img src="./logo_image/Interview.gif" alt="Interview" width="280">
 </p>
 <br>
 
