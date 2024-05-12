@@ -98,12 +98,6 @@ Interview Guide:
 
 
 
-
-
-<img src=".\logo_image\Interview.gif" alt="Interview" width="280"/>
-
-
-
 ### 开发的底层框架
 
 - 单Ability开发：结合应用使用场景，选择使用单UIAbility进行项目开发
