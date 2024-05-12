@@ -93,7 +93,9 @@ Interview Guide:
 ```
 
 <br>
-<img align="center" src="./logo_image/Interview.gif" alt="Logo" width="280">
+<p align="center">
+    <img src="./logo_image/Interview.gif" alt="Logo" width="280">
+</p>
 <br>
 
 
