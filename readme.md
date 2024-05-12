@@ -19,7 +19,7 @@
   <p align="center">
     点击下方链接，开始探索本项目！
     <br />
-    <a href="https://gitee.com/chiqingsan/my-harmony-project"><strong>探索本项目的文档 »</strong></a>
+    <a href="https://gitee.com/chiqingsan/interview-guide"><strong>探索本项目的文档 »</strong></a>
     <br />
     <br />
     <a href="https://gitee.com/chiqingsan/my-harmony-project">查看Demo</a>
