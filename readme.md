@@ -92,10 +92,9 @@ Interview Guide:
 
 ```
 
-
-
-<img src="./logo_image/Interview.gif" alt="Logo" width="280">
-
+<br>
+<img align="center" src="./logo_image/Interview.gif" alt="Logo" width="280">
+<br>
 
 
 ### 开发的底层框架
