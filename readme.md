@@ -73,8 +73,7 @@ Interview Guide:
 │      │  │  ├─common  // 公共组件
 │      │  │  ├─entryability  // Ability配置信息
 │      │  │  ├─pages  // 主要页面
-│      │  │  ├─views // 自定义组件
-│      │  │	 └─models // 数据模型
+│      │  │  └─views // 自定义组件
 │      │  └─resources // 资源目录
 │      │      ├─base
 │      │      │  ├─element  // 通用语言配置
