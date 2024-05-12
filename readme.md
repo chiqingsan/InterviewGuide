@@ -22,9 +22,9 @@
     <a href="https://gitee.com/chiqingsan/interview-guide"><strong>探索本项目的文档 »</strong></a>
     <br />
     <br />
-    <a href="https://gitee.com/chiqingsan/my-harmony-project">查看Demo</a>
+    <a href="https://gitee.com/chiqingsan/interview-guide">查看Demo</a>
     ·
-    <a href="https://gitee.com/chiqingsan/my-harmony-project/issues">报告Bug</a>
+    <a href="https://gitee.com/chiqingsan/interview-guide/issues">报告Bug</a>
     ·
     <a href="./entry/src/main/ets">进入Pages</a>
   </p>
