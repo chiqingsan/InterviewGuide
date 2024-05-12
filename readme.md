@@ -1,6 +1,6 @@
 # Interview Guide 面试宝典
 
-使用鸿蒙Ark框架开发的轻量级面试APP, 满足不同前端程序员的需求。
+使用鸿蒙Ark框的Stage模型开发的轻量级面试APP，提供常见的面试题以及各大公司的面试经验，满足不同前端程序员的需求。
 
 
 
@@ -11,12 +11,11 @@
 
 <p align="center">
   <a href="https://gitee.com/chiqingsan/my-harmony-project">
-    <img src="https://gitee.com/chiqingsan/interview-guide/raw/master/logo_image/logo.png" alt="Logo" width="80" height="80">
+    <img src="./logo_image/logo.png" alt="Logo" width="80" height="80">
   </a>
-
-<h2 align="center">Interview Guide</h3>
+<h2 align="center">Interview Guide</h2>
   <p align="center">
-    点击下方链接, 开始探索本项目！
+    点击下方链接，开始探索本项目！
     <br />
     <a href="https://gitee.com/chiqingsan/my-harmony-project"><strong>探索本项目的文档 »</strong></a>
     <br />
@@ -25,7 +24,7 @@
     ·
     <a href="https://gitee.com/chiqingsan/my-harmony-project/issues">报告Bug</a>
     ·
-    <a href="./entry/src/main/ets/pages">进入Pages</a>
+    <a href="./entry/src/main/ets">进入Pages</a>
   </p>
 
 </p>
@@ -37,9 +36,11 @@
 
 - [上手指南](#上手指南)
     - [开发前的配置要求](#开发前的配置要求)
-    - [安装步骤](#安装步骤)
 - [文件目录说明](#文件目录说明)
-- [开发的架构](#开发的架构)
+- [开发的底层框架](#开发的底层框架)
+- [业务的核心功能][#业务的核心功能]
+- [使用技术][#使用技术]
+- [项目亮点][#项目亮点]
 - [部署](#部署)
 - [使用到的框架](#使用到的框架)
 - [贡献者](#贡献者)
@@ -51,13 +52,13 @@
 ###### 开发前的配置要求
 
 1. Dev Eco Studio
-2. SDK10 以上
+2. SDK11 以上
 3. Nodejs 18.14.1
 
 ### 文件目录说明
 
 ```
-Interview Guide:.
+Interview Guide:
 ├─.hvigor
 ├─.idea
 ├─AppScope  // 应用配置信息
@@ -89,19 +90,79 @@ Interview Guide:.
 
 ```
 
-### 开发的架构
 
-请阅读[Readme.md](https://gitee.com/chiqingsan/interview-guide/blob/master/readme.md) 查阅为该项目的架构。
+
+![image-20240512195747094](C:\Users\chiqingsan\AppData\Roaming\Typora\typora-user-images\image-20240512195747094.png)
+
+
+
+
+
+<img src=".\logo_image\Interview.gif" alt="Interview" style="zoom:50%;" />
+
+
+
+### 开发的底层框架
+
+- **单Ability开发：结合应用使用场景，选择使用单UIAbility进行项目开发**
+- **resource分类管理：对本地资源实现分类管理，提高后续可维护性**
+- **组件和功能模块化封装：对自定义组件以及功能进行模块化封装，提高代码的复用性和可维护性，加快开发效率**
+- **应用权限申请配置：对应用使用到的权限进行配置申请**
+
+
+
+### 业务的核心功能
+
+- **登录：判断之前是否持久化保存过token，有则无需登录直接跳转首页**
+- **首页：题库分类，面试题长列表、点赞、收藏、反馈、富文本展示、面试题详情切换、面试题搜索**
+- **项目：企业级项目场景面试题展示、业务类问答、技术类问答**
+- **面经：大厂面试经验、文章阅读、试题阅读数据埋点**
+- **我的：打卡、打卡记录、学习时间统计、数据可视化、头像上传、编辑昵称、退出登录**
+- **历史记录：试题阅读记录、面经阅读记录**
+- **单词语音朗读：播放单词朗读音频，半模态展示用法，高亮其中的关键词**
+- **AI面试：调用后端接口，完成AI面试对话功能**
+
+
+
+### 使用技术
+
+- **基于 `API11` 使用 `ArtTS` 与 `ArtUI` 实现页面构建和状态管理**
+- **基于 `http` 封装请求工具类，实现接口响应数据泛型支持和参数处理与响应拦截**
+- **基于`hilog` 封装自定义日志类，自定义日志打印的类型，打印的内存位置，打印的标识**
+- **基于 `window` 完成安全区域类的封装，完成页面的沉浸式显示**
+- **基于 `preferences` 封装持久化储存类，用于储存用户的基本信息，搜索记录和浏览记录**
+- **基于 `AppStorage` 实现用户信息缓存和访问权限控制**
+- **基于组件间传参+@watch完成页面刷新的逻辑处理**
+- **基于鸿蒙系统组件，抽象封装通用组件 `HdSearch.ets、CustomDialog、IvSkeleton、HdClockIn、HdRichText... `等**
+- **基于 `UIAbility` 和 `Page` 生命周期实现阅读实现埋点**
+- **基于 `RichText` 组件，完成页面的富文本显示，以及解决兼容问题**
+- **基于 `AVPlay` 模块完成音频文件的播放**
+- **基于 `fs` 读取和复制到应用沙箱环境实现文件上传，且完成数据回显功能**
+- **基于 `Web` 组件实现 webview 能力，实现用户协议和隐私协议功能**
+- **基于 `Web` 组件的runJavaScript方法，调用第三方函数，完成代码用法的关键词高亮展示**
+- **基于 `router` 都页面栈进行控制，完成页面栈维护和清理**
+- **基于 `emitter` 实现 `UIAbility` 进程内通信实现上传进度实时更新**
+- **基于显示动画，实现页面元素转场动画的自定义动画效果**
+- **使用自定义封装的骨架屏组件，完成页面加载中骨架屏的显示**
+- **使用鸿蒙第三方组件 `@ohmos/calendar` 完成打卡页面的日历展示**
+- **封装页面使用的常量，提高项目的可维护性，提高项目的可迭代能力**
+
+**整个项目涉及到鸿蒙原生能力应用，文件管理、网络管理、WebView、窗口管理完成项目需求**
+
+
+
+### 项目亮点
+
+- **通用类的封装，提高代码复用性，例如：封装了统一日志类、沉浸式模式类、请求处理类，数据持久化类等**
+- **通用组件(搜素组件、打卡组件、Loading组件，难易程度组件)、业务组件抽取（题目分类组件、题目列表组件、单个题目显示内容组件），方便业务的复用**
+- **鸿蒙原生应用与网页方法交互显示高亮代码**
+- **使用AVPlayer完成在线和本地音频的播放**
+
+
 
 ### 部署
 
 暂无
-
-### 使用到的框架
-
-- [鸿蒙Ark框架](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V2/1_1_u5feb_u901f_u5165_u95e8-0000001478340845-V2)
-- [TypeScript](https://www.tslang.cn/)
-- [JavaScript](https://developer.mozilla.org/zh-CN/docs/learn/JavaScript)
 
 ### 贡献者
 
