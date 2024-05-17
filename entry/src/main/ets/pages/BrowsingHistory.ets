@@ -25,7 +25,7 @@ struct BrowsingHistory {
   setLineLeft(area: Area) {
     const width = area.width as number
     const x = area.position.x as number
-    this.left = x + (width - 16) / 2
+    this.left = x + (width - 16) / 2 + 5
   }
 
   aboutToAppear(): void {
