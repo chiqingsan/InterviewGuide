@@ -22,7 +22,7 @@
     <a href="https://gitee.com/chiqingsan/interview-guide"><strong>探索本项目的文档 »</strong></a>
     <br />
     <br />
-    <a href="https://gitee.com/chiqingsan/interview-guide">查看Demo</a>
+    <a href="https://gitee.com/chiqingsan/interview-guide/releases/tag/v0.1.0">查看Demo</a>
     ·
     <a href="https://gitee.com/chiqingsan/interview-guide/issues">报告Bug</a>
     ·
