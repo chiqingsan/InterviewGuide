@@ -4,6 +4,7 @@ import { promptAction, router } from '@kit.ArkUI'
 import { Logger } from './Logger'
 import { BasicConstant } from '../constants/BasicConstant'
 import { PreferencesManager } from './Preference'
+import { RefreshTheToken } from '../function/RefreshTheToken'
 
 // 项目请求的基地址
 const baseUrl: string = "https://api-harmony-teach.itheima.net/hm/"

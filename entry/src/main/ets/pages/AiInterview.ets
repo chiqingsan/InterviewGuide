@@ -24,6 +24,10 @@ struct AiInterview {
 
   async sendAMessage() {
 
+    if (this.userInput.trim() === "") {
+      return
+    }
+
     const msg = encodeURIComponent(this.userInput)
 
     this.aListOfConversations.push({
@@ -56,7 +60,7 @@ struct AiInterview {
     }, () => {
       this.aListOfConversations.splice(this.aListOfConversations.length - 1, 1,
         {
-          substance: res.result["data"]["info"]["text"],
+          substance: res?.result["data"]["info"]["text"] || "",
           sender: false
         } as conversationStructure
       )

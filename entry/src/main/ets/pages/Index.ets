@@ -24,19 +24,18 @@ struct Index {
             tabsSubstance,
             (item: tabsStructure, index) => {
               TabContent() {
-                if (this.tabsIndex === 0) {
+                if (index === 0) {
                   // 首页
                   Home()
-                } else if (this.tabsIndex === 1) {
+                } else if (index === 1) {
                   // 项目
                   Project()
-                } else if (this.tabsIndex === 2) {
+                } else if (index === 2) {
                   // 面经
                   Interview()
-                } else if (this.tabsIndex === 3) {
+                } else if (index === 3) {
                   // 我的
                   Mine()
-                  // test()
                 }
               }.tabBar(this.tabBar(item.name, item.icon, item.selectedIcon, index))
             }
